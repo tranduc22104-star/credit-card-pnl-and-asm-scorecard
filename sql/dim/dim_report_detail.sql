@@ -1,66 +1,81 @@
 -- =====================================================================
--- BẢNG CHIỀU CHỈ TIÊU BÁO CÁO (dim_report_detail):
--- Định nghĩa cây chỉ tiêu cho hai báo cáo; số liệu nằm ở fct_pnl_value và fct_asm_value.
---   report_group : 'PNL' là báo cáo tổng hợp lãi lỗ, 'XH' là xếp hạng quản lý vùng
---   report_id    : mã chỉ tiêu cố định trong từng nhóm (lãi lỗ 1..94, xếp hạng 201..222)
---   parent_id    : mã chỉ tiêu cha (-1 là nút gốc)
---   sort_order   : thứ tự dòng theo mẫu đối chiếu Excel
---   unit         : đơn vị tính (VND, count, pct, rank, score)
--- Chạy trước hai tệp thủ tục điều phối.
+-- BẢNG DANH MỤC CHỈ TIÊU BÁO CÁO (dim_report_detail)
+-- Vị trí trong quy trình: Giai đoạn 2 - Bước 2.1 (Tạo từ điển chỉ tiêu cho cả 2 báo cáo).
+-- Vai trò:
+--   - Lưu trữ cây phân cấp chỉ tiêu của Báo cáo Lãi lỗ ('PNL') và Báo cáo Xếp hạng ASM ('XH').
+--   - Là từ điển trung tâm để giải nghĩa cột report_id trong các bảng dọc (tmp_ và fct_).
+--   - Cấu trúc cột:
+--       + report_group : Phân nhóm báo cáo ('PNL' = Lãi lỗ vùng, 'XH' = Xếp hạng ASM)
+--       + report_id    : Mã số chỉ tiêu cố định (nhóm PNL: 1..121; nhóm XH: 201..222)
+--       + parent_id    : Mã chỉ tiêu cha trên cây phân cấp (-1 là chỉ tiêu cấp cao nhất)
+--       + sort_order   : Thứ tự sắp xếp dòng từ trên xuống dưới theo đúng biểu mẫu báo cáo
+--       + unit         : Đơn vị tính ('VND', 'count', 'pct', 'rank', 'score', 'header')
 -- =====================================================================
 SET search_path TO banking_project, public;
 
 DROP TABLE IF EXISTS dim_report_detail CASCADE;
 CREATE TABLE dim_report_detail (
-    report_group VARCHAR(3)   NOT NULL,   -- 'PNL' hoặc 'XH'
-    report_id    INT          NOT NULL,
-    report_name  VARCHAR(120) NOT NULL,
-    parent_id    INT          NOT NULL DEFAULT -1, -- -1 là nút gốc
-    sort_order   INT          NOT NULL,   -- thứ tự hiển thị trên báo cáo
-    unit         VARCHAR(10)  NOT NULL,   -- VND / count / pct / rank / score
+    report_group VARCHAR(3)   NOT NULL,   -- Nhóm báo cáo: 'PNL' hoặc 'XH'
+    report_id    INT          NOT NULL,   -- Mã định danh chỉ tiêu
+    report_name  VARCHAR(120) NOT NULL,   -- Tên chỉ tiêu hiển thị trên báo cáo
+    parent_id    INT          NOT NULL DEFAULT -1, -- Mã chỉ tiêu tổng cấp trên (-1 nếu là dòng gốc)
+    sort_order   INT          NOT NULL,   -- Thứ tự hiển thị dòng trên báo cáo
+    unit         VARCHAR(10)  NOT NULL,   -- Đơn vị tính: VND / count / pct / rank / score / header
     PRIMARY KEY (report_group, report_id)
 );
 CREATE INDEX idx_report_detail_parent
     ON dim_report_detail (report_group, parent_id);
 
--- 01. PNL — 28 mã (16 mã lá, 4 mã tổng nhóm, E/H/A, J và 4 tỷ số)
--- Cây: 1 đến 5 lên 11 lên 40 | 21 đến 23 lên 24 lên 40 | 31 đến 33 lên 34 lên 40
---      40, 56, 60 lên 70 (A); 80 (H) và 90 đến 94 đứng riêng
+-- 01. NHÓM 'PNL' — 32 dòng hiển thị chính (sort_order 30..340) và 1 dòng trung gian (mã 80, sort_order 999)
+-- Thứ tự sort_order 30..340 khớp từng dòng với cấu trúc Báo cáo tổng hợp lãi lỗ trên Power BI và Excel mẫu
 INSERT INTO dim_report_detail
     (report_group, report_id, report_name, parent_id, sort_order, unit)
 VALUES
-    ('PNL',  1, 'Lai trong han (B2)',                 11,  10, 'VND'),
-    ('PNL',  2, 'Lai qua han (B1)',                   11,  20, 'VND'),
-    ('PNL',  3, 'Phi bao hiem (B3)',                  11,  30, 'VND'),
-    ('PNL',  4, 'Phi tang hoa don (B4)',              11,  40, 'VND'),
-    ('PNL',  5, 'Phi cham tra (B5)',                  11,  50, 'VND'),
-    ('PNL', 11, 'Tong thu nhap the (B)',              40,  60, 'VND'),
-    ('PNL', 21, 'Von tai toan ca (C3)',               24,  70, 'VND'),
-    ('PNL', 22, 'Von tai toan 1 (C2)',                24,  80, 'VND'),
-    ('PNL', 23, 'Von CCTG (C1)',                      24,  90, 'VND'),
-    ('PNL', 24, 'Tong von kinh doanh the (C)',        40, 100, 'VND'),
-    ('PNL', 31, 'Doanh thu kinh doanh (D3)',          34, 110, 'VND'),
-    ('PNL', 32, 'Chi phi hoa hong (D1)',              34, 120, 'VND'),
-    ('PNL', 33, 'Chi phi kinh doanh khac (D2)',       34, 130, 'VND'),
-    ('PNL', 34, 'Tong hoa hong + chi phi KD khac (D)',40, 140, 'VND'),
-    ('PNL', 40, 'Tong thu nhap (E = B + C + D)',      70, 150, 'VND'),
-    ('PNL', 51, 'Chi phi thue (F1)',                  56, 160, 'VND'),
-    ('PNL', 52, 'Chi phi nhan su (F2)',               56, 170, 'VND'),
-    ('PNL', 53, 'Chi phi quan ly (F3)',               56, 180, 'VND'),
-    ('PNL', 54, 'Chi phi tai san (F4)',               56, 190, 'VND'),
-    ('PNL', 56, 'Tong chi phi (F)',                   70, 200, 'VND'),
-    ('PNL', 60, 'Du phong rui ro (G)',                70, 210, 'VND'),
-    ('PNL', 70, 'LN sau thue (A = E + F + G)',        -1, 220, 'VND'),
-    ('PNL', 80, 'Tong doanh thu (H = B + D3)',        -1, 230, 'VND'),
-    ('PNL', 90, 'So luong SM (J)',                    -1, 240, 'count'),
-    ('PNL', 91, 'Chi so CIR (-F/E %)',                -1, 250, 'pct'),
-    ('PNL', 92, 'Chi so Margin (A/H %)',              -1, 260, 'pct'),
-    ('PNL', 93, 'Chi so he so von (A/|C| %)',         -1, 270, 'pct'),
-    ('PNL', 94, 'LN sau thue binh quan nhan su (A/J)',-1, 280, 'VND');
+    -- Dòng 1: Chỉ tiêu kết quả cuối cùng A = E + F + G
+    ('PNL', 70,  '1. Lợi nhuận trước thuế',                                    -1,  30, 'VND'),
+    -- Cụm B (mã 11 = tổng các mã 1..5): Thu nhập từ hoạt động thẻ tín dụng
+    ('PNL', 11,  'Thu nhập từ hoạt động thẻ',                                  70,  40, 'VND'),
+    ('PNL',  1,  '  Lãi trong hạn',                                            11,  50, 'VND'),
+    ('PNL',  2,  '  Lãi quá hạn',                                              11,  60, 'VND'),
+    ('PNL',  3,  '  Phí Bảo hiểm',                                             11,  70, 'VND'),
+    ('PNL',  4,  '  Phí tăng hạn mức',                                         11,  80, 'VND'),
+    ('PNL',  5,  '  Phí thanh toán chậm, thu từ ngoại bảng, khác…',            11,  90, 'VND'),
+    -- Cụm C (mã 24 = tổng các mã 21..23): Chi phí thuần Kinh doanh vốn (KDV)
+    ('PNL', 24,  'Chi phí thuần KDV',                                          70, 100, 'VND'),
+    ('PNL', 111, '  DT Nguồn vốn',                                             24, 110, 'VND'),
+    ('PNL', 21,  '  CP vốn TT 2',                                              24, 120, 'VND'),
+    ('PNL', 22,  '  CP vốn TT 1',                                              24, 130, 'VND'),
+    ('PNL', 23,  '  CP vốn CCTG',                                              24, 140, 'VND'),
+    -- Cụm D (mã 34 = tổng các mã 31..33): Chi phí thuần hoạt động khác
+    ('PNL', 34,  'Chi phí thuần hoạt động khác',                               70, 150, 'VND'),
+    ('PNL', 116, '  DT Fintech',                                               34, 160, 'VND'),
+    ('PNL', 117, '  DT tiểu thương, cá nhân',                                  34, 170, 'VND'),
+    ('PNL', 31,  '  DT Kinh doanh',                                            34, 180, 'VND'),
+    ('PNL', 32,  '  CP hoa hồng',                                              34, 190, 'VND'),
+    ('PNL', 33,  '  CP thuần KD khác',                                         34, 200, 'VND'),
+    ('PNL', 121, '  CP hợp tác kd tàu (net)',                                  34, 210, 'VND'),
+    -- Cụm E (mã 40 = B + C + D) và Cụm F (mã 56 = tổng các mã 51..54): Tổng thu nhập & Tổng chi phí hoạt động
+    ('PNL', 40,  'Tổng thu nhập hoạt động',                                    70, 220, 'VND'),
+    ('PNL', 56,  'Tổng chi phí hoạt động',                                     70, 230, 'VND'),
+    ('PNL', 51,  '  CP thuế, phí',                                             56, 240, 'VND'),
+    ('PNL', 52,  '  CP nhân viên',                                             56, 250, 'VND'),
+    ('PNL', 53,  '  CP quản lý',                                               56, 260, 'VND'),
+    ('PNL', 54,  '  CP tài sản',                                               56, 270, 'VND'),
+    -- Cụm G (mã 60: Chi phí dự phòng rủi ro tín dụng) & Cụm J (mã 90: Định biên nhân sự Sale Manager)
+    ('PNL', 60,  'Chi phí dự phòng',                                           70, 280, 'VND'),
+    ('PNL', 90,  '2. Số lượng nhân sự ( Sale Manager )',                       -1, 290, 'count'),
+    -- Cụm Chỉ số tài chính (mã 95 là dòng tiêu đề nhóm; các mã 91..94 là 4 tỷ số hiệu quả tài chính)
+    ('PNL', 95,  '3. Chỉ số tài chính',                                        -1, 300, 'header'),
+    ('PNL', 91,  '  CIR (%)',                                                  95, 310, 'pct'),
+    ('PNL', 92,  '  Margin (%)',                                               95, 320, 'pct'),
+    ('PNL', 93,  '  Hiệu suất trên/vốn (%)',                                   95, 330, 'pct'),
+    ('PNL', 94,  '  Hiệu suất BQ/ Nhân sự',                                    95, 340, 'VND'),
+    -- Chỉ tiêu trung gian H (mã 80 = Thu nhập thẻ B + DT Kinh doanh D3), dùng làm mẫu số tính Margin (mã 92)
+    ('PNL', 80,  'Tổng doanh thu (H = B + D3)',                                -1, 999, 'VND');
 
--- 02. XH — 22 mã (4 chỉ số, 4 hạng quy mô, điểm và hạng, phần tài chính, phần tổng)
--- Cây: 205 đến 208 lên 209 (điểm quy mô) | 212, 214, 216, 218 lên 219 (điểm tài chính)
---      209 và 219 lên 221 (điểm tổng); chỉ số và hạng gốc đứng riêng
+-- 02. NHÓM 'XH' — 22 mã chỉ tiêu đánh giá và xếp hạng Quản lý vùng (ASM)
+-- Chia làm 2 trụ cột: Trụ cột Quy mô phát triển kinh doanh (201..210) và Trụ cột Tài chính vùng (211..220),
+-- kết thúc bằng Tổng điểm (221) và Hạng tổng kết toàn hàng (222).
 INSERT INTO dim_report_detail
     (report_group, report_id, report_name, parent_id, sort_order, unit)
 VALUES
@@ -84,13 +99,5 @@ VALUES
     ('XH', 218, 'Rank HSBQ',                    219, 180, 'rank'),
     ('XH', 219, 'Diem tai chinh (FIN)',         221, 190, 'score'),
     ('XH', 220, 'Rank FIN (diem FIN)',          219, 200, 'rank'),
-    ('XH', 221, 'Tong diem (QM + FIN)',         -1, 210, 'score'),
-    ('XH', 222, 'Rank tong ket',                221, 220, 'rank');
-
--- Kiểm tra:
--- SELECT report_group, COUNT(*) FROM dim_report_detail GROUP BY 1; -- 28 + 22
--- SELECT COUNT(*) FROM dim_report_detail WHERE parent_id = -1; -- 7 + 9 = 16 nút gốc
--- SELECT d.report_group, d.report_id, d.report_name, p.report_name AS parent
--- FROM dim_report_detail d LEFT JOIN dim_report_detail p
---   ON p.report_group = d.report_group AND p.report_id = d.parent_id
--- WHERE d.parent_id <> -1 AND p.report_id IS NULL; -- 0 dòng: mọi mã cha đều có thật
+    ('XH', 221, 'Tong diem (QM + FIN)',          -1, 210, 'score'),
+    ('XH', 222, 'Rank tong ket',                 -1, 220, 'rank');

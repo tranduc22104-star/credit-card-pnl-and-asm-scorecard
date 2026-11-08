@@ -1,36 +1,33 @@
 -- =====================================================================
--- XẾP HẠNG ASM (mỗi ASM một quản lý kinh doanh vùng): bảng sự kiện
--- fct_asm_value và thủ tục điều phối sp_xephang_asm.
--- Phần một tính theo từng ASM: doanh số cho vay mới, PSDN và tỷ lệ duyệt là
--- trung bình luỹ kế từ đầu năm (bỏ qua ô trống); tỷ lệ nợ xấu lấy theo vùng.
--- Phần hai là bốn chỉ số tài chính của vùng (chi phí trên doanh thu, lợi nhuận
--- biên, hệ số vốn, kết quả bình quân một quản lý) — mọi ASM cùng vùng như nhau.
--- Điểm tổng = điểm phần một cộng điểm phần hai. RANK() để cùng điểm thì cùng
--- hạng nên dãy hạng có thể nhảy cóc. Phải chạy báo cáo lãi lỗ của tháng đang
--- xét trước khi gọi thủ tục này.
--- Sáu bảng tạm cùng thủ tục nạp của từng bảng ở sql/tmp/tmp_xh_step.sql; bốn
--- khung nhìn ở sql/rpt/.
--- Thứ tự chạy: ingestion, sql/dim, sql/tmp, tệp này, gọi thủ tục từng tháng,
--- rồi sql/rpt.
+-- BẢNG SỰ KIỆN XẾP HẠNG QUẢN LÝ VÙNG (fct_asm_value)
+-- VÀ THỦ TỤC ĐIỀU PHỐI CHẤM ĐIỂM XẾP HẠNG THEO THÁNG (sp_xephang_asm)
+-- Vị trí trong quy trình: Giai đoạn 2 - Bước 2.3 (Tổng hợp bảng sự kiện Xếp hạng ASM).
+-- Cơ chế chấm điểm và xếp hạng đa chiều (22 mã chỉ tiêu từ 201 đến 222):
+--   1. Trụ cột 1 - Quy mô phát triển kinh doanh (10 mã: 201..210):
+--        - 3 chỉ tiêu cá nhân luỹ kế từ đầu năm: Mã 201 (Doanh số cho vay mới LTN),
+--          Mã 202 (Số thẻ phát sinh dư nợ PSDN), Mã 203 (Tỷ lệ duyệt hồ sơ) — càng cao hạng càng cao (DESC).
+--        - 1 chỉ tiêu kiểm soát rủi ro cấp vùng: Mã 204 (Tỷ lệ nợ xấu trước xoá nợ NPL) — càng thấp hạng càng cao (ASC).
+--        - Điểm quy mô (Mã 209) = Tổng 4 thứ hạng (Mã 205 + Mã 206 + Mã 207 + Mã 208).
+--        - Hạng Phát triển kinh doanh (Mã 210) = Xếp hạng tăng dần theo Điểm quy mô (điểm càng nhỏ hạng càng cao).
+--   2. Trụ cột 2 - Hiệu quả tài chính vùng (10 mã: 211..220):
+--        - Gắn kết quả 4 chỉ số tài chính vùng và 4 thứ hạng tương ứng (Mã 211..218) cùng Điểm tài chính (Mã 219)
+--          từ bảng tạm Bước 3 (tmp_xh_step3_fin_area) cho từng ASM thuộc vùng đó.
+--        - Hạng Tài chính (Mã 220) = Xếp hạng tăng dần theo Điểm tài chính trên toàn bộ danh sách ASM.
+--   3. Tổng kết chung cuộc (2 mã: 221..222):
+--        - Tổng điểm (Mã 221) = Điểm quy mô (Mã 209) + Điểm tài chính (Mã 219).
+--        - Hạng tổng kết toàn hàng (Mã 222) = Xếp hạng tăng dần theo Tổng điểm (tổng điểm thấp nhất đạt Top 1).
 -- =====================================================================
 
 SET search_path TO banking_project, public;
 
--- 01. BẢNG SỰ KIỆN DẠNG DỌC CỦA BẢNG XẾP HẠNG (khoá chỉ có asm_id) -----------
--- report_id (bản đầy đủ ở sql/dim/dim_report_detail.sql):
---   201 doanh số cho vay mới | 202 PSDN | 203 tỷ lệ duyệt | 204 tỷ lệ nợ xấu
---   205 đến 208 là bốn hạng của bốn chỉ số vừa nêu | 209 điểm quy mô
---   210 hạng theo điểm quy mô
---   211 chi phí trên doanh thu | 212 hạng | 213 lợi nhuận biên | 214 hạng
---   215 hệ số vốn | 216 hạng | 217 kết quả bình quân một quản lý | 218 hạng
---   219 điểm tài chính | 220 hạng theo điểm tài chính
---   221 điểm tổng | 222 hạng tổng kết
+-- 01. BẢNG SỰ KIỆN XẾP HẠNG ASM DẠNG DỌC (fct_asm_value)
+-- Mỗi ASM có mặt trong kỳ báo cáo được lưu 22 dòng (tương ứng với 22 mã report_id từ 201 đến 222).
 DROP TABLE IF EXISTS fct_asm_value CASCADE;
 CREATE TABLE fct_asm_value (
-    month_key   INT NOT NULL,
-    asm_id      INT NOT NULL,          -- khoá logic nối sang dim_asm theo asm_id
-    report_id   INT NOT NULL,          -- khoá logic nối sang dim_report_detail
-    value       NUMERIC(24,6),         -- cột cho phép 6 chữ số; số làm tròn đến chữ số nào ghi ở bước nạp
+    month_key   INT NOT NULL,              -- Kỳ báo cáo tháng (YYYYMM)
+    asm_id      INT NOT NULL,              -- Mã định danh Quản lý khu vực (nối sang bảng dim_asm)
+    report_id   INT NOT NULL,              -- Mã chỉ tiêu xếp hạng (201..222, nối sang dim_report_detail)
+    value       NUMERIC(24,6),             -- Giá trị chỉ tiêu, điểm số hoặc thứ hạng
     PRIMARY KEY (month_key, asm_id, report_id)
 );
 CREATE INDEX IF NOT EXISTS idx_fct_asm_value_month
@@ -38,25 +35,21 @@ CREATE INDEX IF NOT EXISTS idx_fct_asm_value_month
 CREATE INDEX IF NOT EXISTS idx_fct_asm_value_asm
     ON fct_asm_value (asm_id);
 
--- 02. THỦ TỤC ĐIỀU PHỐI THEO THÁNG (báo cáo lãi lỗ của tháng đó phải chạy trước)
--- Tệp này chỉ làm ba việc: xoá số cũ của tháng trên bảng sự kiện, gọi lần lượt
--- ba thủ tục bước trong sql/tmp/tmp_xh_step.sql, rồi tính ba bước cuối ghi
--- fct_asm_value.
+-- 02. THỦ TỤC ĐIỀU PHỐI XẾP HẠNG ASM THEO THÁNG (sp_xephang_asm)
+-- Yêu cầu tiên quyết: Phải chạy thủ tục sp_baocao_tonghop(p_month) trước để có số liệu tài chính 7 vùng.
 CREATE OR REPLACE PROCEDURE sp_xephang_asm(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
     v_step TEXT;
 BEGIN
-    -- BƯỚC 0: xoá số của tháng trên bảng sự kiện để chạy lại không bị trùng.
-    -- Ba bảng tạm do chính thủ tục bước xoá dòng của tháng đó trên bảng của nó.
+    -- BƯỚC 0: Xoá dữ liệu cũ của tháng đang xét trên bảng sự kiện fct_asm_value
     v_step := 'STEP0_DELETE_MONTH';
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xephang_asm', p_month, v_step, 'START');
     DELETE FROM fct_asm_value
     WHERE month_key = p_month;
 
-    -- Ba bước tạm (sp_xh_step1_asm_avg, sp_xh_step2_npl_area, sp_xh_step3_fin_area):
-    -- sp_xh_step3_fin_area có chặn: báo cáo lãi lỗ tháng này phải đủ bảy vùng.
+    -- GỌI 3 THỦ TỤC BƯỚC TRUNG GIAN (định nghĩa tại tệp sql/tmp/tmp_xh_step.sql)
     v_step := 'CALL_STEP1_ASM_AVG';
     CALL sp_xh_step1_asm_avg(p_month);
     v_step := 'CALL_STEP2_NPL_AREA';
@@ -64,14 +57,14 @@ BEGIN
     v_step := 'CALL_STEP3_FIN_AREA';
     CALL sp_xh_step3_fin_area(p_month);
 
-    -- BƯỚC 4: xếp hạng bốn chỉ số phần một (ba chỉ số đầu lấy cao trước, tỷ lệ nợ
-    -- xấu lấy thấp trước), cộng thành điểm quy mô rồi hạng theo điểm quy mô.
-    -- Ghi vào bảng sự kiện, mỗi ASM mười dòng: bốn chỉ số, bốn hạng, một điểm và
-    -- một hạng tổng của phần một. Bốn chỉ số đọc từ bảng bước 1 đã trải ngang, tỷ
-    -- lệ nợ xấu đọc từ bảng bước 2 (report_id 204), mã vùng lấy theo asm_id trong
-    -- dim_asm.
+    -- BƯỚC 4: Chấm hạng Trụ cột 1 (Quy mô phát triển kinh doanh) và ghi 10 mã (201..210) cho từng ASM
+    -- Giải thích 4 khối CTE bên dưới:
+    --   1. asm_vals : Xoay ngang 3 chỉ tiêu cá nhân (201, 202, 203) từ bảng Bước 1 và lấy mã vùng từ dim_asm.
+    --   2. rows     : Ghép thêm tỷ lệ nợ xấu trước xoá nợ của vùng (mã 204 từ bảng Bước 2) cho từng ASM.
+    --   3. ranked   : Chấm hạng 4 chỉ tiêu quy mô trên toàn bộ danh sách ASM trong tháng.
+    --   4. scored   : Cộng 4 thứ hạng thành Điểm quy mô (qm - mã 209) và xếp Hạng PTKD (r_ptkd - mã 210).
     v_step := 'STEP4_RANK_QM';
-    WITH asm_vals AS ( -- trải ba dòng của mỗi ASM thành một dòng
+    WITH asm_vals AS (
         SELECT
             t.asm_id,
             MAX(d.area_code) AS area_code,
@@ -116,26 +109,24 @@ BEGIN
     FROM scored AS s
     CROSS JOIN LATERAL (
         VALUES
-            (201, s.ltn_avg),
-            (202, s.psdn_avg),
-            (203, s.approval_rate_avg),
-            (204, s.npl),
-            (205, s.r_ltn::NUMERIC),
-            (206, s.r_psdn::NUMERIC),
-            (207, s.r_appr::NUMERIC),
-            (208, s.r_npl::NUMERIC),
-            (209, s.qm::NUMERIC),
-            (210, s.r_ptkd::NUMERIC)
+            (201, s.ltn_avg),              -- Mã 201: Doanh số cho vay mới (LTN) bình quân luỹ kế
+            (202, s.psdn_avg),             -- Mã 202: Số thẻ phát sinh dư nợ (PSDN) bình quân luỹ kế
+            (203, s.approval_rate_avg),    -- Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (%)
+            (204, s.npl),                  -- Mã 204: Tỷ lệ nợ xấu trước xoá nợ của vùng (%)
+            (205, s.r_ltn::NUMERIC),       -- Mã 205: Hạng Doanh số cho vay mới (LTN)
+            (206, s.r_psdn::NUMERIC),      -- Mã 206: Hạng Số thẻ phát sinh dư nợ (PSDN)
+            (207, s.r_appr::NUMERIC),      -- Mã 207: Hạng Tỷ lệ duyệt hồ sơ
+            (208, s.r_npl::NUMERIC),       -- Mã 208: Hạng Kiểm soát nợ xấu (NPL)
+            (209, s.qm::NUMERIC),          -- Mã 209: Điểm Quy mô (Tổng 4 hạng 205..208)
+            (210, s.r_ptkd::NUMERIC)       -- Mã 210: Hạng Phát triển kinh doanh (xếp theo Điểm Quy mô)
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xephang_asm', p_month, v_step, 'OK');
 
-    -- BƯỚC 5: chép chín dòng tài chính của vùng sang từng ASM thuộc vùng đó.
-    -- Bước này không tính lại gì: hạng đã chốt ở bước 3 của bảng tạm, ở đây chỉ
-    -- nhân bản theo (area_code, report_id). Riêng mã 217 (kết quả bình quân một
-    -- quản lý) làm tròn hai chữ số lúc ghi vì bảng tạm giữ nguyên phép chia.
+    -- BƯỚC 5: Gắn 9 mã chỉ tiêu Trụ cột 2 (Tài chính vùng: 211..219) từ bảng Bước 3 sang từng ASM thuộc vùng đó.
+    -- Riêng mã 217 (Hiệu suất bình quân/nhân sự) được làm tròn 2 chữ số thập phân khi ghi vào bảng sự kiện.
     v_step := 'STEP5_ADD_FIN';
-    WITH asm_list AS ( -- danh sách ASM của tháng này, kèm mã vùng lấy từ dim_asm
+    WITH asm_list AS (
         SELECT DISTINCT t.asm_id, d.area_code
         FROM tmp_xh_step1_asm_avg AS t
         JOIN banking_project.dim_asm AS d ON d.asm_id = t.asm_id
@@ -152,9 +143,8 @@ BEGIN
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xephang_asm', p_month, v_step, 'OK');
 
-    -- BƯỚC 6: cộng điểm quy mô với điểm tài chính thành điểm tổng, xếp hạng tổng
-    -- kết và hạng theo điểm tài chính. Hạng theo điểm quy mô đã có từ bước 4 nên
-    -- không ghi lại.
+    -- BƯỚC 6: Tính Hạng Tài chính (Mã 220), Tổng điểm 2 trụ cột (Mã 221 = Điểm QM + Điểm FIN)
+    -- và xếp Hạng tổng kết toàn hàng (Mã 222: tổng điểm càng thấp thứ hạng càng cao).
     v_step := 'STEP6_TONG_FINAL';
     WITH s AS (
         SELECT
@@ -178,14 +168,14 @@ BEGIN
     FROM r
     CROSS JOIN LATERAL (
         VALUES
-            (220, r.r_fin::NUMERIC),
-            (221, r.tong),
-            (222, r.r_final::NUMERIC)
+            (220, r.r_fin::NUMERIC),       -- Mã 220: Hạng Tài chính (xếp theo Điểm FIN trên toàn danh sách ASM)
+            (221, r.tong),                 -- Mã 221: Tổng điểm chung cuộc (= Điểm Quy mô + Điểm Tài chính)
+            (222, r.r_final::NUMERIC)      -- Mã 222: Hạng tổng kết toàn hàng (Top 1 là người có Tổng điểm nhỏ nhất)
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xephang_asm', p_month, v_step, 'OK');
 
-EXCEPTION WHEN OTHERS THEN -- ghi dòng FAIL rồi ném lỗi ra ngoài
+EXCEPTION WHEN OTHERS THEN -- Ghi nhận dòng FAIL vào log_proc_run và hoàn tác giao dịch của tháng bị lỗi
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status, note)
     VALUES ('sp_xephang_asm', p_month, v_step, 'FAIL', SQLERRM);
     RAISE;

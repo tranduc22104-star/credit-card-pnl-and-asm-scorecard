@@ -1,49 +1,49 @@
 -- =====================================================================
--- BÁO CÁO LÃI LỖ THEO BẢY VÙNG: bảng sự kiện fct_pnl_value và thủ tục
--- điều phối sp_baocao_tonghop.
--- Số của một vùng = phần gán thẳng theo mã đơn vị (quy tắc 1) cộng phần hội
--- sở chia theo tỷ lệ hệ số (quy tắc 2). Mọi số là luỹ kế từ đầu năm, nên số
--- của tháng Hai là tổng của tháng Một và tháng Hai.
--- Bảng lưu dạng dọc: một giá trị là một dòng (month_key, area_code,
--- report_id, value); ý nghĩa từng report_id xem sql/dim/dim_report_detail.sql.
--- Bảng theo dõi tiến trình log_proc_run đặt ở đầu tệp vì thủ tục ghi từng bước.
--- Index trên các bảng stg_ và dim_param_area do chính bước ingestion tạo
--- (quy ước: chủ bảng tạo index).
--- Sáu bảng tạm cùng thủ tục nạp của từng bảng nằm ở sql/tmp/; bốn khung nhìn
--- đã tách sang sql/rpt/.
--- Thứ tự chạy: ingestion, sql/dim, sql/tmp, tệp này, gọi thủ tục từng tháng,
--- rồi sql/rpt.
+-- BẢNG SỰ KIỆN LÃI LỖ VÙNG (fct_pnl_value), BẢNG NHẬT KÝ (log_proc_run)
+-- VÀ THỦ TỤC ĐIỀU PHỐI TÍNH LÃI LỖ THÁNG (sp_baocao_tonghop)
+-- Vị trí trong quy trình: Giai đoạn 2 - Bước 2.3 & 2.4 (Tổng hợp bảng sự kiện và ghi nhật ký).
+-- Công thức tổng hợp số liệu báo cáo lãi lỗ (P&L) của từng vùng:
+--   - Số liệu của vùng ('B'..'H') = Phần Gán thẳng theo tỉnh (Quy tắc 1)
+--                                 + Phần Hội sở ('A') * Tỷ lệ phân bổ của vùng (Quy tắc 2).
+--   - Cấu trúc cây chỉ tiêu chính trên báo cáo:
+--       + B (Mã 11) : Thu nhập từ hoạt động thẻ = Tổng các mã 1, 2, 3, 4, 5.
+--       + C (Mã 24) : Chi phí thuần Kinh doanh vốn (KDV) = Tổng các mã 21, 22, 23.
+--       + D (Mã 34) : Chi phí thuần hoạt động khác = Tổng các mã 31, 32, 33.
+--       + E (Mã 40) : Tổng thu nhập hoạt động (TOI) = B + C + D.
+--       + F (Mã 56) : Tổng chi phí hoạt động (OPEX) = Tổng các mã 51, 52, 53, 54.
+--       + G (Mã 60) : Chi phí dự phòng rủi ro tín dụng.
+--       + A (Mã 70) : Lợi nhuận trước thuế (LNTT) = E + F + G (do chi phí F và G mang dấu âm).
+--       + H (Mã 80) : Tổng doanh thu dùng tính Margin = Thu nhập thẻ (B) + Doanh thu kinh doanh (mã 31).
+--       + J (Mã 90) : Số lượng nhân sự Quản lý bán hàng (Sale Manager - SM).
+--       + 4 tỷ số tài chính: Mã 91 (CIR % = -F / E), Mã 92 (Margin % = A / H),
+--                            Mã 93 (Hiệu suất trên vốn % = A / -C), Mã 94 (Hiệu suất BQ/nhân sự = A / J).
 -- =====================================================================
 
 SET search_path TO banking_project, public;
 
--- 00. BẢNG THEO DÕI TIẾN TRÌNH: xem chạy đến đâu, hỏng ở đâu trong log_proc_run --
+-- 00. BẢNG NHẬT KÝ VẬN HÀNH (log_proc_run): Tự động ghi lại thời điểm bắt đầu (START),
+-- hoàn thành (OK) hoặc báo lỗi (FAIL) của từng bước tính toán để dễ dàng kiểm tra và truy vết.
 DROP TABLE IF EXISTS log_proc_run CASCADE;
 CREATE TABLE log_proc_run (
     run_id      SERIAL PRIMARY KEY,
-    proc_name   VARCHAR(100) NOT NULL,
-    month_key   INT NOT NULL,
-    step_name   VARCHAR(100) NOT NULL,
-    status      VARCHAR(20) NOT NULL,   -- START, OK hoặc FAIL
-    note        TEXT,
-    created_at  TIMESTAMP DEFAULT NOW()
+    proc_name   VARCHAR(100) NOT NULL,     -- Tên thủ tục đang chạy
+    month_key   INT NOT NULL,              -- Kỳ báo cáo tháng (YYYYMM)
+    step_name   VARCHAR(100) NOT NULL,     -- Tên bước xử lý chi tiết
+    status      VARCHAR(20) NOT NULL,      -- Trạng thái: 'START', 'OK' hoặc 'FAIL'
+    note        TEXT,                      -- Thông báo lỗi chi tiết (nếu status = 'FAIL')
+    created_at  TIMESTAMP DEFAULT NOW()    -- Thời gian ghi nhận bản ghi
 );
 
--- 02. BẢNG SỰ KIỆN DẠNG DỌC: một giá trị là một dòng (tháng, vùng, report_id) --
--- report_id (bản đầy đủ ở sql/dim/dim_report_detail.sql):
---   1 đến 5 là năm dòng thu nhập nhóm B | 11 là tổng B
---   21 đến 23 là vốn kinh doanh, 24 là tổng C
---   31 đến 33 là doanh thu và chi phí kinh doanh, 34 là tổng D
---   40 là tổng thu nhập E | 51 đến 54 là bốn dòng chi phí | 56 là tổng F
---   60 là dự phòng rủi ro G | 70 là A (kết quả sau cùng) | 80 là H | 90 là số quản lý J
---   91 đến 94 là bốn chỉ số: CIR, lợi nhuận biên, hệ số vốn, kết quả bình quân một quản lý
--- Dòng area_code='A' là phần hội sở: chưa chia cho vùng nào, chỉ có dòng lá và tổng.
+-- 02. BẢNG SỰ KIỆN LÃI LỖ DẠNG DỌC (fct_pnl_value): Mỗi dòng lưu một giá trị (tháng, vùng, mã chỉ tiêu)
+-- Mỗi tháng sinh ra đúng 223 dòng:
+--   - 7 vùng kinh doanh ('B'..'H') x 28 mã chỉ tiêu = 196 dòng.
+--   - 1 cột Hội sở ('A') x 27 mã chỉ tiêu (Hội sở không có chỉ tiêu nhân sự vùng mã 90) = 27 dòng.
 DROP TABLE IF EXISTS fct_pnl_value CASCADE;
 CREATE TABLE fct_pnl_value (
-    month_key   INT NOT NULL,
-    area_code   VARCHAR(10) NOT NULL,  -- tám mã vùng 'A'..'H' (trong đó 'A' là hội sở)
-    report_id   INT NOT NULL,          -- khoá logic nối sang dim_report_detail
-    value       NUMERIC(24,6),         -- tiền 2 chữ số, tỷ lệ 6 chữ số, số đếm 0 chữ số
+    month_key   INT NOT NULL,              -- Kỳ báo cáo tháng (YYYYMM)
+    area_code   VARCHAR(10) NOT NULL,      -- Mã đơn vị: 'A' (Hội sở) và 'B'..'H' (7 vùng kinh doanh)
+    report_id   INT NOT NULL,              -- Mã chỉ tiêu báo cáo (nối sang bảng dim_report_detail)
+    value       NUMERIC(24,6),             -- Giá trị chỉ tiêu (số tiền đồng làm tròn 2 chữ số, tỷ lệ % làm tròn 6 chữ số)
     PRIMARY KEY (month_key, area_code, report_id)
 );
 CREATE INDEX IF NOT EXISTS idx_fct_pnl_value_month
@@ -51,25 +51,25 @@ CREATE INDEX IF NOT EXISTS idx_fct_pnl_value_month
 CREATE INDEX IF NOT EXISTS idx_fct_pnl_value_report
     ON fct_pnl_value (report_id);
 
--- 03. THỦ TỤC ĐIỀU PHỐI THEO THÁNG (mỗi lần gọi xử lý một tháng) ------------
--- Tệp này chỉ làm ba việc: xoá số cũ của tháng trên bảng sự kiện, gọi lần lượt
--- ba thủ tục bước trong sql/tmp/tmp_pnl_step.sql, rồi cộng gộp ở hai bước cuối
--- để ghi fct_pnl_value.
+-- 03. THỦ TỤC ĐIỀU PHỐI TÍNH BÁO CÁO LÃI LỖ THEO THÁNG (sp_baocao_tonghop)
+-- Quy trình xử lý 5 bước khi gọi CALL sp_baocao_tonghop(p_month):
+--   - Bước 0     : Xoá dữ liệu cũ của tháng p_month trên bảng fct_pnl_value để chạy lại không bị trùng.
+--   - Bước 1..3  : Gọi tuần tự 3 thủ tục bước trung gian (sp_pnl_step1_driver, sp_pnl_step2_ratio, sp_pnl_step3_gl_split).
+--   - Bước 4     : Kết hợp phần Gán thẳng + (phần Hội sở * Tỷ lệ phân bổ) để ghi các dòng lá và nhóm B, C, D, J.
+--   - Bước 5     : Tính các dòng tổng cấp cao (E, F, G, A, H) và 4 chỉ số tài chính (CIR, Margin, Hiệu suất vốn, HSBQ).
 CREATE OR REPLACE PROCEDURE sp_baocao_tonghop(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
     v_step TEXT;
 BEGIN
-    -- BƯỚC 0: xoá số của tháng trên bảng sự kiện để chạy lại không bị trùng.
-    -- Sáu bảng tạm do chính thủ tục bước xoá dòng của tháng đó trên bảng của nó.
+    -- BƯỚC 0: Xoá số liệu cũ của tháng đang xét trên bảng sự kiện fct_pnl_value
     v_step := 'STEP0_DELETE_MONTH';
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_baocao_tonghop', p_month, v_step, 'START');
     DELETE FROM fct_pnl_value
     WHERE month_key = p_month;
 
-    -- Ba bước tạm (sp_pnl_step1_driver, sp_pnl_step2_ratio, sp_pnl_step3_gl_split):
-    -- Đổi biến v_step trước mỗi lần gọi để lỗi ở bước nào in ra đúng tên bước đó.
+    -- GỌI 3 THỦ TỤC BƯỚC TRUNG GIAN (định nghĩa tại tệp sql/tmp/tmp_pnl_step.sql)
     v_step := 'CALL_STEP1_DRIVER';
     CALL sp_pnl_step1_driver(p_month);
     v_step := 'CALL_STEP2_RATIO';
@@ -77,12 +77,9 @@ BEGIN
     v_step := 'CALL_STEP3_GL_SPLIT';
     CALL sp_pnl_step3_gl_split(p_month);
 
-    -- BƯỚC 4: ghép hai phần thành số của vùng, theo từng report_id:
-    --   số ở bảng sự kiện = phần gán thẳng + phần hội sở nhân tỷ lệ.
-    -- Dòng tổng 11, 24, 34 cộng trực tiếp từ các dòng lá đã chia, nên chỉ làm
-    -- tròn một lần ở đây, không làm tròn rồi cộng tiếp.
+    -- BƯỚC 4: Tổng hợp số liệu từng vùng = Phần gán thẳng (d.value) + Phần Hội sở (h.value) * Tỷ lệ vùng (c.value)
     v_step := 'STEP4_COMBINE';
-    -- Mỗi vùng 16 dòng lá, bảy vùng thành 112 dòng.
+    -- 4a. Ghi 16 chỉ tiêu dòng lá cho 7 vùng kinh doanh ('B'..'H'): 7 vùng x 16 mã = 112 dòng
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, c.area_code, c.report_id,
@@ -93,8 +90,9 @@ BEGIN
     LEFT JOIN banking_project.tmp_pnl_step3_gl_split AS d
         ON d.month_key = p_month AND d.area_code = c.area_code AND d.report_id = c.report_id
     WHERE c.month_key = p_month;
-    -- Dòng tổng của từng nhóm: 11 là tổng B (mã 1 đến 5), 24 là tổng C (21 đến 23),
-    -- 34 là tổng D (31 đến 33).
+    -- 4b. Ghi 3 dòng tổng nhóm cho 7 vùng: Mã 11 (Thu nhập thẻ B = tổng 1..5),
+    -- Mã 24 (Chi phí thuần KDV C = tổng 21..23), Mã 34 (Chi phí thuần HĐ khác D = tổng 31..33).
+    -- Cộng từ số chính xác trước khi làm tròn để tránh sai số làm tròn tích luỹ.
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, g.area_code, g.rid, ROUND(g.sdir + g.shp, 2)
@@ -117,19 +115,19 @@ BEGIN
                       WHEN c.report_id IN (31,32,33)  THEN 34 END
     ) AS g
     WHERE g.rid IS NOT NULL;
-    -- Mã 90 (J): số quản lý của vùng, chép thẳng từ hệ số ở bước 1.
+    -- 4c. Ghi Mã 90 (J - Số lượng nhân sự Quản lý bán hàng SM) cho 7 vùng kinh doanh
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, s.area_code, 90, s.value
     FROM banking_project.tmp_pnl_step1_driver AS s
     WHERE s.month_key = p_month AND s.report_id = 90;
-    -- Phần hội sở 'A': 16 dòng lá giữ nguyên số, không nhân tỷ lệ cho ai.
+    -- 4d. Ghi 16 chỉ tiêu dòng lá của cột Hội sở ('A') — giữ nguyên số gốc hạch toán tại Hội sở trước khi phân bổ
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, h.area_code, h.report_id, ROUND(h.value, 2)
     FROM banking_project.tmp_pnl_step3_gl_split AS h
     WHERE h.month_key = p_month AND h.area_code = 'A';
-    -- Phần hội sở 'A': ba dòng tổng 11, 24, 34 cộng từ mười một dòng lá của nó.
+    -- 4e. Ghi 3 dòng tổng nhóm (Mã 11, Mã 24, Mã 34) của cột Hội sở ('A')
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, 'A',
@@ -144,9 +142,7 @@ BEGIN
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_baocao_tonghop', p_month, v_step, 'OK');
 
-    -- BƯỚC 5: cộng các dòng tổng E, F, A, H rồi tính bốn chỉ số, đọc lại chính
-    -- những dòng vừa ghi. Ghi lại mã 56 (tổng F) từ bốn dòng lá ĐÃ LÀM TRÒN,
-    -- giống hệt cách làm trước khi tách bước, rồi mới dùng F để tính A và chỉ số.
+    -- BƯỚC 5: Tính các dòng tổng cấp cao (Mã 56, Mã 40, Mã 80, Mã 70) và 4 chỉ số tài chính (Mã 91..94)
     v_step := 'STEP5_TONG_CHISO';
     DELETE FROM banking_project.fct_pnl_value
     WHERE month_key = p_month AND report_id = 56;
@@ -170,15 +166,15 @@ BEGIN
     ) AS w
     CROSS JOIN LATERAL (
         VALUES
-            (56, w.f1 + w.f2 + w.f3 + w.f4),           -- mã 56 (F): cộng bốn dòng lá đã làm tròn
-            (40, w.b + w.c + w.d),                      -- mã 40 (E): B cộng C cộng D
-            (80, w.b + w.d3),                           -- mã 80 (H): B cộng doanh thu kinh doanh D3
-            (70, w.b + w.c + w.d + w.f1 + w.f2 + w.f3 + w.f4 + w.g)  -- mã 70 (A): E cộng F cộng G
+            (56, w.f1 + w.f2 + w.f3 + w.f4),           -- Mã 56 (F - Tổng chi phí hoạt động): Tổng 4 mã chi phí 51..54
+            (40, w.b + w.c + w.d),                      -- Mã 40 (E - Tổng thu nhập hoạt động TOI): B + C + D
+            (80, w.b + w.d3),                           -- Mã 80 (H - Tổng doanh thu tính Margin): Thu nhập thẻ B + DT Kinh doanh D3
+            (70, w.b + w.c + w.d + w.f1 + w.f2 + w.f3 + w.f4 + w.g)  -- Mã 70 (A - Lợi nhuận trước thuế): E + F + G
     ) AS v(rid, val);
 
-    -- Bốn chỉ số, đổi ra phần trăm và để dấu dương: chi phí trên doanh thu là
-    -- trừ F chia E; ba chỉ số còn lại là A chia H, A chia trị tuyệt đối của C
-    -- (C mang giá trị âm), A chia số quản lý J.
+    -- Tính 4 chỉ số tài chính (Mã 91..94):
+    -- Lưu ý: Do Tổng chi phí hoạt động (F - mã 56) và Chi phí thuần KDV (C - mã 24) mang dấu âm,
+    -- nên công thức dùng -w.f và -w.c để đổi về số dương khi tính tỷ lệ phần trăm.
     INSERT INTO banking_project.fct_pnl_value
         (month_key, area_code, report_id, value)
     SELECT p_month, w.area_code, v.rid, v.val
@@ -197,18 +193,18 @@ BEGIN
     CROSS JOIN LATERAL (
         VALUES
             (91, CASE WHEN w.e = 0 THEN NULL
-                      ELSE ROUND(-w.f / w.e * 100, 6) END),
+                      ELSE ROUND(-w.f / w.e * 100, 6) END),         -- Mã 91 (CIR %): Tỷ lệ Chi phí hoạt động / Tổng thu nhập hoạt động
             (92, CASE WHEN w.h = 0 THEN NULL
-                      ELSE ROUND(w.a / w.h * 100, 6) END),
+                      ELSE ROUND(w.a / w.h * 100, 6) END),          -- Mã 92 (Margin %): Tỷ lệ Lợi nhuận trước thuế / Tổng doanh thu H
             (93, CASE WHEN w.c = 0 THEN NULL
-                      ELSE ROUND(w.a / NULLIF(-w.c, 0) * 100, 6) END),
+                      ELSE ROUND(w.a / NULLIF(-w.c, 0) * 100, 6) END), -- Mã 93 (Hiệu suất trên vốn %): Lợi nhuận trước thuế / Chi phí vốn thuần
             (94, CASE WHEN w.j = 0 THEN NULL
-                      ELSE ROUND(w.a / w.j, 2) END)
+                      ELSE ROUND(w.a / w.j, 2) END)                 -- Mã 94 (Hiệu suất BQ/nhân sự): Lợi nhuận trước thuế / Số quản lý SM
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_baocao_tonghop', p_month, v_step, 'OK');
 
-EXCEPTION WHEN OTHERS THEN -- ghi dòng FAIL rồi ném lỗi ra ngoài
+EXCEPTION WHEN OTHERS THEN -- Ghi nhận dòng FAIL vào log_proc_run và hoàn tác giao dịch của tháng bị lỗi
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status, note)
     VALUES ('sp_baocao_tonghop', p_month, v_step, 'FAIL', SQLERRM);
     RAISE;

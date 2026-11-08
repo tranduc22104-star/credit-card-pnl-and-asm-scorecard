@@ -2,7 +2,154 @@
 
 ## DANG DỞ
 
+- Phân tích toàn bộ 13 tệp SQL trong thư mục sql/ và viết lại hệ thống chú thích (comments) trong từng tệp rõ ràng, tường minh về mặt nghiệp vụ ngân hàng và kỹ thuật SQL để người đọc dễ hiểu.
+
 ## ĐÃ XONG
+### 2026-11-08
+222. **Đồng Bộ Toàn Diện 4 Tầng Hệ Thống Theo Quy Trình 3 Giai Đoạn & 3 View Chính Thức**
+   - Thực hiện đồng bộ 100% giữa DBeaver (`banking_project`), mã nguồn `sql/`, thư mục `images/` và toàn bộ tài liệu dự án (`README.md`, `README_eng.md`, `docs/PIPELINE.md`, `docs/HIEN_TRANG_HE_THONG.md`):
+     1. **Dọn thư mục `images/`**: Lưu trữ 2 ảnh nháp thử nghiệm (`architecture_pipeline_3steps.png`, `pipeline_architecture_user_schema.png`) vào `.staging/archived_files/`, giữ đúng 9 ảnh chính thức trong `images/`.
+     2. **Chuẩn hóa `sql/rpt/` và DBeaver**: Loại bỏ `rpt_pnl_matrix_view.sql` và các view phụ (`_vnd`, `v_baocao_pnl_pivot`), chỉ giữ đúng **3 tệp SQL tương ứng 3 View báo cáo sạch** trong `banking_project`: `v_baocao_tonghop` (35 dòng), `v_xephang_asm` (388 dòng), `v_baocao_pnl_excel_pivoted` (160 dòng).
+     3. **Cập nhật `README.md` và `README_eng.md`**: Chuyển toàn bộ mô tả quy trình (Mục 5), công cụ (Mục 9), cấu trúc thư mục (Mục 10) sang **Quy trình 3 giai đoạn (Excel ➔ PostgreSQL + DBeaver ➔ Power BI Import)**; nâng hệ thống báo cáo Power BI lên **7 trang** chia làm 3 bộ sản phẩm; đồng bộ Mục 7 Phần C khớp 100% với Trang 7 Power BI (`84%` – `16/19` quản lý vùng tại Đông Nam Bộ, đủ 5 địa bàn kèm cột tác động định lượng).
+     4. **Cập nhật `docs/PIPELINE.md` và `docs/HIEN_TRANG_HE_THONG.md`**: Đồng bộ cấu trúc 19 bảng, 3 view, 11 stored procedures (`dim_report_detail` 55 dòng, `log_proc_run` 208 dòng, 0 FAIL) và hướng dẫn vận hành trong DBeaver.
+   - Kiểm tra đối soát vượt qua 100% tiêu chí bằng `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số >= 10) và `.staging/push_check.py`.
+### 2026-11-08
+221. **Chuẩn Hóa Bước 3 Giai Đoạn 2 Trên Infographic Quy Trình (Đúng 3 View Chính Thức Nạp Power BI)**
+   - Cập nhật Bước 3 Giai đoạn 2 (`BƯỚC 3: ĐẦU RA VIEW BÁO CÁO`) trên sơ đồ `images/quy-trinh.png` và `workflow_quy_trinh_ky_thuat.html`:
+     * Loại bỏ các view đuôi `_vnd` không sử dụng trên Power BI.
+     * Chỉ giữ đúng **3 View sạch schema `rpt`** phục vụ trực tiếp hệ thống báo cáo Power BI: `v_baocao_tonghop`, `v_xephang_asm` và `v_baocao_pnl_excel_pivoted`.
+     * Căn chỉnh lại độ rộng 3 khung pill cân đối với 3 bảng `stg_*` ở Bước 1, chữ `v_baocao_pnl_excel_pivoted` nằm gọn trong khung, sắc nét tuyệt đối.
+### 2026-11-08
+220. **Tinh Gọn & Căn Chỉnh Bố Cục Infographic Quy Trình Kỹ Thuật (Xoá Chữ Xám Phụ & Cân Đối 3 Cột)**
+   - Tinh chỉnh sơ đồ trực quan Quy trình xử lý kỹ thuật 3 giai đoạn theo yêu cầu của người dùng:
+     * **Bước 3 Giai đoạn 2 (Đầu ra View báo cáo)**: Xoá toàn bộ chữ xám phụ bên dưới tên view, chỉ giữ 4 pill tên view (`v_baocao_tonghop`, `v_xephang_asm`, `v_baocao_tonghop_vnd`, `v_xephang_asm_vnd`) nằm gọn gàng trong khung.
+     * **Giai đoạn 3 (Trực quan các báo cáo)**: Xoá toàn bộ các dòng chữ xám diễn giải bên dưới, chỉ giữ đúng 3 tiêu đề chính (`2 Bản Báo Cáo Tổng Hợp`, `2 Bản Báo Cáo Được Trực Quan Hoá`, `1 Bản Phân Tích Sâu`) kèm vạch nhấn màu và số thứ tự rõ nét.
+     * **Căn chỉnh bố cục & Font chữ**: Thay thế hoàn toàn các ký tự emoji bị lỗi hiển thị ô vuông (`[]`) bằng huy hiệu tròn đánh số `1, 2, 3`; đồng bộ chiều cao điểm đầu và điểm cuối của các khối nội dung trong cả 3 Card thẳng hàng ngang tuyệt đối.
+   - Cập nhật đồng bộ tệp ảnh `images/quy-trinh.png` (1200x470 px) và Artifact `workflow_quy_trinh_ky_thuat.html`.
+### 2026-11-08
+219. **Chuẩn Hóa Infographic Quy Trình Kỹ Thuật (Đúng 3 File Nguồn & Đúng 3 Nhóm Báo Cáo)**
+   - Rà soát và chuẩn hóa chính xác nội dung hiển thị trên sơ đồ infographic:
+     * **Giai đoạn 1 (Dữ liệu đầu vào)**: Giữ đúng 3 tệp số liệu thô theo ảnh gốc của người dùng:
+       1. Sổ Hợp Đồng Tín Dụng (\act_kpi_month\ - 2,9 triệu dòng).
+       2. Sổ Bút Toán Kế Toán GL (\act_txn_month\ - 63 nghìn dòng).
+       3. Chỉ Tiêu Quản Lý Vùng (\kpi_asm_data\ - 84 nhân sự ASM).
+     * **Giai đoạn 2 (Kho dữ liệu & Tính toán SQL)**: Giữ trọn vẹn mini-pipeline 3 bước trực quan: Nạp liệu (\stg_*\), Tính toán (lưới 4 ô PL/pgSQL \dim_\, \	mp_\, \ct_\, \log_proc_run\), Đầu ra (4 View pt\).
+     * **Giai đoạn 3 (Trực quan các báo cáo)**: Tinh chỉnh đúng 3 nhóm đầu ra theo yêu cầu:
+       1. *2 Bản Báo Cáo Tổng Hợp* (P&L 7 Vùng & Xếp hạng 84 ASM).
+       2. *2 Bản Báo Cáo Được Trực Quan Hoá* (Dashboard Lãi Lỗ Trọng Tâm & Dashboard Hiệu Suất/Rủi Ro ASM).
+       3. *1 Bản Phân Tích Sâu* (Phân Tích Chuyên Sâu, Thác Nước P&L 250,5 Tỷ & Khung Hành Động Điều Hành).
+   - Xuất bản đồng bộ ảnh chất lượng cao \images/quy-trinh.png\ (1200x520 px) và Artifact \workflow_quy_trinh_ky_thuat.html\.
+
+### 2026-11-08
+218. **Thiết Kế Lại Infographic Quy Trình Kỹ Thuật 3 Giai Đoạn Thuần Trực Quan (Visual-First Flowchart)**
+   - Tái thiết kế toàn bộ sơ đồ quy trình kỹ thuật từ dạng văn bản sang mô hình infographic thuần trực quan (Visual-first Flowchart), loại bỏ hoàn toàn các đoạn văn dài để người xem nắm bắt ngay lập tức qua sơ đồ khối và icon:
+     * **Khung Card 1 (DỮ LIỆU ĐẦU VÀO / Excel)**: Trình bày trực quan 4 khối pill entity kèm tên tệp và số liệu định lượng (Sổ Hợp đồng \act_kpi_month\ 2,9M dòng, Sổ Bút toán \act_txn_month\ 63K dòng, Chỉ tiêu \kpi_asm_data\ 84 ASM, Bảng tham số \param_area\).
+     * **Khung Card 2 (KHO DỮ LIỆU & TÍNH TOÁN SQL / PostgreSQL + DBeaver)**: Mô hình hóa mini-pipeline 3 bước liên hoàn bằng mũi tên đứng:
+       - *Bước 1 (Nạp liệu)*: Khối nạp DBeaver Native Import đổ vào 3 bảng staging \stg_*\.
+       - *Bước 2 (Tính toán)*: Lưới 4 ô thực thi PL/pgSQL (1. DDL \dim_*\, 2. Bảng tạm \	mp_*\ 3 bước, 3. Bảng sự kiện \ct_*\, 4. Audit nhật ký \log_proc_run\).
+       - *Bước 3 (Đầu ra)*: Khối 4 pill view chuẩn hóa schema pt\ (\_baocao_tonghop\, \_xephang_asm\, \_baocao_pnl_excel_pivoted\, \_baocao_tonghop_vnd\).
+     * **Khung Card 3 (TRỰC QUAN CÁC BÁO CÁO / Power BI)**: Phân tầng trực quan 3 nhóm sản phẩm báo cáo (2 Báo cáo Tổng hợp P&L/ASM, 2 Dashboard Trọng tâm đòn bẩy & rủi ro, 1 Trang Phân tích Chuyên sâu Thác nước P&L 250,5 tỷ & Khung hành động).
+     * **Mũi tên liên kết giữa các Card**: Bổ sung 2 luồng liên kết rõ ràng có nhãn: \DBeaver Import\ (Card 1 -> Card 2) và \Power BI IMPORT\ (Card 2 -> Card 3).
+   - Xuất bản ảnh độ phân giải cao thay thế \images/quy-trinh.png\ (1200x540 px) và tạo Artifact HTML tương tác \workflow_quy_trinh_ky_thuat.html\.
+
+### 2026-11-08
+217. **Tạo Workflow Quy Trình Kỹ Thuật 3 Giai Đoạn (DBeaver + PostgreSQL PL/pgSQL + Power BI Import)**
+   - Thiết kế và xuất bản sơ đồ Workflow quy trình xử lý kỹ thuật 3 giai đoạn (gồm 3 card song song chuẩn nhận diện hệ thống) bám sát cấu trúc ảnh mẫu:
+     * **Card 1 (GIAI ĐOẠN 1 - TÌM DỮ LIỆU ĐẦU VÀO / Excel)**: 3 tệp số liệu thô (sổ hợp đồng 2,9 triệu dòng, sổ giao dịch 63 nghìn dòng, chỉ tiêu 84 nhân sự ASM, bảng tham số).
+     * **Card 2 (GIAI ĐOẠN 2 - LƯU TRỮ & XỬ LÝ DỮ LIỆU TỰ ĐỘNG / PostgreSQL + DBeaver)**: Cập nhật chi tiết 3 khâu kỹ thuật:
+       - *Nạp liệu*: DBeaver đưa trực tiếp dữ liệu thô từ các file Excel vào kho PostgreSQL (\stg_\).
+       - *Tính toán*: Thực thi các script SQL theo thứ tự: DDL tạo danh mục (\dim_\), Stored Procedure 3 bước tính toán tạm (\	mp_\), tổng hợp số liệu sự kiện (\ct_\) và ghi nhật ký (\log_proc_run\).
+       - *Đầu ra*: Dựng 4 View báo cáo sạch (pt_\) để Power BI kết nối Import trực tiếp.
+     * **Card 3 (GIAI ĐOẠN 3 - TRỰC QUAN CÁC BÁO CÁO / Power BI)**: Nạp số liệu vào mô hình qua chế độ Import, vận hành hệ thống 5 trang báo cáo tương tác và phân tích điều hành.
+   - Xuất bản ảnh độ nét cao \images/quy-trinh.png\ (1000x380 px) tích hợp logo chuẩn từ ảnh gốc và tạo Artifact HTML tương tác \workflow_quy_trinh_ky_thuat.html\.
+
+### 2026-11-07
+216. **Tái Dựng Sơ Đồ Kiến Trúc Pipeline Chuẩn Cấu Trúc Bảng Thực Tế & Chế Độ Import**
+   - Tái dựng toàn diện sơ đồ kiến trúc luồng dữ liệu 3 vùng (Data Sources -> Data Processing -> Reporting/Visualization) bám sát 100% bố cục và phong cách thiết kế của ảnh mẫu:
+     * **Cột 1 (DATA SOURCES)**: Giữ 3 tệp nguồn Excel (\act_kpi_month_raw_data\, \act_txn_month_raw_data\, \kpi_asm_data\) kết nối qua luồng \IMPORT\ với biểu trưng DBeaver.
+     * **Cột 2 (DATA PROCESSING)**: Thay thế toàn bộ tên bảng cũ sang cấu trúc thực tế của schema \anking_project\:
+       - Hàng Dim (4 bảng): \dim_area\, \dim_param_area\, \dim_asm\, \dim_month_headcount\.
+       - Hàng Staging (3 bảng): \stg_fact_kpi_month\, \stg_fact_txn_month\, \stg_asm_target\.
+       - Hàng Audit (1 bảng): \log_proc_run\ cùng biểu trưng PostgreSQL.
+       - Nhánh \PROCEDURE\: Các thủ tục PL/pgSQL nạp ra 2 bảng sự kiện kết quả \ct_pnl_value\ và \ct_asm_value\.
+     * **Cột 3 (REPORTING/VISUALIZATION)**: Thay thế mũi tên \DIRECT QUERY\ thành \IMPORT\. Chuẩn hóa 2 trang báo cáo tổng hợp (\BÁO CÁO TỔNG HỢP\, \BÁO CÁO XẾP HẠNG\) nằm trực tiếp trong Power BI, kết nối \VISUALIZE\ vào khối \DASHBOARDS\ cùng biểu trưng Power BI.
+   - Xuất bản đồng bộ ra 2 định dạng: Tệp ảnh độ phân giải cao (\images/pipeline_architecture_user_schema.png\ 1600x480) và tệp tương tác HTML (\pipeline_architecture_recreated.html\).
+
+### 2026-11-07
+215. **Cập Nhật Toàn Diện Bảng Data Glossary & Measure HTML Trong Power BI Desktop (68 Chỉ Tiêu Nghiệp Vụ Chuẩn)**
+   - Tái cấu trúc và mở rộng toàn diện bảng Từ điển dữ liệu nghiệp vụ (\Data Glossary\) và Measure \Data_Glossary_HTML\ trực tiếp trong mô hình Power BI Desktop (\output/Bao cao quan tri va phan tich (Ngan Hang).pbix\) thông qua giao thức TOM API (cổng SSAS 62753), phục vụ người xem nắm bắt 100% logic khi chỉ theo dõi Power BI mà không cần mở file Excel:
+     * **Bao phủ đầy đủ 68 chỉ tiêu nghiệp vụ chuẩn hóa** chia làm 5 phân nhóm nghiệp vụ rõ ràng:
+       1. *0. Định danh & Phân cấp (Sort 10..30)*: Kỳ báo cáo dồn tích (month_key YTD), Mã vùng (area_code A..H), Tên vùng kinh doanh (area_name).
+       2. *1. Báo cáo Lãi Lỗ P&L (Sort 40..350)*: Đủ 32 dòng chuẩn Excel khớp 100% Sheet \BaocaoTonghop\ (LNTT, Thu nhập thẻ TOI kèm 5 dòng lãi/phí; Chi phí thuần KDV kèm DT nguồn vốn & 3 loại CP vốn TT2, TT1, CCTG; Chi phí thuần HĐ khác kèm 6 dòng doanh thu/chi phí đối tác; Tổng thu nhập hoạt động TOI; Tổng chi phí hoạt động OPEX kèm 4 dòng chi phí thuế phí, nhân viên, quản lý, tài sản; Chi phí dự phòng tín dụng; Định biên nhân sự Sale Manager; Tiêu đề phân nhóm Chỉ số tài chính; 4 tỷ số tài chính CIR, Margin, Hiệu suất vốn, Hiệu suất BQ/nhân sự).
+       3. *2. Đánh Giá & Xếp Hạng ASM (Sort 360..560)*: Đủ 21 biến số và thứ hạng chuẩn Sheet \BaocaoXepHangASM\ (Email, Tên ASM, Tỉnh/Địa bàn; 4 chỉ số quy mô LTN, PSDN, Approval Rate, NPL bef WO kèm 4 thứ hạng tương ứng; Điểm QM & Xếp hạng QM; 4 thứ hạng tài chính vùng rank CIR, Margin, HS Vốn, HSBQ; Điểm FIN & Xếp hạng FIN; Tổng điểm thi đua & Thứ hạng chung cuộc Rank Final #1..#84).
+       4. *3. Nguyên Tắc Phân Bổ (Sort 570..620)*: Giải thích tường minh phương pháp Rule 1 (gán thẳng theo Analysis Code) và Rule 2 (phân bổ Pool Hội sở theo tỷ lệ Driver), kèm 4 bộ Driver nghiệp vụ cốt lõi (DNCK bình quân sau WO nhóm 1, nhóm 2, nhóm 2-5; Số lượng thẻ PSDN; Định biên nhân sự SM; DNCK bình quân trước WO).
+       5. *4. Thuật Ngữ Viết Tắt (Sort 630..680)*: Định nghĩa chuẩn xác các từ viết tắt chuyên ngành ngân hàng (DVML, KDV, TT1 & TT2, CCTG, NPL & WO, RSM / BM / ASM / SM).
+     * Nâng cấp Measure \Data_Glossary_HTML\ (81.443 ký tự render) với hệ thống badge màu sắc hiện đại (Xanh lá P&L, Xanh dương ASM, Vàng hổ phách Quy tắc phân bổ, Tím Từ viết tắt, Xám Dùng chung), định dạng zebra xen kẽ và highlight tiêu đề phân nhóm ấm áp.
+     * Cấu hình thuộc tính \SortByColumn\ liên kết các trường text sang \Sort_Order\, kích hoạt Full Refresh trên SSAS: 68 dòng nạp thành công, 0 lỗi DAX/XMLA.
+
+### 2026-11-07
+214. **Đồng Bộ Thứ Tự Sort_Order Khớp 100% 32 Dòng Báo Cáo P&L Chuẩn Excel**
+   - Rà soát và đồng bộ toàn diện `sort_order` và tên các chỉ tiêu trong `sql/dim/dim_report_detail.sql` bám sát 100% từng dòng từ Row 3 đến Row 34 của Sheet `BaocaoTonghop_T5` trong file Excel mẫu:
+     * Dải `sort_order` chạy từ 30 đến 340 (tương ứng Row 3 đến Row 34): `1. Lợi nhuận trước thuế` (30), `Thu nhập từ hoạt động thẻ` (40), 5 dòng thu nhập thẻ (50..90), `Chi phí thuần KDV` (100), 4 dòng chi phí vốn gồm cả DT Nguồn vốn (110..140), `Chi phí thuần hoạt động khác` (150) kèm 6 dòng hoạt động khác (160..210), `Tổng thu nhập hoạt động` (220), `Tổng chi phí hoạt động` (230) kèm 4 dòng CP hoạt động (240..270), `Chi phí dự phòng` (280), `2. Số lượng nhân sự ( Sale Manager )` (290), `3. Chỉ số tài chính` (300), và 4 chỉ số tài chính CIR, Margin, Hiệu suất vốn, Hiệu suất BQ nhân sự (310..340).
+   - Nâng cấp View `sql/rpt/rpt_pnl_excel_pivoted_view.sql`:
+     * Bổ sung COALESCE để các dòng giá trị 0 (DT Nguồn vốn, DT Fintech, CP tàu...) hiển thị `0.00` chuẩn xác như file Excel và ảnh mẫu.
+     * Dòng tiêu đề `3. Chỉ số tài chính` để trống (NULL) toàn bộ các ô dữ liệu.
+   - Cập nhật đồng bộ 3 Measure DAX màu sắc trong Power BI Desktop (`PnlTable_BgColor_TieuChi`, `PnlTable_FontColor_TieuChi`, `PnlTable_BgColor_Values`) theo dải `sort_order` mới và kích hoạt Full Refresh thành công vào mô hình.
+
+### 2026-11-07
+213. **Tách Tiêu Đề "3. Chỉ Số Tài Chính" & Chuẩn Hóa Tên 4 Chỉ Số Con Tránh Lặp Chữ**
+   - Cập nhật sql/dim/dim_report_detail.sql:
+     * Tách riêng dòng tiêu đề nhóm `report_id = 95` mang tên `3. Chỉ số tài chính` (`sort_order = 230`, `unit = 'header'`).
+     * Chuẩn hóa tên 4 chỉ số con bỏ tiền tố lặp: `CIR (%)` (sort_order = 240), `Margin (%)` (sort_order = 250), `Hiệu suất trên/vốn (%)` (sort_order = 260), `Hiệu suất BQ/ Nhân sự` (sort_order = 270) theo đúng 100% mẫu Excel đối chiếu.
+   - Nâng cấp View sql/rpt/rpt_pnl_excel_pivoted_view.sql (`v_baocao_pnl_excel_pivoted` và `v_baocao_pnl_pivot`): dùng CROSS JOIN danh mục với các tháng để dòng tiêu đề số 3 hiển thị đầy đủ, các ô dữ liệu để rỗng chuẩn xác.
+   - Cập nhật 3 Measure màu sắc DAX trong Power BI Desktop (`PnlTable_BgColor_TieuChi`, `PnlTable_FontColor_TieuChi`, `PnlTable_BgColor_Values`): dòng tiêu đề `3. Chỉ số tài chính` nhận màu nền nâu cam (`#C55A11`), chữ trắng; các dòng con bên dưới nhận nền trắng và chữ đen bình thường. Đã kích hoạt Full Refresh trên Power BI.
+
+### 2026-11-07
+212. **Bổ Sung Cột Sort Vào 4 Bảng View Báo Cáo P&L Và Xếp Hạng ASM**
+   - Cập nhật sql/rpt/rpt_pnl_view.sql và sql/rpt/rpt_xephang_view.sql bổ sung trường sort chuẩn hóa logic nghiệp vụ bám sát Excel:
+     * _baocao_tonghop và _baocao_tonghop_vnd: Bổ sung cột sort (1..7 tương ứng 7 vùng kinh doanh từ B đến H theo thứ tự cột chuẩn Excel: Đông Bắc Bộ, Tây Bắc Bộ, ĐB Sông Hồng, Bắc Trung Bộ, Nam Trung Bộ, Tây Nam Bộ, Đông Nam Bộ).
+     * _xephang_asm và _xephang_asm_vnd: Bổ sung cột sort lấy trực tiếp từ thứ hạng tổng kết (
+ank_final, 1..84) theo đúng thứ tự dòng trong sheet Xếp hạng ASM của file Excel output.
+   - Nạp lại 4 view trong PostgreSQL và kiểm tra đối soát:
+     * Số dòng toàn vẹn: _baocao_tonghop (35 dòng), _baocao_tonghop_vnd (35 dòng), _xephang_asm (388 dòng), _xephang_asm_vnd (388 dòng).
+     * Toàn bộ giá trị sort đều NOT NULL (100% dòng có thứ tự sắp xếp).
+     * Tháng 2/2023: LNTT đạt chuẩn **92.226 triệu đồng**; Top 1 ASM: Hoàng Văn Nam (**34 điểm**, sort = 1).
+
+### 2026-11-07
+211. **Tạo View Bảng Tổng Hợp Chỉ Số Lãi Lỗ Trải Ngang Chuẩn Excel (v_baocao_pnl_excel_pivoted)**
+   - Tạo mới tệp SQL sql/rpt/rpt_pnl_excel_pivoted_view.sql định nghĩa 2 View trải ngang dữ liệu phân bổ P&L:
+     * _baocao_pnl_excel_pivoted: Khung nhìn chuẩn hóa với 10 cột hiển thị đúng tên có dấu khớp 100% giao diện Power BI Table visual (TIÊU CHÍ, HỘI SỞ, Đông Bắc Bộ, Tây Bắc Bộ, Đồng Bằng Sông Hồng, Bắc Trung Bộ, Nam Trung Bộ, Tây Nam Bộ, Đông Nam Bộ, Total).
+     * _baocao_pnl_pivot: Bản view chuẩn snake_case (	ieu_chi, hoi_so, dong_bac_bo, ..., 	otal) phục vụ truy vấn backend và code SQL.
+   - Cơ chế tính toán và liên kết:
+     * Nối ct_pnl_value với dim_report_detail (lấy theo nhóm 
+eport_group = 'PNL'), giữ nguyên sort_order logic nghiệp vụ.
+     * Cột Total tính chuẩn xác theo tổng 7 vùng mạng lưới kinh doanh (B đến H), không bị nhân đôi số liệu pool Hội sở (A).
+     * Đối soát kỹ thuật: Tháng 202302 LNTT đạt chuẩn **92.226 triệu đồng**; Tháng 202303 dòng Chi phí dự phòng Hội sở đạt đúng -6.467.791.437,00 VNĐ, tổng 7 vùng -502.875.452.402,68 VNĐ khớp ảnh đối chiếu.
+
+### 2026-11-07
+210. **Chuẩn Hóa Cột Sort Theo Excel & Cập Nhật Data Glossary Trong Power BI**
+   - Chuẩn hóa thứ tự sắp xếp (sort_order) trong PostgreSQL bám sát 100% thứ tự từng dòng của Báo cáo Lãi lỗ Excel (output/Bao cao lai lo luy ke tu dau nam 202305.xlsx):
+     * Cập nhật sql/dim/dim_report_detail.sql: Đặt 1. Lợi nhuận trước thuế lên đầu (sort_order = 10), tiếp theo là Thu nhập hoạt động thẻ (sort_order = 20..70), Chi phí thuần KDV (sort_order = 80..100), Chi phí hoạt động khác (sort_order = 110..140), Chi phí hoạt động chung (sort_order = 160..200), Dự phòng rủi ro (sort_order = 210), Định biên ASM (sort_order = 220) và 4 Chỉ số tài chính (sort_order = 230..260).
+     * Tạo mới View sql/rpt/rpt_pnl_matrix_view.sql (
+_baocao_pnl_matrix 1.115 dòng) chuẩn hóa dòng cột phục vụ visual Matrix trên Power BI đối chiếu y hệt Sheet 1 Excel.
+   - Cập nhật bảng Data Glossary trong Power BI Desktop:
+     * Bổ sung trường Sort_Order (10..370) vào Calculated Table Data Glossary.
+     * Cấu hình thuộc tính SortByColumn cho cột Tên Nghiệp Vụ / Chỉ Số và Tên Biến Trong Dữ Liệu tự động liên kết với Sort_Order.
+     * Cập nhật Measure Data_Glossary_HTML tự động sắp xếp bảng thuật ngữ theo đúng thứ tự logic nghiệp vụ.
+### 2026-11-06
+209. **Tái Cấu Trúc Toàn Diện Hệ Thống Sang Thuần SQL Không Dùng Python**
+   - Hoàn thành tái cấu trúc kiến trúc dự án từ đầu theo mô hình tinh gọn không phụ thuộc runtime Python:
+     * Dọn dẹp và lưu trữ toàn bộ các script Python cũ trong ingestion/ vào thư mục .staging/legacy_ingestion/.
+     * Xác lập chuẩn đầu vào chỉ gồm đúng 3 file dữ liệu gốc của Ngân hàng trong input/ (stg_fact_txn_month, stg_fact_kpi_month, stg_asm_target). Loại bỏ hoàn toàn sự phụ thuộc vào file thứ tư Tham so va mau doi chieu.xlsx.
+     * Toàn bộ bảng danh mục (Dim) như 8 Vùng kinh doanh (dim_area), 64 Tỉnh thành ánh xạ (dim_param_area xử lý chuẩn hóa Bà Rịa - Vũng Tàu), 25 Chỉ tiêu báo cáo LNTT (dim_report_detail), Lịch và định biên nhân sự (dim_month_headcount, dim_sm_headcount) được khởi tạo và nạp dữ liệu mồi thuần túy bằng SQL trong sql/dim/.
+     * Dữ liệu 3 bảng Staging được nạp trực tiếp qua cơ chế Native Import của DBeaver / PostgreSQL.
+     * Toàn bộ logic phân bổ P&L 7 vùng (Rule 1 & Rule 2) và Xếp hạng đa chiều ASM chạy 100% bằng Stored Procedures PL/pgSQL độc lập trong DB, điều phối qua thủ tục duy nhất CALL banking_project.sp_run_all_months();.
+   - Kiểm tra đối soát số liệu kỹ thuật vượt qua 100% tiêu chí chuẩn nghiệp vụ:
+     * Tháng 2: LNTT 7 vùng đạt đúng **92,226 triệu đồng**; Top 1 ASM: Hoàng Văn Nam (**34 điểm**).
+     * Tháng 5: LNTT 7 vùng đạt đúng **250,450 tỷ đồng** (~250,5 tỷ đồng).
+     * Hai View báo cáo kết nối Power BI (
+_baocao_tonghop 35 dòng, 
+_xephang_asm 388 dòng) hoạt động trơn tru.
 ### 2026-11-06
 208. **Xóa Bỏ Triệt Để Chú Thích Mở Ngoặc Tiếng Anh Rườm Rà Trong README**
    - Rà soát và xóa bỏ toàn diện 40 vị trí mở ngoặc chú thích tiếng Anh rườm rà không cần thiết trong `README.md` theo yêu cầu của người dùng:
@@ -502,207 +649,3 @@ if split_pos != -1:
     line_start = nhatky.rfind("\
 ", 0, split_pos)
     h_idx = nhatky.rfind("### ", 0, line_start)
-
-174. **Nâng Cấp Thiết Kế Toàn Diện File `performance_diagnosis_merged_chart_v2.html`**
-   - Triển khai toàn bộ các giải pháp tối ưu hóa UI/UX và trực quan hóa dữ liệu theo phê duyệt của người dùng:
-     + Mục 01 (Biểu đồ bong bóng): Tách rời hoàn toàn 3 đường chỉ dẫn của cụm Bắc Trung Bộ, Đông Bắc Bộ, Tây Bắc Bộ theo 3 hướng độc lập (không còn đan chéo); tích hợp trực tiếp các số liệu đinh (Lãi %, NPL %, CIR %) vào nhãn callout, giúp đọc báo cáo ngay trên bản in/slide mà không cần hover chuột.
-     + Mục 02 (Biểu đồ Dumbbell): Bổ sung mã vùng trực thuộc (`· ĐNB`, `· NTB`, `· TBB`, `· ĐBB`, `· TNB`, `· ĐBSH`) cạnh tên 7 giám đốc vùng để gắn kết cá nhân với địa bàn; bổ sung tiêu đề cột `THAY ĐỔI` ở mép phải.
-     + Mục 03 (Đông Nam Bộ): Bổ sung thang đo trục hoành thứ hạng (#84 Thấp ──► #1 Cao nhất) cho 3 thanh xếp hạng phát triển kinh doanh tự thân của Lê Văn Bình, Trần Văn Hải, Trần Văn Anh.
-     + Mục 04 (Trọng tâm điều hành): Loại bỏ các thanh bar mini ảo, thay thế bằng các badge cam kết chỉ tiêu tài chính định lượng rõ ràng (+55 tỷ xóa lỗ, tiết kiệm 1,5 tỷ/tháng, minh bạch 4.447 triệu dự phòng...).
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/sec1_crop.png`, `.staging/sec234_crop.png`) và soi chiếu thị giác máy tính, xác nhận các lỗi hiển thị đã được khắc phục 100%.
-   - Cắt task 124 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (174 xuống 125).
-
-"""
-
-nhatky = nhatky.replace("## ĐÃ XONG\
-", "## ĐÃ XONG\
-" + task_174)
-
-# Cắt task 124
-split_pos = nhatky.find("124. **")
-if split_pos != -1:
-    line_start = nhatky.rfind("\
-", 0, split_pos)
-    h_idx = nhatky.rfind("### ", 0, line_start)
-
-173. **Định Lượng Hóa Cột Kết QuẢ Kỳ Vọng Tại Bảng Kế Hoạch Hành Động (Mục 3)**
-   - Tiếp thu phản biện chính xác của người dùng về việc cột Kết quả kỳ vọng bị lẫn lộn giữa định tính và định lượng, đồng thời dùng sai thuật ngữ ngân hàng:
-     + Dòng Nam Trung Bộ: Thay cụm từ định tính khó hiểu "Chuẩn hóa mô hình mẫu" bằng chỉ tiêu đo lường cụ thể: `Giữ CIR < 15% & NPL < 12%` (kèm chú thích Hiệu suất vốn > 200%).
-     + Dòng ĐBSH: Sửa cụm từ dùng sai thuật ngữ "Giữ vững 30,6% thị phần" (nhầm tỷ trọng giải ngân nội bộ với thị phần ngành) thành con số đo lường chuẩn mực: `> 55 tỷ đồng / tháng` (kèm chú thích Chiếm > 30% cho vay toàn hàng).
-     + Đồng bộ cả 5 dòng tại Bảng 3 đều có con số định lượng cụ thể (tiền, %, tỷ lệ) kèm dòng chú giải bản chất, loại bỏ 100% khẩu hiệu chung chung.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/table3_crop.png`), kiểm chứng độ rành mạch và dễ hiểu.
-   - Cắt task 123 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (173 xuống 124).
-
-"""
-
-nhatky = nhatky.replace("## ĐÃ XONG\
-", "## ĐÃ XONG\
-" + task_173)
-
-# Cắt task 123
-split_pos = nhatky.find("123. **")
-if split_pos != -1:
-    line_start = nhatky.rfind("\
-", 0, split_pos)
-    h_idx = nhatky.rfind("### ", 0, line_start)
-
-172. **Chuẩn Hóa Tiêu Đề Biểu Đồ 2A & 2B Theo Hướng Nghiên Cứu Trường Hợp Điển Hình (Case Studies)**
-   - Tiếp thu chỉ đạo của người dùng về việc đặt tên tiêu đề phản ánh đúng tính chất phân tích tình huống thực tế:
-     + Biểu đồ 2A: `BIẾN ĐỘNG PHONG ĐỘ: MỘT VÀI TRƯỜNG HỢP ĐIỂN HÌNH (THÁNG 1 ──► THÁNG 5)` kèm phụ đề `Ca bứt phá & Ca sa sút`.
-     + Biểu đồ 2B: `BÓC TÁCH TRÁCH NHIỆM QUA MỘT VÀI TRƯỜNG HỢP ĐIỂN HÌNH` kèm phụ đề `Bán hàng tự thân vs Lỗ cấp vùng`.
-   - Giúp người đọc tiếp cận biểu đồ như những lát cắt quản trị cụ thể, giải thích cặn kẽ vì sao chỉ có vài nhân sự xuất hiện trên hình.
-   - **Verify**: Render headless Edge, kiểm tra hình ảnh cận cảnh (`.staging/section2_titles_crop.png`), xác nhận 100% cân đối và rành mạch.
-
-171. **Tái Cấu Trúc Biểu Đồ 2B Theo Ngôn Ngữ Kinh Doanh Trực Diện (Loại Bỏ 'Điểm Tài Chính' Trừu Tượng)**
-   - Tiếp thu chỉ đạo của người dùng về việc biểu đồ phải dễ hiểu cho người ngoài đọc, loại bỏ cách thể hiện trừu tượng gây nhầm lẫn:
-     + Chuyển trục tung thành **KẾT QUẢ TÀI CHÍNH CỦA VÙNG** với 3 mốc tiền tệ thực tế: `Lãi +50 tỷ (Nam Trung Bộ)` ──► `Hòa vốn (0)` ──► `Lỗ -48,8 tỷ (Đông Nam Bộ)`. Không còn chữ "5 điểm", "26 điểm" kỹ thuật.
-     + Chuyển trục hoành thành **NĂNG LỰC BÁN HÀNG CÁ NHÂN (TỰ THÂN)**: Từ `Bán hàng yếu` sang `Top đầu toàn quốc`.
-     + Phân 3 cụm trực quan bằng khung bo góc nét đứt riêng biệt: Cụm Toàn diện (Nam Trung Bộ), Cụm Nghịch lý bán giỏi gánh lỗ vùng (Trần Văn Hải Top 28, Lê Văn Bình Top 24) và Cụm 9 quản lý nhóm cuối (ĐNB).
-     + Đưa toàn bộ nhãn mốc ra ngoài trục tọa độ, loại bỏ 100% tình trạng chồng lấn chữ, đảm bảo ai nhìn vào cũng hiểu ngay trong 3 giây.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/section2_perfect_crop.png`) và soi chiếu thị giác máy tính, xác nhận độ rành mạch tuyệt đối.
-   - Cắt task 121 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (171 xuống 122).
-
-"""
-
-nhatky = nhatky.replace("## ĐÃ XONG\
-", "## ĐÃ XONG\
-" + task_171)
-
-# Cắt task 121
-split_pos = nhatky.find("### 2026-10-31\
-
-### 2026-11-04
-170. **Khắc Phục Triệt Để Lỗi Hiển Thị Biểu Đồ 2B (Khoanh Vùng & Bóc Tách Bán Hàng vs Tài Chính)**
-   - Tiếp thu phản hồi xác đáng của người dùng về các lỗi hiển thị nghiêm trọng ở Biểu đồ 2B (chữ bị xén cụt, nét đứt cắt ngang chữ, nhãn tên quản lý đè dính nhau).
-   - Tái thiết kế toàn diện Biểu đồ 2B trong `.staging/prototype_v2_executive_cockpit.html`:
-     + Nới rộng không gian hiển thị (`viewBox="0 0 560 255"`), chuyển các elip thô sơ sang các khung phân vùng bo góc nét đứt (Dashed Rounded Callout Zones) có khoảng đệm an toàn.
-     + Tách biệt hoàn toàn dòng "Mức sàn tài chính ĐNB: 26đ" thành badge độc lập ở góc trái, đường nét đứt chạy từ sau badge sang mép phải, không cắt qua chữ.
-     + Dãn khoảng cách giữa TV Hải (Hạng 28) và Lê Văn Bình (Hạng 24) lên gần 100px, tách dòng họ tên (ở trên) và thứ hạng (ở dưới), xóa bỏ 100% tình trạng đè chữ.
-     + Định vị lại cụm Nam Trung Bộ và nhóm 9 quản lý cuối bảng gọn gàng, ngay ngắn.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/section2_clean_crop.png`) và soi chiếu thị giác máy tính, xác nhận giao diện đã đạt độ sắc nét và rành mạch chuẩn mực.
-   - Cắt task 120 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (170 xuống 121).
-
-"""
-
-nhatky = nhatky.replace("## ĐÃ XONG\
-", "## ĐÃ XONG\
-" + task_170)
-
-# Cắt task 120
-split_pos = nhatky.find("### 2026-10-31\
-
-169. **Tr\\u1ef1c Quan H\\xf3a & Ki\\u1ec3m Th\\u1eed Th\\u1ecb Gi\\xe1c To\\xe0n Di\\u1ec7n Trang Ph\\xe2n T\\xedch \\u0110i\\u1ec1u H\\xe0nh C-Level (Page 5)**'\r
-170 '170. **Kh\\u1eafc Ph\\u1ee5c Tri\\u1ec7t \\u0110\\u1ec3 L\\u1ed7i Hi\\u1ec3n Th\\u1ecb Bi\\u1ec3u \\u0110\\u1ed3 2B (Khoanh V\\xf9ng & B\\xf3c T\\xe1ch B\\xe1n H\\xe0ng vs T\\xe0i Ch\\xednh)**'\r
-171 "171. **T\\xe1i C\\u1ea5u Tr\\xfac Bi\\u1ec3u \\u0110\\u1ed3 2B Theo Ng\\xf4n Ng\\u1eef Kinh Doanh Tr\\u1ef1c Di\\u1ec7n (Lo\\u1ea1i B\\u1ecf '\\u0110i\\u1ec3m T\\xe0i Ch\\xednh' Tr\\u1eebu T\\u01b0\\u1ee3ng)**"\r
-172 '172. **Chu\\u1ea9n H\\xf3a Ti\\xeau \\u0110\\u1ec1 Bi\\u1ec3u \\u0110\\u1ed3 2A & 2B Theo H\\u01b0\\u1edbng Nghi\\xean C\\u1ee9u Tr\\u01b0\\u1eddng H\\u1ee3p \\u0110i\\u1ec3n H\\xecnh (Case Studies)**'\r
-173 '173. **\\u0110\\u1ecbnh L\\u01b0\\u1ee3ng H\\xf3a C\\u1ed9t K\\u1ebft Qu\\u1ea2 K\\u1ef3 V\\u1ecdng T\\u1ea1i B\\u1ea3ng K\\u1ebf Ho\\u1ea1ch H\\xe0nh \\u0110\\u1ed9ng (M\\u1ee5c 3)**'\r
-174 '174. **N\\xe2ng C\\u1ea5p Thi\\u1ebft K\\u1ebf To\\xe0n Di\\u1ec7n File `performance_diagnosis_merged_chart_v2.html`**'\r
-175 '175. **Chuy\\u1ec3n \\u0110\\u1ed5i M\\u1ee5c 01 Sang Bi\\u1ec3u \\u0110\\u1ed3 C\\u1ed9t Nh\\xf3m K\\u1ebft H\\u1ee3p \\u0110\\u01b0\\u1eddng (Combo Chart)**'\r
-176 '176. **T\\xe1i C\\u1ea5u Tr\\xfac To\\xe0n Di\\u1ec7n M\\u1ee5c 03 (\\u0110\\xf4ng Nam B\\u1ed9) Theo Lu\\u1ed3ng Nghi\\u1ec7p V\\u1ee5 4 Kh\\u1ed1i M\\u1ea1ch L\\u1ea1c**'\r
-177 '177. **Tinh G\\u1ecdn Kh\\u1ed1i 1 M\\u1ee5c 03 (\\u0110i\\u1ec3m T\\xe0i Ch\\xednh \\u0110\\xf4ng Nam B\\u1ed9) Theo H\\u01b0\\u1edbng Tr\\u1ef1c Di\\u1ec7n**'\r
-178 '178. **H\\u1ee3p Nh\\u1ea5t Bi\\u1ec3u \\u0110\\u1ed3 2 & 3 Th\\xe0nh Panel B\\xf3c T\\xe1ch C\\xe1c Tr\\u01b0\\u1eddng H\\u1ee3p B\\u1ecb K\\xe9o T\\u1ee5t H\\u1ea1ng V\\xe0 Nguy\\xean Nh\\xe2n**'\r
-179 '179. **X\\xe2y D\\u1ef1ng Bi\\u1ec3u \\u0110\\u1ed3 SVG Tr\\u1ef1c Quan H\\xf3a C\\xe1c Ca B\\u1ecb K\\xe9o T\\u1ee5t H\\u1ea1ng V\\xe0 Nguy\\xean Nh\\xe2n (Visual Chart)**'\r
-180 '180. **Rollback T\\u1ec7p `performance_diagnosis_merged_chart_v2.html` V\\u1ec1 Tr\\u1ea1ng Th\\xe1i K\\u1ebft Th\\xfac Prompt 325**'\r
-181 '181. **Thay Th\\u1ebf Bi\\u1ec3u \\u0110\\u1ed3 02 B\\u1eb1ng Bi\\u1ec3u \\u0110\\u1ed3 C\\u1ed9t Ngang \\u0110i\\u1ec3m T\\xe0i Ch\\xednh 7 V\\xf9ng D\\u1eabn V\\xe0o M\\u1ee5c 03**'\r
-182 '182. **Chu\\u1ea9n H\\xf3a Nh\\xe3n Th\\u1ee9 H\\u1ea1ng C\\u1ea5p V\\xf9ng Tr\\xean Bi\\u1ec3u \\u0110\\u1ed3 02 (Tr\\xe1nh Nh\\u1ea7m L\\u1eabn V\\u1edbi Rank C\\xe1 Nh\\xe2n)**'\r
-183 '183. **T\\xe1i Thi\\u1ebft K\\u1ebf & C\\u0103n Ch\\u1ec9nh \\u0110\\u1ed3ng B\\u1ed9 4 \\xd4 (Cards) T\\u1ea1i M\\u1ee5c 03 (\\u0110\\xf4ng Nam B\\u1ed9)**'\r
-184 '184. **Ho\\xe0n thi\\u1ec7n thi\\u1ebft k\\u1ebf th\\u1ecb gi\\xe1c M\\u1ee5c 01 (Bi\\u1ec3u \\u0111\\u1ed3 K\\u1ebft h\\u1ee3p Quy m\\xf4 - L\\u1ee3i nhu\\u1eadn - N\\u1ee3 x\\u1ea5u 7 v\\xf9ng)**'\r
-"}
-
-168. **Tái Cấu Trúc Steps & Gained Value Trong CV Theo Mạch Tư Duy Tóm Tắt Của README**
-   - Điều chỉnh toàn diện mục Steps và Gained Value của Project 1 trong hồ sơ CV (`CV/cv_tran_ngoc_duc.tex`) theo đúng hành trình Data Analyst thực tế của bản README (từ làm rõ yêu cầu $\rightarrow$ thiết kế output $\rightarrow$ khảo sát input & gap analysis $\rightarrow$ xây dựng logic tính toán $\rightarrow$ kiến trúc CSDL/pipeline $\rightarrow$ kiểm soát chất lượng & phát hiện thực tế):
-     + **Step 1 (Clarified Business Problem & Designed Output-First)**: Làm rõ chỉ đạo quản trị ban đầu, thiết kế trước cấu trúc báo cáo 7 vùng và thẻ điểm ASM 2 trụ cột trước khi tìm kiếm dữ liệu.
-     + **Step 2 (Data Discovery & Gap Analysis)**: Khảo sát 4 nguồn dữ liệu phân tán (63.134 bút toán GL, 2,93M+ sao kê thẻ, 420 KPI, 64 tỉnh thành); phát hiện khoảng cách dữ liệu: chi phí Hội sở tập trung và hợp đồng thẻ không có mã cá nhân ASM (buộc phải quản trị chất lượng tín dụng theo địa bàn).
-     + **Step 3 (Engineered Business Logic & Cost Allocation)**: Thiết lập khung phân bổ 2 quy tắc (gán trực tiếp chi nhánh và phân bổ 181 bút toán Hội sở theo 4 Cost Drivers: vốn, dự phòng, CNTT, quản lý chung); xây dựng thẻ điểm ASM 8 chỉ tiêu trên 2 trụ cột (Thương mại & Tài chính) bằng phương pháp Percentile Rank Scaling.
-     + **Step 4 (Architected Data Pipeline & Automated Warehouse)**: Xử lý streaming file Excel lớn 117,2 MB bằng Python, chuẩn hóa tiếng Việt bảo toàn 36.000 hợp đồng, dựng kho dữ liệu Kimball Star Schema (19 bảng, 4 view, 9 stored procedure) trong PostgreSQL với 6 bảng tạm dọc và rollback an toàn.
-     + **Step 5 (Instituted 5-Layer QA & Delivered Critical Business Insight)**: Khung đối soát 5 lớp, 91 phép kiểm tra DB-PBI tự động (0 lệch), phát hiện 97,2% mức tăng LNTT tháng 5 toàn hàng đến từ hoàn nhập/giảm trích lập dự phòng tại Tây Nam Bộ, đưa ra 5 kiến nghị quản trị rủi ro.
-     + **Gained Value**: Tái cấu trúc thành 3 năng lực cốt lõi: (1) Business-Driven Analytics & Tư duy Output-First; (2) Kế toán quản trị ngân hàng & Logic rủi ro tín dụng; (3) Kỹ thuật dữ liệu toàn diện (Streaming ETL, PostgreSQL Kimball DWH, DAX Power BI).
-     + Tinh chỉnh câu chữ trong Project 2, loại bỏ hoàn toàn các lỗi overfull hbox (0 warnings, 0 errors).
-   - **Verify**: biên dịch `pdflatex` thành công, sinh file `CV/cv_tran_ngoc_duc.pdf` 3 trang (553 KB), bố cục trang 2 vuông vắn, không tràn trang.
-   - Xóa task 118 ở cuối `## ĐÃ XONG`, duy trì nghiêm ngặt trần 50 task (168 xuống 119).
-
-167. **Cập Nhật Toàn Diện Nội Dung Project Báo Cáo Quản Trị Thẻ Trong CV (`CV/cv_tran_ngoc_duc.tex`)**
-   - Nâng cấp nội dung Project 1 trong CV theo đúng góc nhìn Data Analyst chuyên nghiệp và đồng bộ 100% với phiên bản README mới nhất:
-     + Đổi tên đề mục: *Report: Credit Card Business Management Reporting & ASM Performance Scorecard*.
-     + Bổ sung liên kết GitHub chính thức vào mục Output: `https://github.com/tranduc22104-star/banking-pnl-allocation-reporting`.
-     + Viết lại **Objective**: làm rõ bài toán kinh doanh thực tế (chi phí Hội sở tập trung không mã vùng, đánh giá quản lý vùng thiếu điều chỉnh rủi ro).
-     + Viết lại **Steps** (4 điểm chuyên sâu): (1) Khung phân bổ 2 quy tắc (Direct Tracing + Driver-based Allocation qua 4 Cost Drivers); (2) Tách số lũy kế YTD thành phát sinh tháng theo 6 nhân tố thu-chi; (3) Thẻ điểm ASM đa chiều 8 chỉ tiêu trên 2 trụ cột (Chất lượng thương mại `diem_qm` và Hiệu quả tài chính `diem_fin`); (4) Hệ thống kiểm soát 5 lớp và phát hiện thực tế tháng 5 (97,2% tăng trưởng LNTT do hoàn nhập/giảm trích lập dự phòng tại Tây Nam Bộ).
-     + Nâng cấp **Gained Value**: Kỹ thuật dữ liệu streaming ETL Python, Kiến trúc kho Kimball Star Schema và Stored Procedure PL/pgSQL, Kế toán quản trị & BI.
-     + Bố cục lại trang: chèn ngắt trang tự nhiên giữa 2 dự án, thêm số trang 3 ở góc trên bên phải đồng bộ với trang 2. Cả 3 trang đều vuông vắn, tròn trịa, không bị cắt xẻ dòng bullet nào giữa các trang.
-   - **Verify**: biên dịch `pdflatex` thành công tuyệt đối, sinh file `cv_tran_ngoc_duc.pdf` 3 trang (552 KB) chuẩn chỉnh.
-   - Xóa task 117 ở cuối `## ĐÃ XONG`, duy trì nghiêm ngặt trần 50 task (167 xuống 118).
-
-166. **Tái Cấu Trúc Thứ Tự Chương 4 Và Chương 5 Theo Mạch Nghiệp Vụ Data Analyst**
-   - Đảo vị trí hai chương cốt lõi trong `README.md` và `README_eng.md`:
-     + Đưa logic tính toán và chỉ tiêu quản trị lên trước thành **Chương 4**: *Xây dựng cách tính và các chỉ tiêu quản trị* (Mục 4.1 P&L Allocation Framework và 4.2 Multi-dimensional ASM Scorecard). Thể hiện tư duy Business-driven: làm rõ công thức và giải pháp nghiệp vụ trước khi thiết kế hệ thống.
-     + Đưa thiết kế kho dữ liệu và quy trình xử lý ra sau thành **Chương 5**: *Thiết kế quy trình xử lý và kho dữ liệu* (4 bước Ingestion, Cleaning, Kimball Star Schema 19 bảng và Stored Procedure). Giải thích tự nhiên lý do cần 6 bảng tạm dạng dọc và 2 bảng fact để hiện thực hóa logic tính toán ở Chương 4.
-     + Đồng bộ Mục lục, các thẻ heading và anchor slug hai chiều ở cả hai bản song ngữ.
-   - **Verify**: chạy 4 script kiểm tra độc lập:
-     + `.staging/check_toc.py`: `ok` (12 mục mục lục khớp 100% heading).
-     + `.staging/check_int_pair.py`: `ok` (0 lệch số $\ge 10$).
-     + `.staging/check_readme_pair.py`: `ok` (cân bằng cấu trúc).
-     + `.staging/push_check.py`: `32 tệp, 4.86 MiB`.
-   - Xóa task 116 ở cuối `## ĐÃ XONG`, duy trì nghiêm ngặt trần 50 task (166 xuống 117).
-
-165. **Tinh Chỉnh Ba Lỗi Kỹ Thuật Cuối Cùng, Đồng Bộ Song Ngữ Và Hoàn Tất Đẩy Kho GitHub**
-   - Người dùng duyệt bản đề xuất tự nhiên (9,5/10) và yêu cầu cải thiện ba chi tiết kỹ thuật nhỏ trước khi đẩy lên repo:
-     + Sửa lỗi lặp từ ở Mục 5.1 ("phát sinh tại phát sinh tại chi nhánh" $\rightarrow$ "phát sinh tại chi nhánh").
-     + Thống nhất tiêu đề Mục 8 ở Mục lục (`[📚 Kinh nghiệm rút ra](#8--kinh-nghiệm-rút-ra)`) khớp chính xác 100% với heading `## 8. 📚 Kinh nghiệm rút ra` và anchor slug.
-     + Rà soát câu từ, số liệu bảng biểu Mục 7 và toàn văn, giữ chuẩn định dạng số song ngữ và đồng bộ sang `.staging/README_thuan_viet.md` và `README_eng.md`.
-   - **Verify**: chạy 4 script kiểm tra độc lập:
-     + `.staging/check_toc.py`: `ok` (12 mục mục lục khớp hoàn toàn heading và anchor slug hai chiều).
-     + `.staging/check_int_pair.py`: `ok` (0 lệch số $\ge 10$ giữa hai bản song ngữ).
-     + `.staging/check_readme_pair.py`: `ok` (468 dòng đối xứng song song).
-     + `.staging/push_check.py`: `32 tệp, 4.86 MiB`, 0 tệp vượt trần, 0 mật khẩu/kết nối nghi vấn, 0 liên kết gãy, 0 liên kết ngoài kho.
-   - Xóa task 115 ở cuối `## ĐÃ XONG`, duy trì nghiêm ngặt trần 50 task (165 xuống 116).
-
-164. **Áp Dụng Bản README.md Chốt Bởi Người Dùng Và Đồng Bộ Song Ngữ README_eng.md**
-   - Người dùng gửi toàn văn bản README đã chốt và yêu cầu cập nhật kho mã:
-     + Cập nhật tiêu đề Mục 8 thành *Kinh Nghiệm Nhận Được* (bản tiếng Anh: *Key Takeaways*), Mục 9 thành *Công Cụ Sử Dụng* (bản tiếng Anh: *Tools Used*), Mục 11 thành *Tài Liệu Tham Khảo* (bản tiếng Anh: *Reference Documentation*).
-     + Cập nhật tiêu đề cột bảng Mục 5.2 thành *Mức độ chi tiết dữ liệu* (bản tiếng Anh: *Data Granularity*).
-     + Rút gọn thông tin phần Tác giả ở Mục 12 chỉ còn họ tên kèm 2 liên kết Email và LinkedIn.
-     + Cập nhật toàn bộ các thẻ anchor slug trong Mục lục khớp 100% với các thẻ heading mới.
-     + Đồng bộ tương ứng sang `README_eng.md` và `.staging/README_thuan_viet.md`, đảm bảo tuyệt đối khớp đa tập số liệu $\ge 10$.
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số $\ge 10$), `.staging/check_readme_pair.py` (`ok`, 468 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.86 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).
-
-163. **Biên Tập Văn Phong README Tự Nhiên Theo Góc Nhìn Chuyên Môn Data Analyst**
-   - Tiếp thu phản hồi nghiệp vụ chi tiết của người dùng về việc làm tự nhiên hoá câu từ, loại bỏ văn phong cứng/AI dịch máy:
-     + Thay thế các từ ngữ quá trang trọng, khuôn mẫu ("chuyển hóa", "phân định", "hấp thụ", "triệt tiêu", "cấu thành", "định hướng quản trị", v.v.) bằng lối diễn đạt trực diện, tự nhiên của người làm phân tích dữ liệu ngân hàng.
-     + Chuyển đổi các cụm từ dịch gượng ("đóng góp thứ hạng danh nghĩa" $\rightarrow$ "đóng góp một thứ hạng vào điểm tổng", "các thứ nguyên hoàn toàn khác nhau" $\rightarrow$ "đơn vị đo lường khác nhau", "được phân bổ trên mạng lưới" $\rightarrow$ "được triển khai tại", "thiết kế ngược từ mục tiêu ra quyết định" $\rightarrow$ "xác định đầu ra cần có trước khi tìm dữ liệu", v.v.).
-     + Tách các câu dài, chứa quá nhiều ý thành câu đơn gọn gàng, rõ nghĩa.
-     + Viết lại 5 đoạn văn trọng tâm theo đúng góp ý chi tiết của người dùng: Bối cảnh hoạt động (Mục 1), Ba vấn đề quản trị cần giải quyết (Mục 1), Phân tích yêu cầu và thiết kế đầu ra Output-First (Mục 2), Bộ chỉ tiêu đánh giá quản lý vùng (Mục 5.2), và Phân tích kết quả thực tế tháng 5 (Mục 7).
-     + Đồng bộ văn phong tự nhiên song ngữ sang `README_eng.md` và `.staging/README_thuan_viet.md`, bảo toàn tuyệt đối 100% các số liệu $\ge 10$ và cấu trúc 12 chương.
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số $\ge 10$), `.staging/check_readme_pair.py` (`ok`, 468 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.86 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).
-
-162. **Làm Rõ Thuật Ngữ Quản Lý Vùng (ASM) Trong Tiêu Đề Và Toàn Bộ Nội Dung README**
-   - Người dùng yêu cầu: "Xây Dựng Báo Cáo Quản Trị Kết Quả Kinh Doanh Thẻ Tín Dụng Và Đánh Giá Hiệu Quả Hoạt Động ASM, asm ghi rõ ra là quản lý vùng và các chỗ khác tương tự".
-   - Đổi tiêu đề H1 thành: *Xây Dựng Báo Cáo Quản Trị Kết Quả Kinh Doanh Thẻ Tín Dụng Và Đánh Giá Hiệu Quả Hoạt Động Của Quản Lý Vùng (ASM)* (bản tiếng Anh: *Building Credit Card Business Management Reporting And Evaluating Area Sales Management Performance (ASM)*).
-   - Rà soát và viết rõ toàn bộ các vị trí xuất hiện của "ASM" trong bài viết thành "quản lý vùng (ASM)", "đội ngũ quản lý vùng", hoặc "Area Sales Manager (ASM)".
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số $\ge 10$), `.staging/check_readme_pair.py` (`ok`, 468 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.86 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).
-
-161. **Hiệu Chỉnh Chuyên Môn Sâu Sắc Cho Chương 5 Và Chương 7 Theo Phản Hồi Nghiệp Vụ**
-   - Hiệu chỉnh chi tiết Chương 5:
-     + Chuẩn hoá giải thích Cost Driver chi phí công nghệ: đại diện cho quy mô danh mục thẻ đang hoạt động và mức độ phục vụ của hệ thống, không khẳng định phản ánh trực tiếp tần suất giao dịch của từng chủ thẻ.
-     + Chuẩn hoá giải thích Cost Driver chi phí dự phòng: tiêu thức phân bổ quản trị gián tiếp trong điều kiện sổ cái GL chỉ ghi nhận khoản mục tập trung tại Hội sở, không khẳng định là nguyên nhân trực tiếp tạo ra toàn bộ chi phí dự phòng.
-     + Đổi tên Trụ cột 1 thành *Kết quả kinh doanh và kiểm soát chất lượng tăng trưởng* (`diem_qm`), Trụ cột 2 thành *Hiệu quả tài chính* (`diem_fin`).
-     + Đổi tên bảng xếp hạng thành *Bộ chỉ tiêu đánh giá hiệu quả hoạt động ASM (Multi-dimensional ASM Scorecard)* kết hợp kết quả bán hàng cá nhân và trách nhiệm quản lý địa bàn.
-     + Làm rõ sự cân bằng 50/50 danh nghĩa về số lượng chỉ tiêu và đóng góp thứ hạng độc lập từ 1 đến $N$, không khẳng định là trọng số kinh tế hiệu chỉnh định lượng; nhấn mạnh tỷ lệ duyệt hồ sơ cao chưa chắc càng tốt.
-     + Đổi tên chỉ tiêu nợ xấu thành *Tỷ lệ rủi ro tín dụng mở rộng (bao gồm nợ đã xử lý rủi ro)* và phân tích rõ giới hạn khi so sánh giữa các danh mục thẻ có tuổi đời khác nhau.
-   - Hiệu chỉnh mức độ suy luận Chương 7:
-     + Tây Nam Bộ: Sửa nhận định mức tăng lợi nhuận tháng 5 chủ yếu đến từ giảm chi phí dự phòng ròng trong khi thu nhập thuần tăng nhẹ 16,3 trđ, chưa cho thấy sự cải thiện đáng kể về nguồn thu kinh doanh cốt lõi.
-     + Đông Nam Bộ: Đổi tiêu đề thành *Thu nhập thuần tăng nhưng lợi nhuận vẫn âm do áp lực chi phí dự phòng*, loại bỏ cụm từ "lời giả lỗ thật", chuyển giả thuyết về chuyển nhóm nợ từ các khoản vay quá khứ sang mục cần xác minh thêm qua phân tích vintage/cohort.
-     + Đồng bằng Sông Hồng: Nêu rõ giảm thu nhập thuần là dấu hiệu cần theo dõi thêm ở các kỳ tiếp theo, tránh kết luận xu hướng dài hạn.
-     + Nam Trung Bộ: Đổi tiêu đề thành *Kết quả xếp hạng tốt đi cùng tỷ lệ nợ xấu thấp*, chỉ ra mẫu chỉ có 5 ASM nên cần khảo sát thực địa trước khi xem xét thí điểm nhân rộng có kiểm soát.
-     + Rà soát 5 đề xuất quản trị thận trọng và có kiểm soát (nghiên cứu thí điểm thay vì nhân rộng ngay; rà soát tiêu chí đánh giá và cơ chế xét thưởng kết hợp nhiều chiều).
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số $\ge 10$), `.staging/check_readme_pair.py` (`ok`, 468 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.86 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).
-
-160. **Gỡ Bỏ Mục 7 (Thiết Kế Và Trực Quan Hóa Báo Cáo Trên Power BI) Khỏi README**
-   - Người dùng yêu cầu: "Với bỏ phần này 7. 🖥️ Thiết Kế Và Trực Quan Hóa Báo Cáo Trên Power BI".
-   - Xoá bỏ hoàn toàn nội dung Mục 7 cùng 5 ảnh minh họa dashboard Power BI khỏi `README.md`, `README_eng.md` và `.staging/README_thuan_viet.md`.
-   - Đánh số lại các mục từ 8..13 thành 7..12 trong cả Mục lục (TOC) và các thẻ heading `##`.
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`, 12 mục khớp chuẩn xác), `.staging/check_int_pair.py` (`ok`, 0 lệch số $\ge 10$), `.staging/check_readme_pair.py` (`ok`, 467 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.86 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).
-
-159. **Gỡ Bỏ Khối Tổng Quan Dự Án Ở Đầu Trang README Theo Yêu Cầu Người Dùng**
-   - Người dùng yêu cầu: "Bỏ khúc đầu đi TỔNG QUAN DỰ ÁN...".
-   - Xoá bỏ hoàn toàn khối trích dẫn `> **TỔNG QUAN DỰ ÁN** ...` ở đầu `README.md` và `.staging/README_thuan_viet.md`, cùng khối `> **PROJECT OVERVIEW** ...` ở đầu `README_eng.md`.
-   - **Verify**: chạy `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`), `.staging/check_readme_pair.py` (`ok`, 525 dòng đối xứng), `.staging/push_check.py` (`32 tệp, 4.87 MiB`, 0 liên kết gãy, 0 liên kết ngoài kho).

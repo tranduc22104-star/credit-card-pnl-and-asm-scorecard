@@ -6,7 +6,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/DBeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white">
   <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black">
   <img src="https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white">
 </p>
@@ -83,7 +83,7 @@ Từ yêu cầu ban đầu, cần làm rõ Ban lãnh đạo muốn theo dõi nh�
 | **Theo dõi biến động kinh doanh** | Lợi nhuận tăng, giảm do hoạt động kinh doanh hay do chi phí dự phòng thay đổi? | Cần tách số lũy kế thành số phát sinh riêng từng tháng, sau đó phân tích các khoản thu và chi cấu thành lợi nhuận | **Báo cáo phân tích biến động lợi nhuận (Waterfall)**: Chênh lệch tháng (MoM) và mức đóng góp của 6 khoản thu, chi |
 | **Theo dõi chất lượng tín dụng** | Làm sao phát hiện sớm rủi ro nợ xấu đe dọa an toàn vốn tại từng vùng? | Cần xem xét đồng thời mức tăng trưởng lợi nhuận và tỷ lệ nợ xấu của từng vùng | **Ma trận Lợi nhuận – Rủi ro **: Xếp 7 vùng vào 4 nhóm để phục vụ công tác quản trị |
 | **Đánh giá hiệu quả quản lý vùng** | Hiệu quả của quản lý vùng (ASM) cần được đo lường bằng những yếu tố nào để tránh chạy theo số lượng? | Cần kết hợp chỉ tiêu về quy mô kinh doanh (50%) với chỉ tiêu về kỷ luật tài chính và rủi ro (50%) | **Thẻ điểm và Bảng xếp hạng Quản lý vùng **: Đánh giá 8 chỉ số trên 2 trụ cột độc lập |
-| **Hỗ trợ công tác điều hành** | Cần theo dõi thông tin như thế nào để đáp ứng các nhu cầu khác nhau? | Lãnh đạo cần dashboard có thể tương tác; bộ phận kế toán cần file Excel có công thức để đối soát | **Hệ thống báo cáo tích hợp**: Dashboard Power BI 5 trang và tệp Excel 7 sheet đối soát |
+| **Hỗ trợ công tác điều hành** | Cần theo dõi thông tin như thế nào để đáp ứng các nhu cầu khác nhau? | Lãnh đạo cần dashboard có thể tương tác; bộ phận kế toán cần file Excel có công thức để đối soát | **Hệ thống báo cáo tích hợp**: Dashboard Power BI 7 trang (chia làm 3 bộ báo cáo) và tệp Excel 7 sheet đối soát |
 
 ### Quy trình chuyển từ yêu cầu quản trị đến hệ thống báo cáo:
 
@@ -106,10 +106,11 @@ Từ yêu cầu ban đầu, cần làm rõ Ban lãnh đạo muốn theo dõi nh�
                                     │ (Trình bày thành báo cáo trực quan)
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                         HỆ THỐNG BÁO CÁO QUẢN TRỊ POWER BI (5 TRANG)                   │
-│ • Trang 1: Tổng quan báo cáo           │ • Trang 4: Xếp hạng quản lý vùng (ASM)       │
-│ • Trang 2: Từ điển dữ liệu quản trị    │ • Trang 5: Phân tích chuyên sâu & Kết luận    │
-│ • Trang 3: Kết quả lãi, lỗ kinh doanh   │ + Báo cáo Excel 7 sheet đối soát kế toán      │
+│                         HỆ THỐNG BÁO CÁO QUẢN TRỊ POWER BI (7 TRANG)                   │
+│ • Trang 1: Tổng quan báo cáo           │ • Trang 5: Kết quả kinh doanh (Lãi lỗ)        │
+│ • Trang 2: Từ điển dữ liệu (68 chỉ tiêu)│ • Trang 6: Xếp hạng quản lý vùng (ASM)       │
+│ • Trang 3: Báo cáo tổng hợp lãi lỗ     │ • Trang 7: Phân tích chuyên sâu & Kết luận    │
+│ • Trang 4: Báo cáo tổng hợp xếp hạng   │ + Báo cáo Excel 7 sheet đối soát kế toán      │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -243,30 +244,28 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 
 ## 5. 🔄 Thiết kế quy trình xử lý và kho dữ liệu
 
-Để kết hợp dữ liệu từ nhiều nguồn và xây dựng hệ thống báo cáo, quy trình xử lý được chia thành 4 bước:
+Để kết hợp dữ liệu từ nhiều nguồn và xây dựng hệ thống báo cáo hoàn chỉnh, quy trình xử lý kỹ thuật được thiết kế gồm 3 giai đoạn:
 
 <div align="center">
 
-![Quy trình xử lý kỹ thuật — 4 giai đoạn](images/quy-trinh.png)
+![Quy trình xử lý kỹ thuật — 3 giai đoạn](images/quy-trinh.png)
 
 </div>
 
-### Quy trình xử lý dữ liệu gồm 4 bước:
+### Quy trình xử lý kỹ thuật gồm 3 giai đoạn:
 
-- **Bước 1 – Data Ingestion (Thu thập và trích xuất bằng Python):**
-  Sử dụng `openpyxl` kết hợp `zipfile` và `xml.etree` để đọc theo từng phần tệp sao kê hợp đồng thẻ có dung lượng **117,2 MB**, gồm gần 3 triệu dòng. Cách làm này giúp hạn chế lượng RAM cần sử dụng. Đồng thời, chuyển bảng chỉ tiêu ASM từ dạng ngang (Wide) sang dạng dọc (Tall) để thuận tiện lưu trữ và xử lý.
+- **Giai đoạn 1 – Tìm dữ liệu đầu vào (Excel – 3 File Số Liệu):**
+  Thu thập và chuẩn bị 3 nguồn dữ liệu thô từ các khối nghiệp vụ: Sổ hợp đồng tín dụng (`fact_kpi_month` gồm **2.932.922** dòng, dung lượng **117,2 MB**), Sổ bút toán kế toán GL (`fact_txn_month` gồm **63.134** dòng) và Chỉ tiêu quản lý vùng (`kpi_asm_data` gồm **420** dòng của **84** nhân sự ASM trong 5 tháng).
 
-- **Bước 2 – Data Cleaning (Làm sạch và chuẩn hóa dữ liệu):**
-  Kiểm tra kiểu dữ liệu, xử lý các bản ghi NULL và dùng hàm chuẩn hóa chuỗi tiếng Việt không dấu (`pos_city_norm`) để thống nhất tên địa danh giữa sao kê thẻ với bảng tham số. Bước này khắc phục lỗi ghép dữ liệu có nguy cơ làm mất hơn 36.000 hợp đồng thẻ. Sau đó, nạp dữ liệu đã xử lý vào 3 bảng `staging` (`stg_fact_kpi_month`, `stg_fact_txn_month`, `stg_asm_target`) và 2 bảng danh mục vùng (`dim_area`, `dim_param_area`).
-
-- **Bước 3 – Data Warehouse Design (Mô hình Star Schema trong PostgreSQL):**
-  Kho dữ liệu được xây dựng theo phương pháp Kimball trong schema `banking_project`, gồm **19 bảng và 4 `view`**:
-  - **7 bảng chiều (`dim_`):** `dim_area` (8 vùng), `dim_param_area` (64 tỉnh thành), `dim_month` (5 tháng), `dim_asm` (84 nhân sự), `dim_report_detail` (50 chỉ tiêu), `dim_month_headcount` (35 dòng), `dim_sm_headcount` (35 dòng).
-  - **3 bảng nạp thô (`stg_`):** `stg_fact_kpi_month` (2.932.922 dòng), `stg_fact_txn_month` (63.134 dòng), `stg_asm_target` (420 dòng).
-  - **6 bảng trung gian (`tmp_`):** Cùng cấu trúc dữ liệu dạng dọc (`month_key`, `area_code`, `report_id`, `value`) phục vụ tính trung gian cho P&L (`tmp_pnl_step1..3`) và Xếp hạng (`tmp_xh_step1..3`).
-  - **2 bảng sự kiện cốt lõi (`fct_`):** `fct_pnl_value` (1.115 dòng) lưu kết quả tài chính 7 vùng và `fct_asm_value` (8.536 dòng) lưu thứ hạng chi tiết từng quản lý vùng qua 5 tháng.
-  - **1 bảng nhật ký (`log_`):** `log_proc_run` ghi nhận lịch sử thực thi thủ tục (65 bản ghi `START` và `OK`, 0 bản ghi `FAIL`).
-  - **9 `Virtual Foreign Keys` (Khoá ngoại ảo):** Hỗ trợ kiểm tra các mối liên kết tham chiếu trong DBeaver mà không làm chậm tốc độ nạp dữ liệu định kỳ.
+- **Giai đoạn 2 – Lưu trữ và xử lý dữ liệu tự động (PostgreSQL + DBeaver):**
+  Kho dữ liệu được tổ chức theo mô hình Kimball Star Schema trong schema `banking_project`, gồm **19 bảng, 3 `view` và 11 `stored procedure`**, vận hành qua 3 bước:
+  - **Bước 1 – Nạp liệu (DBeaver Import trực tiếp):** Sử dụng DBeaver đưa trực tiếp dữ liệu thô từ 3 tệp Excel vào 3 bảng tiếp nhận trong PostgreSQL (`stg_fact_kpi_month` **2.932.922** dòng, `stg_fact_txn_month` **63.134** dòng, `stg_asm_target` **420** dòng) và chuẩn hóa chuỗi tên địa danh (`pos_city_norm`) bảo toàn hơn **36.000** hợp đồng thẻ.
+  - **Bước 2 – Tính toán (Thực thi script SQL & Stored Procedure):**
+    - *7 bảng danh mục (`dim_`)*: `dim_area` (8 vùng), `dim_param_area` (64 tỉnh thành), `dim_month` (5 tháng), `dim_date` (151 ngày), `dim_asm` (84 nhân sự), `dim_report_detail` (55 chỉ tiêu), `dim_sm_headcount` (35 dòng).
+    - *6 bảng tạm 3 bước (`tmp_`)*: Cùng cấu trúc dữ liệu dạng dọc (`month_key`, `area_code`, `report_id`, `value`) phục vụ tính trung gian cho P&L (`tmp_pnl_step1..3`) và Xếp hạng (`tmp_xh_step1..3`).
+    - *2 bảng sự kiện (`fct_`)*: `fct_pnl_value` (1.115 dòng) lưu kết quả tài chính 7 vùng và `fct_asm_value` (8.536 dòng) lưu thứ hạng chi tiết từng quản lý vùng qua 5 tháng.
+    - *1 bảng nhật ký (`log_`)*: `log_proc_run` ghi nhận lịch sử thực thi của 11 thủ tục lưu trữ (208 bản ghi `START` và `OK`, 0 bản ghi `FAIL`), đi kèm 9 `Virtual Foreign Keys` (Khoá ngoại ảo) trong DBeaver.
+  - **Bước 3 – Đầu ra View báo cáo (Dựng 3 View sạch schema `rpt`):** Khởi tạo 3 khung nhìn chuẩn hóa (`v_baocao_tonghop` 35 dòng, `v_xephang_asm` 388 dòng, `v_baocao_pnl_excel_pivoted` 160 dòng) phục vụ kết nối trực tiếp vào Power BI.
 
 <div align="center">
 
@@ -274,8 +273,8 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 
 </div>
 
-- **Bước 4 – Data Processing (Tính toán tự động bằng Stored Procedure):**
-  Hệ thống gồm 9 `stored procedure`, chạy lần lượt các bước phân bổ chi phí và xếp hạng. Các thao tác được thực hiện trong transaction để kiểm soát lỗi và rollback khi xảy ra sự cố.
+- **Giai đoạn 3 – Trực quan các báo cáo (Power BI Import Mode):**
+  Kết nối trực tiếp từ Power BI vào PostgreSQL theo chế độ Import, kết hợp **72** measure DAX và từ điển dữ liệu **68** chỉ tiêu để xuất bản 3 bộ sản phẩm báo cáo trên **7 trang**: **2 Bản Báo Cáo Tổng Hợp** (Báo cáo tổng hợp lãi lỗ 32 chỉ tiêu, Báo cáo tổng hợp xếp hạng 84 ASM), **2 Bản Báo Cáo Được Trực Quan Hoá** (Kết quả kinh doanh, Xếp hạng quản lý vùng) và **1 Bản Phân Tích Sâu** (Phân tích chuyên sâu và đưa ra kết luận).
 
 ---
 
@@ -354,7 +353,7 @@ Mọi phép chia đều sử dụng `NULLIF(denominator, 0)` để tránh lỗi 
 | **Phân tích biến động hàng tháng** | Biểu đồ thác nước Waterfall 6 cấu phần | **Đáp ứng 100%**: Tách riêng số phát sinh của từng tháng, chỉ rõ nguyên nhân tăng giảm lợi nhuận. |
 | **Theo dõi chất lượng tín dụng** | Ma trận Lợi nhuận – Rủi ro & Tỷ lệ nợ xấu | **Đáp ứng tốt**: Xác định những vùng có tỷ lệ nợ xấu cao để cảnh báo sớm rủi ro tín dụng. |
 | **Đánh giá và xếp hạng quản lý vùng** | Bảng xếp hạng 2 trụ cột độc lập | **Đáp ứng tốt**: Kết hợp giữa quy mô bán hàng và kiểm soát rủi ro cho toàn bộ 74 - 84 nhân sự. |
-| **Hệ thống điều hành trực quan** | Dashboard Power BI 5 trang & Excel đối chiếu | **Đáp ứng 100%**: Cung cấp dashboard tương tác cho lãnh đạo và file chi tiết để kế toán đối soát. |
+| **Hệ thống điều hành trực quan** | Dashboard Power BI 7 trang & Excel đối chiếu | **Đáp ứng 100%**: Cung cấp dashboard tương tác cho lãnh đạo và file chi tiết để kế toán đối soát. |
 
 ### Phần B – Những điểm đáng chú ý từ số liệu tháng 5/2023:
 
@@ -400,13 +399,14 @@ Phần này tổng hợp các phát hiện chuyên sâu và căn cứ ra quyết
      * Lê Văn Bình: Hạng bán hàng #24 tụt xuống hạng chung cuộc #31 (tụt 7 bậc).
      * Trần Văn Hải: Hạng bán hàng #28 tụt xuống hạng chung cuộc #33 (tụt 5 bậc).
      * Trần Văn Anh: Hạng bán hàng #36 tụt xuống hạng chung cuộc #41 (tụt 5 bậc).
-   - *Hậu quả & Kiến nghị:* **74% Quản lý** (14/19 nhân sự) bị đẩy xuống phân vị 25% cuối bảng toàn hàng. *Kiến nghị quyết định:* Tách riêng Thẻ điểm bán hàng (tính thưởng) với Chỉ tiêu lợi nhuận vùng (giao Giám đốc Vùng).
+   - *Hậu quả & Kiến nghị:* **84% Quản lý** (16/19 nhân sự) bị đẩy xuống phân vị 25% cuối bảng toàn hàng. *Kiến nghị quyết định:* Tách riêng kết quả bán hàng cá nhân để đánh giá và tính thưởng; theo dõi lợi nhuận vùng ở cấp Giám đốc vùng.
 
-4. **Ma trận hành động điều hành đa chiều:**
-   - *Tây Nam Bộ (Tăng trưởng nóng kèm rủi ro):* Siết chặt khẩu vị rủi ro và thanh tra thu hồi nợ khi nợ xấu chạm 22,0% và chi phí dự phòng lên tới 14,6 tỷ đồng.
-   - *Đông Nam Bộ (Nghịch lý cơ chế đánh giá):* Điều chỉnh quy chế phạt cào bằng, gỡ nút thắt đánh giá cho đội ngũ bán hàng giỏi.
-   - *Bắc Trung Bộ (Chi phí hoạt động vượt ngưỡng):* Tái cấu trúc chi phí hoạt động khi CIR chạm mức 124,9%.
-   - *Nam Trung Bộ (Hình mẫu quản trị rủi ro & hiệu quả):* Nhân rộng quy trình thẩm định và sàng lọc khách hàng kiểm soát nợ xấu (11,2%).
+4. **Bảng hành động điều hành theo địa bàn và tác động định lượng:**
+   - *Tây Nam Bộ (Khẩn cấp – Nợ xấu đỉnh điểm 22,0%, lợi nhuận phụ thuộc giảm dự phòng):* Rà soát lại danh mục nợ; bóc tách trích lập và hoàn nhập dự phòng $\rightarrow$ Tác động định lượng: **290.377 triệu đồng** (Minh bạch dự phòng).
+   - *Đông Nam Bộ (Khẩn cấp – Lỗ −48,8 tỷ đồng, 84% quản lý bị kéo tụt đáy bảng):* Thu hồi nợ xấu và tách riêng Thẻ điểm cá nhân khỏi chỉ tiêu lợi nhuận vùng $\rightarrow$ Tác động định lượng: **+55 tỷ đồng** (Xóa lỗ khi nợ xấu giảm về **14%**).
+   - *Bắc Trung Bộ (Ưu tiên – Chi phí vận hành vượt trần 24% doanh thu):* Rà soát chi phí chi nhánh; khóa định mức chi theo doanh số thực tế $\rightarrow$ Tác động định lượng: **~1,5 tỷ đồng/tháng** (Đưa chi phí về mức an toàn **21%**).
+   - *Nam Trung Bộ (Dài hạn – Hiệu suất vốn cao, nợ xấu thấp 11,2%):* Chuẩn hóa quy trình thẩm định và quản trị chi phí để nhân rộng $\rightarrow$ Tác động định lượng: Giữ nợ xấu dưới **12%** (Hiệu suất vốn trên **200%**).
+   - *Đồng bằng Sông Hồng (Duy trì – Đầu tàu quy mô, chiếm 30,6% giải ngân mới):* Giữ nhịp tăng trưởng cho vay; kèm cặp nâng đều năng suất đội ngũ quản lý $\rightarrow$ Tác động định lượng: Giải ngân trên **55 tỷ đồng/tháng** (Giữ **30,6%** thị phần).
 
 ### Năm đề xuất gửi Ban lãnh đạo:
 
@@ -441,34 +441,31 @@ Phần này tổng hợp các phát hiện chuyên sâu và căn cứ ra quyết
 
 ## 9. 🛠️ Công cụ và công nghệ sử dụng
 
-Các công cụ được chọn theo yêu cầu của từng giai đoạn trong dự án:
+Các công cụ được chọn theo yêu cầu của từng giai đoạn trong quy trình 3 giai đoạn:
 
 | Công nghệ | Thành phần | Vai trò kỹ thuật trong dự án | Lý do lựa chọn |
 |---|---|---|---|
-| **Python 3.10** | `openpyxl`, `zipfile`, `xml.etree` | Đọc dữ liệu Excel thô gần 3 triệu dòng, chuẩn hóa ký tự và nạp dữ liệu vào kho | Đọc dữ liệu theo luồng để xử lý tệp 117,2 MB mà không phải nạp toàn bộ dữ liệu vào RAM |
-| **PostgreSQL 15** | PL/pgSQL, Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 4 `view`), thực thi logic phân bổ chi phí và xếp hạng | Khả năng xử lý tập dữ liệu lớn với độ chính xác cao và kiểm soát transaction chặt chẽ |
-| **Power BI Desktop** | Import Mode, 72 Measure DAX | Xây dựng 5 trang dashboard để theo dõi và phân tích số liệu | Giúp Ban lãnh đạo theo dõi, lọc và phân tích số liệu trực quan |
-| **Microsoft Excel** | XLSX, Automated Reports | Xuất báo cáo quản trị 7 sheet tự động qua tập lệnh Python | Phục vụ công tác kiểm tra và đối soát số liệu chi tiết của Phòng Kế toán - Quản trị |
+| **DBeaver 24** | Data Import, ER Diagram | Nạp trực tiếp dữ liệu thô từ 3 tệp Excel (117,2 MB) vào bảng `staging`, quản lý 9 khoá ngoại ảo và thực thi kịch bản SQL | Công cụ quản trị cơ sở dữ liệu trực quan, hỗ trợ nạp tệp dữ liệu lớn và kiểm tra sơ đồ quan hệ nhanh chóng |
+| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), thực thi tự động logic phân bổ chi phí và xếp hạng | Khả năng xử lý tập dữ liệu lớn với độ chính xác số học cao và kiểm soát transaction chặt chẽ |
+| **Power BI Desktop** | Import Mode, 72 Measure DAX | Xây dựng 7 trang báo cáo quản trị (2 báo cáo tổng hợp, 2 báo cáo trực quan hóa, 1 bản phân tích sâu và từ điển 68 chỉ tiêu) | Giúp Ban lãnh đạo theo dõi, lọc tương tác và phân tích số liệu trực quan |
+| **Microsoft Excel** | XLSX, Nguồn dữ liệu & Đối chiếu | Cung cấp 3 tệp dữ liệu nguồn (sao kê hợp đồng, sổ bút toán GL, chỉ tiêu ASM) và báo cáo 7 sheet đối soát | Phục vụ lưu trữ dữ liệu gốc của các phòng ban và đối soát số liệu chi tiết của Phòng Kế toán - Quản trị |
 
 ---
 
 ## 10. 📂 Cấu trúc thư mục dự án
 
-Dự án được chia thành 6 thư mục chính:
+Dự án được tổ chức thành các thư mục chính:
 
 ```text
 .
-├── input/              # Lưu bảng tham số danh mục ánh xạ; 3 tệp dữ liệu nguồn có dung lượng lớn nên được lưu riêng, không đưa trực tiếp lên GitHub
-├── ingestion/          # Các chương trình Python đọc dữ liệu Excel, chuẩn hóa dữ liệu, nạp vào kho và xuất báo cáo
-│                       # run_all.py điều phối 4 bước nạp dữ liệu · run_report.py tự động kiểm tra dữ liệu mới và xuất báo cáo Excel
 ├── sql/                # Mã nguồn SQL tạo bảng, bảng tạm, thủ tục lưu trữ và khung nhìn báo cáo
-│   ├── dim/            # Bảng danh mục: dim_month_headcount, dim_asm, dim_report_detail
+│   ├── dim/            # Khởi tạo bảng staging và bảng danh mục: init_staging_tables, dim_area, dim_month_headcount, dim_asm, dim_report_detail
 │   ├── tmp/            # Bảng tạm và thủ tục tính trung gian cho P&L (step 1-3) và Xếp hạng ASM (step 1-3)
-│   ├── fct/            # Bảng sự kiện chính và thủ tục điều phối: fct_pnl_allocation, fct_xephang_asm
-│   └── rpt/            # Khung nhìn báo cáo: rpt_pnl_view, rpt_xephang_view
-├── images/             # Sơ đồ quy trình kỹ thuật, kiến trúc kho dữ liệu và ảnh chụp các trang dashboard
+│   ├── fct/            # Bảng sự kiện chính và thủ tục điều phối: fct_pnl_allocation, fct_xephang_asm, sp_pipeline
+│   └── rpt/            # 3 khung nhìn báo cáo sạch: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
+├── images/             # Sơ đồ quy trình kỹ thuật 3 giai đoạn, kiến trúc kho dữ liệu và ảnh chụp 7 trang Power BI
 ├── docs/               # Bộ tài liệu vận hành chi tiết: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
-├── output/             # Sản phẩm đầu ra: Báo cáo quản trị Power BI (.pbix) và báo cáo Excel
+├── output/             # Sản phẩm đầu ra: Báo cáo quản trị Power BI (.pbix) và báo cáo Excel đối chiếu
 ├── README.md           # Tài liệu dự án bằng tiếng Việt (mặc định)
 └── README_eng.md       # Tài liệu dự án bằng tiếng Anh
 ```
@@ -478,8 +475,8 @@ Dự án được chia thành 6 thư mục chính:
 ## 11. 📖 Tài liệu dự án
 
 Tài liệu hướng dẫn và ghi chép dự án được lưu trong thư mục `docs/`:
-- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Chi tiết hiện trạng kho dữ liệu, số dòng của 19 bảng và 4 `view`, phân quyền quản lý từng bảng và các mốc đối soát chuẩn.
-- [`docs/PIPELINE.md`](docs/PIPELINE.md) — Kiến trúc luồng xử lý 4 giai đoạn và hướng dẫn chạy kiểm tra dữ liệu.
+- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Chi tiết hiện trạng kho dữ liệu, số dòng của 19 bảng và 3 `view`, phân quyền quản lý từng bảng và các mốc đối soát chuẩn.
+- [`docs/PIPELINE.md`](docs/PIPELINE.md) — Kiến trúc luồng xử lý 3 giai đoạn và hướng dẫn chạy kiểm tra dữ liệu.
 - [`docs/NHAT_KY_CONG_VIEC.md`](docs/NHAT_KY_CONG_VIEC.md) — Nhật ký chi tiết các hạng mục công việc đã thực hiện qua từng giai đoạn phát triển.
 - [`docs/LOI_THUONG_GAP.md`](docs/LOI_THUONG_GAP.md) — Tổng hợp **58 tình huống lỗi thường gặp** trong quá trình xử lý dữ liệu nguồn, SQL, Python và DAX.
 

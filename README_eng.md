@@ -6,7 +6,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/DBeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white">
   <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black">
   <img src="https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white">
 </p>
@@ -83,7 +83,7 @@ Translating initial requests into an analytical solution required determining wh
 | **Analyze Variance Dynamics** | Does profit variance stem from sales expansion or provision write-backs? | Must separate cumulative YTD balances into monthly flows, decomposing line-item contributions | **Monthly Profit Flow Waterfall**: Month-over-month (MoM) variance decomposing 6 revenue and cost drivers |
 | **Monitor Credit Risk** | How can leadership spot rising delinquency threatening capital soundness? | Must plot profit generation against territorial NPL ratios on a unified scale | **Profit – Risk Quadrant Matrix**: Classify 7 regions into 4 strategic governance quadrants |
 | **Evaluate Sales Managers** | What criteria evaluate ASMs without incentivizing loose credit underwriting? | Must balance Commercial Scale (50%) equally against Risk Discipline & Financial Efficiency (50%) | **ASM Balanced Scorecard & Ranking**: 8 indicators evaluated across 2 independent pillars |
-| **Multi-Tier Decision Support**| What reporting formats accommodate diverse divisional habits? | Executives require instant visual exploration; Finance requires cell-level formula auditability | **Integrated Reporting System**: 5-page Power BI dashboard and audit-grade 7-sheet Excel model |
+| **Multi-Tier Decision Support**| What reporting formats accommodate diverse divisional habits? | Executives require instant visual exploration; Finance requires cell-level formula auditability | **Integrated Reporting System**: 7-page Power BI dashboard (grouped into 3 report sets) and audit-grade 7-sheet Excel model |
 
 ### Logical architecture from business requirements to reporting deliverables:
 
@@ -106,10 +106,11 @@ Translating initial requests into an analytical solution required determining wh
                                     │ (Translation to visual delivery layer)
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                          POWER BI MANAGEMENT DASHBOARD (5 PAGES)                       │
-│ • Page 1: Executive Overview           │ • Page 4: ASM Ranking Scorecard               │
-│ • Page 2: Data Glossary                │ • Page 5: Deep-Dive Diagnosis & Conclusion    │
-│ • Page 3: Regional P&L Management      │ + 7-Sheet Excel Accounting Reconciliation Model│
+│                          POWER BI MANAGEMENT DASHBOARD (7 PAGES)                       │
+│ • Page 1: Executive Overview           │ • Page 5: Regional Business Performance (P&L) │
+│ • Page 2: Data Glossary (68 metrics)   │ • Page 6: Regional ASM Ranking Dashboard      │
+│ • Page 3: Summary P&L Report           │ • Page 7: Deep-Dive Diagnosis & Conclusion    │
+│ • Page 4: Summary ASM Ranking Report   │ + 7-Sheet Excel Accounting Reconciliation Model│
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,7 +168,7 @@ The solution is structured across 9 management accounting stages:
 9. Verify economic reasonableness and conservation of aggregate balances.
 
 **Two Core Cost Allocation Rules:**
-- **Rule 1 – Direct Cost Tracing:** 62,953 branch-level transactions are directly assigned 100% of their revenues (card interest, annual fees) and direct costs to their managing commercial region.
+- **Rule 1 – Direct Cost Tracing:** 62,953 branch-level transactions are directly assigned to their managing commercial region, including revenues (card interest, annual fees) and direct costs.
 - **Rule 2 – Driver-Based Indirect Allocation:** 181 centralized Head Office overhead entries are allocated across 7 commercial regions based on dynamic economic driver ratios:
 
 $$\text{Allocation Ratio for Region } i = \frac{\text{Driver Value for Region } i}{\sum_{k=1}^7 \text{Driver Value for Region } k}$$
@@ -243,30 +244,28 @@ $$\text{Total Score} = \text{Scale Rank Score } (diem\_qm) + \text{Financial Ran
 
 ## 5. 🔄 Data Engineering And Warehouse Architecture
 
-To transform multi-source raw data into a complete reporting system, the workflow is structured into 4 engineering stages:
+To transform multi-source raw data into a complete reporting system, the technical workflow is structured into 3 stages:
 
 <div align="center">
 
-![Technical Pipeline — 4 Processing Stages](images/quy-trinh.png)
+![Technical Pipeline — 3 Processing Stages](images/quy-trinh.png)
 
 </div>
 
-### Detailed engineering steps:
+### Technical workflow across 3 stages:
 
-- **Stage 1 – Data Ingestion (Python Streaming Ingestion):**
-  Utilized Python libraries (`openpyxl` combined with `zipfile` + `xml.etree` streaming parsing) to read the **117.2 MB** statement file containing nearly 3 million rows without memory overflows. Transformed the wide-format ASM target worksheet into a vertical relational data structure.
+- **Stage 1 – Source Data Acquisition (Excel – 3 Data Files):**
+  Collected and prepared 3 raw datasets from operational divisions: Credit Card Contract Statements (`fact_kpi_month` with **2,932,922** rows, weighing **117.2 MB**), General Ledger Journal Entries (`fact_txn_month` with **63,134** rows), and Area Sales Manager Targets (`kpi_asm_data` with **420** rows for **84** ASMs across 5 months).
 
-- **Stage 2 – Data Cleaning (Standardization and Quality Enforcement):**
-  Enforced strict data types; handled null values; implemented Vietnamese text normalization (`pos_city_norm`) to resolve province naming mismatches, salvaging 36,000 credit card contracts. Loaded clean data into 3 staging tables (`stg_fact_kpi_month`, `stg_fact_txn_month`, `stg_asm_target`) and 2 regional dimension tables (`dim_area`, `dim_param_area`).
-
-- **Stage 3 – Data Warehouse Design (Kimball Star Schema in PostgreSQL):**
-  Structured within schema `banking_project` encompassing **19 tables and 4 `views`**:
-  - **7 Dimension Tables (`dim_`):** `dim_area` (8 zones), `dim_param_area` (64 provinces), `dim_month` (5 months), `dim_asm` (84 personnel), `dim_report_detail` (50 metrics), `dim_month_headcount` (35 rows), `dim_sm_headcount` (35 rows).
-  - **3 Staging Tables (`stg_`):** `stg_fact_kpi_month` (2,932,922 rows), `stg_fact_txn_month` (63,134 rows), `stg_asm_target` (420 rows).
-  - **6 Temporary Processing Tables (`tmp_`):** Unified vertical schema (`month_key`, `area_code`, `report_id`, `value`) storing intermediate computations for P&L (`tmp_pnl_step1..3`) and Ranking (`tmp_xh_step1..3`).
-  - **2 Core Fact Tables (`fct_`):** `fct_pnl_value` (1,115 rows) storing regional P&L results and `fct_asm_value` (8,536 rows) storing ASM ranking scores across 5 months.
-  - **1 Audit Log Table (`log_`):** `log_proc_run` recording procedure execution history (65 `START` and `OK` entries, 0 `FAIL` entries).
-  - **9 `Virtual Foreign Keys`:** Documenting relational integrity in DBeaver diagrams without degrading transactional batch ingestion speeds.
+- **Stage 2 – Automated Data Storage and Processing (PostgreSQL + DBeaver):**
+  Structured according to Kimball Star Schema within schema `banking_project`, encompassing **19 tables, 3 `views`, and 11 `stored procedures`** across 3 internal steps:
+  - **Step 1 – Data Ingestion (DBeaver Direct Import):** Utilized DBeaver to directly import raw data from the 3 Excel files into 3 PostgreSQL staging tables (`stg_fact_kpi_month` **2,932,922** rows, `stg_fact_txn_month` **63,134** rows, `stg_asm_target` **420** rows) while normalizing province names (`pos_city_norm`) to preserve over **36,000** card contracts.
+  - **Step 2 – Computation (SQL Scripts & Stored Procedures):**
+    - *7 Dimension Tables (`dim_`)*: `dim_area` (8 zones), `dim_param_area` (64 provinces), `dim_month` (5 months), `dim_date` (151 days), `dim_asm` (84 personnel), `dim_report_detail` (55 metrics), `dim_sm_headcount` (35 rows).
+    - *6 Temporary Processing Tables (`tmp_`)*: Unified vertical schema (`month_key`, `area_code`, `report_id`, `value`) storing intermediate computations for P&L (`tmp_pnl_step1..3`) and Ranking (`tmp_xh_step1..3`).
+    - *2 Core Fact Tables (`fct_`)*: `fct_pnl_value` (1,115 rows) storing regional P&L results and `fct_asm_value` (8,536 rows) storing ASM ranking scores across 5 months.
+    - *1 Audit Log Table (`log_`)*: `log_proc_run` recording execution history across 11 stored procedures (208 `START` and `OK` entries, 0 `FAIL` entries), accompanied by 9 `Virtual Foreign Keys` in DBeaver.
+  - **Step 3 – Reporting View Output (3 Clean Views in schema `rpt`):** Created 3 standardized analytical views (`v_baocao_tonghop` 35 rows, `v_xephang_asm` 388 rows, `v_baocao_pnl_excel_pivoted` 160 rows) for direct Power BI connection.
 
 <div align="center">
 
@@ -274,8 +273,8 @@ To transform multi-source raw data into a complete reporting system, the workflo
 
 </div>
 
-- **Stage 4 – Data Processing (PL/pgSQL Stored Procedures):**
-  Engineered 9 stored procedures executing allocation logic and ranking algorithms. Encapsulated processing in atomic transactions with automated error trapping and rollback safeguards.
+- **Stage 3 – Report Visualization (Power BI Import Mode):**
+  Connected Power BI directly to PostgreSQL in Import Mode, combining **72** DAX measures and a **68**-metric data glossary to deliver 3 report sets across **7 pages**: **2 Summary Reports** (32-metric Summary P&L Report, 84-ASM Summary Ranking Report), **2 Visualized Core Reports** (Business Performance Dashboard, ASM Ranking Dashboard), and **1 Deep-Dive Analysis** (Deep-Dive Diagnosis & Executive Conclusion).
 
 ---
 
@@ -354,7 +353,7 @@ All division expressions are guarded with `NULLIF(denominator, 0)`.
 | **Analyze monthly variance** | 6-Component Waterfall Chart | **100% Satisfied**: Monthly flows cleanly separated, identifying profit drivers. |
 | **Monitor credit risk** | Profit – Risk Quadrant Matrix | **Satisfied**: Territories with elevated delinquency identified for early risk containment. |
 | **Equitable ASM ranking** | 2-Pillar Balanced Scorecard | **Satisfied**: Balanced commercial scale against risk discipline for all 74 - 84 managers. |
-| **Interactive governance tools** | 5-Page Dashboard & Excel model | **100% Satisfied**: Instant visual exploration for executives; cell-level models for accounting. |
+| **Interactive governance tools** | 7-Page Dashboard & Excel model | **100% Satisfied**: Instant visual exploration for executives; cell-level models for accounting. |
 
 ### Part B – Key Findings from May 2023 Operational Data:
 
@@ -400,13 +399,14 @@ This section synthesizes deep-dive analytical findings and executive decision su
      * Le Van Binh: Sales rank #24 dropped to final rank #31 (down 7 ranks).
      * Tran Van Hai: Sales rank #28 dropped to final rank #33 (down 5 ranks).
      * Tran Van Anh: Sales rank #36 dropped to final rank #41 (down 5 ranks).
-   - *Consequences & Recommendations:* **74% of Managers** (14/19 personnel) were pushed into the bottom 25% national quartile. *Actionable policy recommendation:* Decouple Individual Sales Scorecards (incentives) from Regional Profit Targets (assigned to Regional Directors).
+   - *Consequences & Recommendations:* **84% of Managers** (16/19 personnel) were pushed into the bottom 25% national quartile. *Actionable policy recommendation:* Decouple individual sales achievements for evaluation and bonuses; monitor regional profitability at the Regional Director level.
 
-4. **Multi-Dimensional Management Action Matrix:**
-   - *Southwest (High Growth with Heightened Risk):* Tighten credit risk appetite and audit debt collection procedures with NPL reaching 22.0% and provision charges at 14.6 billion VND.
-   - *Southeast (Evaluation Mechanism Paradox):* Calibrate blanket penalty policies to unlock motivation for top sales performers.
-   - *North Central Coast (Operating Cost Overhead):* Restructure operating overhead as territorial CIR reaches 124.9%.
-   - *South Central Coast (Operational Benchmark):* Replicate credit screening protocols to maintain low NPL standards (11.2%).
+4. **Executive Action Matrix by Territory and Quantitative Impact:**
+   - *Southwest (Urgent – Peak NPL at 22.0%, profit reliant on provision reduction):* Audit loan portfolios; separate new provision charges from write-back recoveries $\rightarrow$ Quantitative impact: **290,377 million VND** (Provision transparency).
+   - *Southeast (Urgent – Loss of −48.8 billion VND, 84% of managers pulled to bottom):* Accelerate debt recovery and decouple individual scorecards from regional profit targets $\rightarrow$ Quantitative impact: **+55 billion VND** (Eliminate loss when NPL drops to **14%**).
+   - *North Central Coast (Priority – Operating expenses exceeding the 24% revenue cap):* Audit branch expenses; lock spending limits to actual sales volume $\rightarrow$ Quantitative impact: **~1.5 billion VND/month** (Bring CIR to the safe **21%** threshold).
+   - *South Central Coast (Long-term – High capital efficiency, low NPL at 11.2%):* Standardize credit underwriting and cost management procedures for replication $\rightarrow$ Quantitative impact: Maintain NPL below **12%** (Capital efficiency above **200%**).
+   - *Red River Delta (Sustain – Scale leader accounting for 30.6% of new lending):* Maintain lending growth momentum; coach managers to evenly raise team productivity $\rightarrow$ Quantitative impact: New lending above **55 billion VND/month** (Maintain **30.6%** market share).
 
 ### Five Concrete Management Action Plans:
 
@@ -441,34 +441,31 @@ This section synthesizes deep-dive analytical findings and executive decision su
 
 ## 9. 🛠️ Tools Used
 
-Tools were chosen based on fit for purpose across project stages:
+Tools were selected to fit each stage of the 3-stage architecture:
 
 | Technology | Component | Technical Role | Selection Justification |
 |---|---|---|---|
-| **Python 3.10** | `openpyxl`, `zipfile`, `xml.etree` | Ingestion of raw 3M-row statements, text normalization, and database loading | Streaming parsing handles 117.2 MB file without memory exhaustion |
-| **PostgreSQL 15** | PL/pgSQL, Stored Procedures | Kimball Star Schema repository (19 tables, 4 `views`), cost allocation, and ranking logic | High-performance relational calculation with strict ACID transaction controls |
-| **Power BI Desktop** | Import Mode, 72 DAX Measures | 5-page interactive dashboard suite with multi-dimensional slicing | Delivers instant executive exploration and diagnostic drill-downs |
-| **Microsoft Excel** | XLSX, Automated Reports | Automated generation of 7-sheet management report workbooks | Facilitates detailed financial verification and accounting reconciliation |
+| **DBeaver 24** | Data Import, ER Diagram | Direct import of 3 raw Excel files (117.2 MB) into `staging` tables, management of 9 virtual foreign keys, and SQL execution | Visual database administration tool supporting large file imports and rapid schema inspection |
+| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedures | Kimball Star Schema repository (19 tables, 3 `views`), automated cost allocation, and ranking logic | High-performance relational calculation with exact numeric precision and strict ACID transaction controls |
+| **Power BI Desktop** | Import Mode, 72 DAX Measures | 7-page interactive reporting suite (2 summary reports, 2 visualized dashboards, 1 deep-dive analysis, and a 68-metric glossary) | Delivers instant executive exploration, interactive filtering, and diagnostic drill-downs |
+| **Microsoft Excel** | XLSX, Source Data & Reconciliation | Supplies 3 raw operational datasets (card statements, GL entries, ASM targets) and 7-sheet reconciliation workbooks | Supports departmental source data storage and cell-level accounting verification |
 
 ---
 
 ## 10. 📂 Project Repository Structure
 
-Standardized across 6 operational directories:
+Organized across core project directories:
 
 ```text
 .
-├── input/              # Master parameter mapping files; 3 raw files managed locally due to GitHub limits
-├── ingestion/          # Python extraction, transformation, database loading, and reporting scripts
-│                       # run_all.py orchestrates 4-stage ingestion · run_report.py generates Excel workbook
 ├── sql/                # SQL DDL, temporary tables, stored procedures, and reporting views
-│   ├── dim/            # Dimension tables: dim_month_headcount, dim_asm, dim_report_detail
+│   ├── dim/            # Staging DDL and dimension tables: init_staging_tables, dim_area, dim_month_headcount, dim_asm, dim_report_detail
 │   ├── tmp/            # Temporary tables and procedures for P&L (step 1-3) and ASM ranking (step 1-3)
-│   ├── fct/            # Fact tables and orchestrators: fct_pnl_allocation, fct_xephang_asm
-│   └── rpt/            # Analytical views: rpt_pnl_view, rpt_xephang_view
-├── images/             # Technical pipeline diagrams, warehouse architecture, and dashboard screenshots
+│   ├── fct/            # Fact tables and orchestrators: fct_pnl_allocation, fct_xephang_asm, sp_pipeline
+│   └── rpt/            # 3 clean analytical views: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
+├── images/             # 3-stage technical pipeline diagram, warehouse schema, and 7 Power BI page screenshots
 ├── docs/               # Technical documentation: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
-├── output/             # Deliverables: Power BI report model (.pbix) and Excel workbook
+├── output/             # Deliverables: Power BI report model (.pbix) and Excel reconciliation workbook
 ├── README.md           # Vietnamese documentation (default)
 └── README_eng.md       # English documentation
 ```
@@ -478,8 +475,8 @@ Standardized across 6 operational directories:
 ## 11. 📖 Reference Documentation
 
 Comprehensive system documentation is maintained within `docs/`:
-- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Warehouse status, row counts across 19 tables and 4 `views`, file ownership matrix, and reconciliation benchmarks.
-- [`docs/PIPELINE.md`](docs/PIPELINE.md) — 4-stage processing pipeline specifications and operational execution guides.
+- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Warehouse status, row counts across 19 tables and 3 `views`, file ownership matrix, and reconciliation benchmarks.
+- [`docs/PIPELINE.md`](docs/PIPELINE.md) — 3-stage processing pipeline specifications and operational execution guides.
 - [`docs/NHAT_KY_CONG_VIEC.md`](docs/NHAT_KY_CONG_VIEC.md) — Worklog recording implementation steps, testing phases, and optimization history.
 - [`docs/LOI_THUONG_GAP.md`](docs/LOI_THUONG_GAP.md) — Troubleshooting manual cataloging **58 real-world error cases** spanning source data, SQL syntax, Python logic, and DAX expressions.
 

@@ -1,59 +1,63 @@
 -- =====================================================================
--- BẢNG TẠM CHO BÁO CÁO XẾP HẠNG: ba bảng (bước 1 đến 3) và thủ tục tính từng bước.
--- Mỗi bảng lưu dạng dọc; ba thủ tục sp_xh_stepN bên dưới nạp số cho bảng của mình.
--- MỖI BẢNG CÓ MỘT CHỦ DUY NHẤT (AGENTS.md mục 4) — tệp này là chủ ba bảng tạm:
--- khai báo cấu trúc, nạp số, tạo index; thủ tục điều phối sp_xephang_asm chỉ gọi.
--- QUY ƯỚC MÃ CHỈ TIÊU: (a) dòng sẽ thành dòng bảng sự kiện thì giữ nguyên mã của
--- bảng sự kiện (201 đến 222); (b) dòng chỉ để đối chiếu thì lấy dải 231 đến 239,
--- không nằm trong cây báo cáo.
--- Thứ tự chạy: sql/dim, sql/tmp (tệp này), sql/fct, gọi thủ tục từng tháng, sql/rpt.
+-- BẢNG TẠM VÀ THỦ TỤC 3 BƯỚC TÍNH TOÁN XẾP HẠNG QUẢN LÝ VÙNG (tmp_xh_step.sql)
+-- Vị trí trong quy trình: Giai đoạn 2 - Bước 2.2 (Xử lý trung gian cho Báo cáo Xếp hạng ASM).
+-- Nguyên tắc nghiệp vụ cốt lõi:
+--   - Mỗi Quản lý khu vực (ASM) được chấm điểm và xếp hạng dựa trên 2 trụ cột:
+--       + Trụ cột 1 - Quy mô phát triển kinh doanh (4 chỉ tiêu):
+--           * 3 chỉ tiêu cá nhân (mã 201: Doanh số cho vay mới LTN, mã 202: Số thẻ phát sinh dư nợ PSDN,
+--             mã 203: Tỷ lệ duyệt hồ sơ) tính trung bình luỹ kế các tháng từ đầu năm.
+--           * 1 chỉ tiêu rủi ro cấp vùng (mã 204: Tỷ lệ nợ xấu trước xoá nợ NPL) tính theo vùng của ASM đó.
+--       + Trụ cột 2 - Hiệu quả tài chính vùng (4 chỉ tiêu: mã 211 CIR, mã 213 Margin, mã 215 Hiệu suất vốn,
+--         mã 217 Hiệu suất bình quân/nhân sự): lấy từ kết quả Báo cáo Lãi lỗ (fct_pnl_value) của vùng.
+-- Cấu trúc 3 bước trong tệp này:
+--   - Bước 1 (tmp_xh_step1_asm_avg / sp_xh_step1_asm_avg) : Tính trung bình luỹ kế 3 chỉ tiêu cá nhân của từng ASM.
+--   - Bước 2 (tmp_xh_step2_npl_area / sp_xh_step2_npl_area): Tính tỷ lệ nợ xấu trước xoá nợ (NPL) của 7 vùng.
+--   - Bước 3 (tmp_xh_step3_fin_area / sp_xh_step3_fin_area): Chấm hạng 4 chỉ tiêu tài chính và tính Điểm tài chính của 7 vùng.
 -- =====================================================================
 
 SET search_path TO banking_project, public;
 
--- 01a. Bảng trung gian BƯỚC 1: trung bình luỹ kế từng ASM, dạng dọc theo asm_id.
--- Mỗi người ba dòng: 201 doanh số cho vay mới, 202 PSDN, 203 tỷ lệ duyệt hồ sơ.
--- Khi ghi vào bảng, ép về đúng phần thập phân của cột cũ: mã 201 và 202 giữ 2 chữ
--- số, mã 203 giữ 6 chữ số.
+-- 01a. Bảng tạm Bước 1 (tmp_xh_step1_asm_avg): Trung bình luỹ kế 3 chỉ tiêu cá nhân của từng ASM
+-- Mỗi ASM có số liệu hoạt động từ đầu năm sẽ có 3 dòng:
+--   - Mã 201: Doanh số cho vay mới bình quân luỹ kế (ltn_amount, làm tròn 2 chữ số thập phân)
+--   - Mã 202: Số thẻ phát sinh dư nợ bình quân luỹ kế (psdn_count, làm tròn 2 chữ số thập phân)
+--   - Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (approval_rate, làm tròn 6 chữ số thập phân)
 DROP TABLE IF EXISTS tmp_xh_step1_asm_avg CASCADE;
 CREATE TABLE tmp_xh_step1_asm_avg (
     month_key   INT NOT NULL,
-    asm_id      INT NOT NULL,          -- asm_id của người đó trong dim_asm
-    report_id   INT NOT NULL,           -- 201, 202, 203
+    asm_id      INT NOT NULL,          -- Mã định danh ASM (nối sang bảng dim_asm)
+    report_id   INT NOT NULL,          -- 3 mã chỉ tiêu cá nhân: 201, 202, 203
     value       NUMERIC(20,6),
     PRIMARY KEY (month_key, asm_id, report_id)
 );
 CREATE INDEX IF NOT EXISTS idx_tmp_xh_step1_asm_month
     ON tmp_xh_step1_asm_avg (month_key);
 
--- 01b. Bảng trung gian BƯỚC 2: nợ xấu theo vùng, dạng dọc ba mã mỗi vùng.
--- 204 là tỷ lệ nợ xấu (6 chữ số thập phân, bằng cột cũ); 231 là tử số (dư nợ nhóm
--- 3 đến 5 cộng nợ xoá phát sinh trong năm); 232 là mẫu số (tổng dư nợ cộng nợ xoá
--- trong năm). Trước đây tử số và mẫu số nằm ở hai cột riêng; chuyển sang dạng dọc
--- thì bảng vẫn gọn mà đối chiếu được thẳng với bảng sao kê hợp đồng.
--- Không lưu tên vùng: bảng tạm chỉ cần mã vùng, tên lấy từ dim_area.
+-- 01b. Bảng tạm Bước 2 (tmp_xh_step2_npl_area): Tỷ lệ nợ xấu trước xoá nợ (NPL) của 7 vùng
+-- Công thức tính Tỷ lệ nợ xấu trước xoá nợ luỹ kế (mã 204):
+--   - Tử số (mã 231) : Dư nợ nội bảng Nhóm 3..5 tại tháng báo cáo + Dư nợ đã xoá (write-off) phát sinh từ đầu năm.
+--   - Mẫu số (mã 232): Tổng dư nợ nội bảng tất cả các nhóm tại tháng báo cáo + Dư nợ đã xoá phát sinh từ đầu năm.
+--   - Tỷ lệ NPL (mã 204) = (Tử số / Mẫu số) * 100 (lưu 6 chữ số thập phân).
+-- Việc lưu kèm cả mã 231 (tử số) và mã 232 (mẫu số) giúp người kiểm tra đối chiếu trực tiếp được với sao kê hợp đồng.
 DROP TABLE IF EXISTS tmp_xh_step2_npl_area CASCADE;
 CREATE TABLE tmp_xh_step2_npl_area (
     month_key   INT NOT NULL,
     area_code   VARCHAR(10) NOT NULL,
-    report_id   INT NOT NULL,                -- 204 / 231 / 232
-    value       NUMERIC,                     -- tỷ lệ phần trăm (6 chữ số) hoặc đồng (4 chữ số)
+    report_id   INT NOT NULL,                -- Mã 204 (Tỷ lệ NPL %), Mã 231 (Tử số nợ xấu), Mã 232 (Mẫu số tổng dư nợ)
+    value       NUMERIC,
     PRIMARY KEY (month_key, area_code, report_id)
 );
 CREATE INDEX IF NOT EXISTS idx_tmp_xh_step2_npl_month
     ON tmp_xh_step2_npl_area (month_key);
 
--- 01c. Bảng trung gian BƯỚC 3: chỉ tiêu tài chính cấp vùng, dạng dọc 9 mã mỗi vùng.
--- Lấy bốn chỉ tiêu từ fct_pnl_value của vùng (91 chi phí trên doanh thu, 92 lợi nhuận
--- biên, 93 hệ số vốn); riêng hiệu suất bình quân nhân sự tính A chia J giữ nguyên số
--- thập phân từ mã 70 và mã 90, KHÔNG dùng mã 94 vì mã đó đã làm tròn.
--- Bốn hạng của bảy vùng cộng lại thành điểm tài chính. Đây là nơi duy nhất sinh ra
--- hạng tài chính; bước 5 của thủ tục điều phối chỉ chép 9 dòng này cho từng người
--- bán hàng thuộc vùng, giữ nguyên mã 211 đến 219.
--- Để trống kiểu số cho value vì mã 217 phải giữ nguyên thập phân, bước 5 mới làm
--- tròn về 2 chữ số; các mã 211, 213, 215 làm tròn 6 chữ số ngay khi ghi (bằng cột
--- cũ NUMERIC(12,6)).
--- Câu đọc dạng ngang, chỉ dùng khi soi số trong DBeaver:
+-- 01c. Bảng tạm Bước 3 (tmp_xh_step3_fin_area): Chỉ tiêu và thứ hạng tài chính cấp vùng (9 mã/vùng)
+-- Đọc kết quả từ bảng sự kiện lãi lỗ (fct_pnl_value) của 7 vùng kinh doanh ('B'..'H') để xếp hạng từ 1 đến 7:
+--   - Mã 211 (CIR %) & Mã 212 (Hạng CIR)           : Chi phí/Thu nhập — càng thấp càng tốt (ORDER BY ASC).
+--   - Mã 213 (Margin %) & Mã 214 (Hạng Margin)     : Biên lợi nhuận — càng cao càng tốt (ORDER BY DESC).
+--   - Mã 215 (Hiệu suất vốn %) & Mã 216 (Hạng HS vốn): Lợi nhuận/Chi phí vốn — càng cao càng tốt (ORDER BY DESC).
+--   - Mã 217 (HSBQ nhân sự) & Mã 218 (Hạng HSBQ)   : Lợi nhuận trước thuế (mã 70) / Số quản lý SM (mã 90) — càng cao càng tốt (ORDER BY DESC).
+--   - Mã 219 (Điểm tài chính vùng - Điểm FIN)      : Tổng 4 thứ hạng trên (Mã 212 + Mã 214 + Mã 216 + Mã 218).
+-- Câu truy vấn xoay ngang mẫu để kiểm tra nhanh trong DBeaver:
 --   SELECT p.area_code, pa.area_name,
 --          MAX(p.value) FILTER (WHERE p.report_id=212) AS r_cir,
 --          MAX(p.value) FILTER (WHERE p.report_id=214) AS r_margin,
@@ -67,7 +71,7 @@ DROP TABLE IF EXISTS tmp_xh_step3_fin_area CASCADE;
 CREATE TABLE tmp_xh_step3_fin_area (
     month_key   INT NOT NULL,
     area_code   VARCHAR(10) NOT NULL,
-    report_id   INT NOT NULL,                -- 211 đến 219 (mã của bảng sự kiện được ghi sang)
+    report_id   INT NOT NULL,                -- 9 mã tài chính vùng: từ 211 đến 219
     value       NUMERIC,
     PRIMARY KEY (month_key, area_code, report_id)
 );
@@ -75,34 +79,28 @@ CREATE INDEX IF NOT EXISTS idx_tmp_xh_step3_fin_month
     ON tmp_xh_step3_fin_area (month_key);
 
 -- =====================================================================
--- THỦ TỤC BƯỚC — mỗi thủ tục chỉ ghi bảng của chính bước đó.
--- Thủ tục điều phối sp_xephang_asm (sql/fct) gọi lần lượt ba thủ tục này, rồi
--- tính bước 4, bước 5, bước 6 để ghi fct_asm_value.
--- BƯỚC 3 CÓ CHẶN ĐIỀU KIỆN: fct_pnl_value của tháng đang xét phải có đủ 7 vùng,
--- nghĩa là sp_baocao_tonghop phải chạy tháng đó trước.
--- Mỗi thủ tục: chỉ xoá dòng của chính tháng trên chính bảng của nó, tự ghi
--- log_proc_run dưới tên mình, KHÔNG CÓ COMMIT.
--- Gọi lẻ trong DBeaver được: CALL sp_xh_step2_npl_area(202302);
+-- ĐỊNH NGHĨA 3 THỦ TỤC TÍNH TOÁN TỪNG BƯỚC CHO BÁO CÁO XẾP HẠNG ASM
+-- Lưu ý: Bước 3 (sp_xh_step3_fin_area) yêu cầu bảng fct_pnl_value của tháng đó
+-- đã có đủ số liệu của 7 vùng kinh doanh (tức là phải chạy sp_baocao_tonghop trước).
 -- =====================================================================
 
--- 02. BƯỚC 1: trung bình luỹ kế theo người bán hàng (bỏ ô trống khi tính trung bình)
+-- 02. THỦ TỤC BƯỚC 1 (sp_xh_step1_asm_avg): Tính trung bình luỹ kế 3 chỉ tiêu cá nhân của từng ASM
 CREATE OR REPLACE PROCEDURE sp_xh_step1_asm_avg(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
     v_step TEXT;
-    v_ys   INT; -- tháng 1 của năm đang xét (YYYY01)
+    v_ys   INT; -- Tháng đầu năm của kỳ báo cáo (YYYY01)
 BEGIN
     v_step := 'STEP1_ASM_AVG';
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step1_asm_avg', p_month, v_step, 'START');
-    v_ys := (p_month - (p_month % 100)) + 1; -- ví dụ 202302 thì lấy từ 202301
+    v_ys := (p_month - (p_month % 100)) + 1; -- Xác định tháng 1 đầu năm để tính trung bình luỹ kế YTD
     DELETE FROM banking_project.tmp_xh_step1_asm_avg WHERE month_key = p_month;
 
-    -- Lấy những người có ít nhất một tháng có số liệu kể từ đầu năm.
-    -- Ghi dạng dọc, mỗi người ba dòng (201, 202, 203) theo asm_id — asm_id tra từ
-    -- dim_asm qua email; ép về đúng phần thập phân của cột cũ ngay khi ghi để kết
-    -- quả làm tròn không đổi.
-    -- Nợ xấu và hạng chưa tính ở đây: xem bước 2 và bước 4 của thủ tục điều phối.
+    -- Giải thích luồng xử lý:
+    --   - Chỉ đưa vào danh sách xếp hạng những ASM có phát sinh số liệu ở ít nhất một tháng từ đầu năm
+    --     đến tháng báo cáo (HAVING COUNT(...) > 0). Hàm AVG() tự động bỏ qua các tháng trống (NULL).
+    --   - Nối với bảng dim_asm qua email để lấy khoá đại diện asm_id và ghi 3 mã chỉ tiêu (201, 202, 203).
     WITH asm_avg AS (
         SELECT
             LOWER(TRIM(t.email)) AS email,
@@ -126,20 +124,20 @@ BEGIN
     FROM asm_ids AS m
     CROSS JOIN LATERAL (
         VALUES
-            (201, m.ltn_avg::NUMERIC(20,2)),        -- doanh số cho vay mới: 2 chữ số thập phân
-            (202, m.psdn_avg::NUMERIC(12,2)),       -- PSDN (cột psdn_count trong nguồn): 2 chữ số thập phân
-            (203, m.appr_avg::NUMERIC(12,6))        -- tỷ lệ duyệt hồ sơ: 6 chữ số thập phân
+            (201, m.ltn_avg::NUMERIC(20,2)),        -- Mã 201: Doanh số cho vay mới (LTN) bình quân luỹ kế
+            (202, m.psdn_avg::NUMERIC(12,2)),       -- Mã 202: Số thẻ phát sinh dư nợ (PSDN) bình quân luỹ kế
+            (203, m.appr_avg::NUMERIC(12,6))        -- Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (%)
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step1_asm_avg', p_month, v_step, 'OK');
 
-EXCEPTION WHEN OTHERS THEN -- ghi log rồi ném lỗi ra ngoài
+EXCEPTION WHEN OTHERS THEN -- Ghi nhận lỗi vào bảng log_proc_run và dừng giao dịch
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status, note)
     VALUES ('sp_xh_step1_asm_avg', p_month, v_step, 'FAIL', SQLERRM);
     RAISE;
 END; $$;
 
--- 03. BƯỚC 2: nợ xấu theo vùng
+-- 03. THỦ TỤC BƯỚC 2 (sp_xh_step2_npl_area): Tính tỷ lệ nợ xấu trước xoá nợ (NPL) theo vùng
 CREATE OR REPLACE PROCEDURE sp_xh_step2_npl_area(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -152,9 +150,9 @@ BEGIN
     v_ys := (p_month - (p_month % 100)) + 1;
     DELETE FROM banking_project.tmp_xh_step2_npl_area WHERE month_key = p_month;
 
-    -- Nợ xấu theo vùng, dạng dọc ba mã mỗi vùng (204, 231, 232).
-    -- Dư nợ sau xoá nợ = outstanding; trước xoá nợ = outstanding cộng write-off
-    -- phát sinh từ đầu năm.
+    -- Tính tử số nợ xấu (num), mẫu số tổng dư nợ trước xoá nợ (den) và tỷ lệ NPL % (mã 204) cho từng vùng:
+    --   - num = Dư nợ Nhóm 3..5 tại tháng p_month + Dư nợ đã xoá (write_off) có tháng xoá nợ từ đầu năm (v_ys..p_month).
+    --   - den = Tổng dư nợ nội bảng tại tháng p_month + Dư nợ đã xoá (write_off) có tháng xoá nợ từ đầu năm (v_ys..p_month).
     WITH src AS (
         SELECT
             COALESCE(p.area_code, 'UNKNOWN') AS area_code,
@@ -179,9 +177,9 @@ BEGIN
     FROM src AS s
     CROSS JOIN LATERAL (VALUES
         (204, CASE WHEN s.den IS NULL OR s.den = 0 THEN NULL
-                   ELSE ROUND((s.num / s.den) * 100, 6) END),   -- tỷ lệ nợ xấu: 6 chữ số thập phân
-        (231, ROUND(s.num, 4)),                                 -- tử số: 4 chữ số thập phân
-        (232, ROUND(s.den, 4))                                  -- mẫu số: 4 chữ số thập phân
+                   ELSE ROUND((s.num / s.den) * 100, 6) END),   -- Mã 204: Tỷ lệ nợ xấu trước xoá nợ (%)
+        (231, ROUND(s.num, 4)),                                 -- Mã 231: Tử số nợ xấu trước xoá nợ (đồng, dùng đối soát)
+        (232, ROUND(s.den, 4))                                  -- Mã 232: Mẫu số tổng dư nợ trước xoá nợ (đồng, dùng đối soát)
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step2_npl_area', p_month, v_step, 'OK');
@@ -192,20 +190,19 @@ EXCEPTION WHEN OTHERS THEN
     RAISE;
 END; $$;
 
--- 04. BƯỚC 3: bốn chỉ tiêu tài chính và bốn hạng của bảy vùng
+-- 04. THỦ TỤC BƯỚC 3 (sp_xh_step3_fin_area): Chấm hạng 4 chỉ tiêu tài chính của 7 vùng kinh doanh
 CREATE OR REPLACE PROCEDURE sp_xh_step3_fin_area(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
     v_step TEXT;
-    v_nth  INT; -- số vùng đã có số liệu lãi lỗ, dùng để chặn trước khi ghi
+    v_nth  INT; -- Biến đếm số vùng đã có số liệu báo cáo lãi lỗ trong tháng
 BEGIN
     v_step := 'STEP3_FIN_AREA';
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step3_fin_area', p_month, v_step, 'START');
     DELETE FROM banking_project.tmp_xh_step3_fin_area WHERE month_key = p_month;
 
-    -- Chặn ở đây, trước khi ghi bất kỳ dòng nào: báo cáo lãi lỗ của tháng này
-    -- phải có đủ 7 vùng. Loại hội sở 'A' vì hội sở không có hạng tài chính.
+    -- Kiểm tra điều kiện tiên quyết: Bảng sự kiện lãi lỗ (fct_pnl_value) của tháng p_month phải có đủ 7 vùng ('B'..'H').
     SELECT COUNT(DISTINCT area_code) INTO v_nth
     FROM banking_project.fct_pnl_value
     WHERE month_key = p_month AND area_code <> 'A' AND report_id = 70;
@@ -216,7 +213,13 @@ BEGIN
         RAISE EXCEPTION 'Chua co fct_pnl_value du 7 vung cho thang % - chay sp_baocao_tonghop truoc', p_month;
     END IF;
 
-    WITH w AS ( -- bốn chỉ tiêu và hai số liệu gốc của từng vùng
+    -- Giải thích luồng xử lý 2 khối CTE bên dưới:
+    --   1. w   : Lấy các chỉ số tài chính của 7 vùng từ bảng fct_pnl_value (mã 91 CIR, mã 92 Margin,
+    --            mã 93 Hiệu suất vốn, mã 70 Lợi nhuận trước thuế A, mã 90 Số lượng quản lý J).
+    --   2. fin : Tính Hiệu suất bình quân/nhân sự chính xác (a / j) và xếp hạng 7 vùng theo từng chỉ số:
+    --            CIR xếp tăng dần (ASC - chi phí càng thấp hạng càng cao); Margin, Hiệu suất vốn và HSBQ
+    --            xếp giảm dần (DESC - hiệu quả càng cao hạng càng cao).
+    WITH w AS (
         SELECT
             area_code,
             MAX(value) FILTER (WHERE report_id = 91) AS cir,
@@ -228,7 +231,7 @@ BEGIN
         WHERE month_key = p_month AND area_code <> 'A'
         GROUP BY area_code
     ),
-    fin AS ( -- xếp hạng 7 vùng: chi phí trên doanh thu lấy thấp nhất, ba chỉ tiêu còn lại lấy cao nhất
+    fin AS (
         SELECT
             w.area_code, w.cir, w.margin, w.hs,
             w.a / NULLIF(w.j, 0) AS hsbq,
@@ -243,15 +246,15 @@ BEGIN
     SELECT p_month, f.area_code, v.rid, v.val
     FROM fin AS f
     CROSS JOIN LATERAL (VALUES
-        (211, ROUND(f.cir, 6)),        -- tỷ lệ chi phí trên doanh thu (6 chữ số thập phân)
-        (212, f.r_cir::NUMERIC),       -- hạng chi phí trên doanh thu (thấp tốt)
-        (213, ROUND(f.margin, 6)),     -- tỷ lệ lợi nhuận biên
-        (214, f.r_margin::NUMERIC),
-        (215, ROUND(f.hs, 6)),         -- tỷ lệ lợi nhuận trên vốn
-        (216, f.r_hs::NUMERIC),
-        (217, f.hsbq),                 -- lợi nhuận chia số quản lý, giữ nguyên; bước 5 làm tròn 2 chữ số
-        (218, f.r_hsbq::NUMERIC),
-        (219, (f.r_cir + f.r_margin + f.r_hs + f.r_hsbq)::NUMERIC)  -- điểm tài chính
+        (211, ROUND(f.cir, 6)),        -- Mã 211: Tỷ lệ Chi phí/Thu nhập (CIR %) của vùng
+        (212, f.r_cir::NUMERIC),       -- Mã 212: Hạng CIR của vùng (1..7, CIR thấp nhất đạt hạng 1)
+        (213, ROUND(f.margin, 6)),     -- Mã 213: Tỷ lệ Biên lợi nhuận (Margin %) của vùng
+        (214, f.r_margin::NUMERIC),    -- Mã 214: Hạng Margin của vùng (1..7, Margin cao nhất đạt hạng 1)
+        (215, ROUND(f.hs, 6)),         -- Mã 215: Hiệu suất trên vốn (%) của vùng
+        (216, f.r_hs::NUMERIC),        -- Mã 216: Hạng Hiệu suất vốn của vùng (1..7)
+        (217, f.hsbq),                 -- Mã 217: Hiệu suất bình quân/nhân sự (sẽ làm tròn 2 chữ số khi ghi sang bảng sự kiện)
+        (218, f.r_hsbq::NUMERIC),      -- Mã 218: Hạng Hiệu suất bình quân/nhân sự của vùng (1..7)
+        (219, (f.r_cir + f.r_margin + f.r_hs + f.r_hsbq)::NUMERIC)  -- Mã 219: Tổng điểm tài chính vùng (Điểm FIN = tổng 4 hạng trên)
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step3_fin_area', p_month, v_step, 'OK');
