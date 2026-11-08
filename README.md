@@ -87,32 +87,11 @@ Từ yêu cầu ban đầu, cần làm rõ Ban lãnh đạo muốn theo dõi nh�
 
 ### Quy trình chuyển từ yêu cầu quản trị đến hệ thống báo cáo:
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                         YÊU CẦU BAN ĐẦU CỦA BAN LÃNH ĐẠO                             │
-│   1. Báo cáo kết quả kinh doanh thẻ theo vùng    │   2. Đánh giá hiệu quả quản lý vùng (ASM)   │
-└───────────────────────────────────┬────────────────────────────────────────────────────┘
-                                    │ (Phân tích nghiệp vụ và làm rõ yêu cầu)
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                         CÁC NHÓM THÔNG TIN CẦN CÓ TRONG BÁO CÁO                      │
-├────────────────────────────────────────┬───────────────────────────────────────────────┤
-│ NHÓM 1: QUẢN TRỊ KẾT QUẢ KINH DOANH    │ NHÓM 2: ĐÁNH GIÁ NĂNG LỰC QUẢN LÝ VÙNG        │
-│ • Thu nhập, chi phí vốn, chi phí      │ • Chỉ tiêu bán hàng cá nhân: Cho vay mới, thẻ │
-│   hoạt động, trích lập dự phòng        │   phát sinh dư nợ, tỷ lệ phê duyệt hồ sơ     │
-│ • Phân bổ chi phí Hội sở theo tiêu thức│ • Trách nhiệm địa bàn: Tỷ lệ nợ xấu vùng,     │
-│ • Biến động lợi nhuận theo tháng         │ CIR vùng, Margin, Lợi nhuận bình quân/ASM │
-└───────────────────────────────────┬────────────────────────────────────────────────────┘
-                                    │ (Trình bày thành báo cáo trực quan)
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                         HỆ THỐNG BÁO CÁO QUẢN TRỊ POWER BI (7 TRANG)                   │
-│ • Trang 1: Tổng quan báo cáo           │ • Trang 5: Kết quả kinh doanh (Lãi lỗ)        │
-│ • Trang 2: Từ điển dữ liệu (68 chỉ tiêu)│ • Trang 6: Xếp hạng quản lý vùng (ASM)       │
-│ • Trang 3: Báo cáo tổng hợp lãi lỗ     │ • Trang 7: Phân tích chuyên sâu & Kết luận    │
-│ • Trang 4: Báo cáo tổng hợp xếp hạng   │ + Báo cáo Excel 7 sheet đối soát kế toán      │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+| Bước chuyển đổi | Nhánh 1: Quản trị kết quả kinh doanh vùng (P&L) | Nhánh 2: Đánh giá năng lực Quản lý vùng (ASM) |
+|---|---|---|
+| **1. Yêu cầu ban đầu của Ban Lãnh đạo** | Báo cáo kết quả kinh doanh thẻ tín dụng theo 7 vùng | Đánh giá hiệu quả hoạt động đội ngũ Quản lý vùng (ASM) |
+| **2. Các nhóm thông tin cần có trong báo cáo** *(Phân tích nghiệp vụ & làm rõ yêu cầu)* | • Thu nhập, chi phí vốn, chi phí hoạt động, trích lập dự phòng<br>• Phân bổ chi phí Hội sở theo tiêu thức kinh tế<br>• Biến động lợi nhuận lũy kế và phát sinh theo tháng | • **Chỉ tiêu bán hàng cá nhân**: Cho vay mới, thẻ phát sinh dư nợ, tỷ lệ phê duyệt hồ sơ<br>• **Trách nhiệm địa bàn**: Tỷ lệ nợ xấu vùng, CIR vùng, Margin, Lợi nhuận bình quân/ASM |
+| **3. Hệ thống báo cáo quản trị đầu ra** *(Trình bày thành 7 trang Power BI & Excel)* | • **Trang 1**: Tổng quan báo cáo<br>• **Trang 2**: Từ điển dữ liệu (68 chỉ tiêu)<br>• **Trang 3**: Báo cáo tổng hợp lãi lỗ<br>• **Trang 5**: Kết quả kinh doanh (Lãi lỗ) | • **Trang 4**: Báo cáo tổng hợp xếp hạng<br>• **Trang 6**: Xếp hạng quản lý vùng (ASM)<br>• **Trang 7**: Phân tích chuyên sâu & Kết luận<br>• **Đối soát**: Báo cáo Excel 7 sheet đối soát kế toán |
 
 ### Vai trò của hai nhóm chỉ tiêu:
 - **Nhóm chỉ tiêu kết quả kinh doanh (P&L, NPL vùng, CIR, Margin):** Cho thấy tình hình tài chính của từng vùng sau khi tính đầy đủ chi phí từ Hội sở, giúp Ban lãnh đạo đưa ra quyết định phân bổ vốn và hạn mức tín dụng.
@@ -205,19 +184,9 @@ $$\text{Tỷ lệ rủi ro tín dụng mở rộng} = \frac{\text{Dư nợ nhóm
 
 Khác với tỷ lệ NPL thông thường (chỉ tính dư nợ nhóm 3–5 nội bảng trên tổng dư nợ), đây là **chỉ tiêu quản trị do dự án tự xây dựng** từ việc phân tích bản chất dòng tiền và nguyên tắc kế toán quản trị rủi ro tín dụng. Số write-off (nợ đã xử lý rủi ro ngoại bảng) được cộng dồn từ đầu năm để phản ánh đúng thực chất mức độ tổn thất vốn, tránh việc tỷ lệ nợ xấu nội bảng giảm giả tạo đơn thuần do các khoản nợ xấu được xóa khỏi bảng cân đối kế toán. *Giới hạn nghiệp vụ cần lưu ý:* Chỉ tiêu này phản ánh cả tổn thất đã tích lũy trong quá khứ, không chỉ phản ánh chất lượng danh mục hiện tại. Những vùng có danh mục thẻ lâu năm có thể tích lũy lượng nợ write-off lớn hơn vùng mới mở rộng, vì vậy cần thận trọng khi so sánh các vùng có thời gian hình thành danh mục khác nhau.
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│          BỘ CHỈ TIÊU ĐÁNH GIÁ HIỆU QUẢ HOẠT ĐỘNG QUẢN LÝ VÙNG              │
-├──────────────────────────────────────────┬─────────────────────────────────────────────┤
-│ TRỤ CỘT 1: KẾT QUẢ KINH DOANH & KIỂM SOÁT│ TRỤ CỘT 2: HIỆU QUẢ TÀI CHÍNH (diem_fin)    │
-│ CHẤT LƯỢNG TĂNG TRƯỞNG (diem_qm)         │                                             │
-│ • Doanh số cho vay mới bình quân (Cao tốt)│ • Tỷ lệ chi phí / thu nhập - CIR (Thấp tốt) │
-│ • Số thẻ phát sinh dư nợ bình quân (Cao) │ • Biên lợi nhuận - Margin (Cao tốt)         │
-│ • Tỷ lệ phê duyệt hồ sơ bình quân (Đánh giá) │ • Hệ số hiệu quả vốn (Cao tốt)              │
-│ • TỶ LỆ RỦI RO TÍN DỤNG MỞ RỘNG (Thấp)   │ • Lợi nhuận bình quân / Quản lý (Cao tốt)   │
-│   (Bao gồm nợ đã xử lý rủi ro ngoại bảng)│   (Gắn trách nhiệm quản trị với địa bàn)    │
-└──────────────────────────────────────────┴─────────────────────────────────────────────┘
-```
+| Trụ cột 1: Kết quả kinh doanh & Kiểm soát chất lượng tăng trưởng (`diem_qm`) | Trụ cột 2: Hiệu quả tài chính địa bàn (`diem_fin`) |
+|---|---|
+| • **Doanh số cho vay mới bình quân** *(Càng cao càng tốt)*<br>• **Số thẻ phát sinh dư nợ bình quân** *(Càng cao càng tốt)*<br>• **Tỷ lệ phê duyệt hồ sơ bình quân** *(Đánh giá kèm rủi ro)*<br>• **Tỷ lệ rủi ro tín dụng mở rộng** *(Càng thấp càng tốt — bao gồm nợ đã xử lý rủi ro ngoại bảng)* | • **Tỷ lệ chi phí / thu nhập – CIR** *(Càng thấp càng tốt)*<br>• **Biên lợi nhuận – Margin** *(Càng cao càng tốt)*<br>• **Hệ số hiệu quả vốn** *(Càng cao càng tốt)*<br>• **Lợi nhuận bình quân / Quản lý** *(Càng cao càng tốt — gắn trách nhiệm quản trị với địa bàn)* |
 
 **Bảng chi tiết 8 chỉ tiêu đánh giá quản lý vùng (ASM):**
 
@@ -282,17 +251,13 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 
 **Cách kiểm tra kết quả:** Trong quá trình triển khai, không có sẵn bảng kết quả mẫu để đối chiếu từng con số. Vì vậy, quy trình kiểm tra được chia thành 5 lớp nhằm rà soát số liệu, công thức và kết quả qua từng bước xử lý.
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                      HỆ THỐNG KIỂM SOÁT VÀ ĐỐI SOÁT DỮ LIỆU 5 LỚP                      │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│ Lớp 1: ĐỐI SOÁT SỐ LIỆU SỔ CÁI (GL Reconciliation: Tổng vùng = Tổng ngân hàng)       │
-│ Lớp 2: KIỂM TRA ĐIỀU KIỆN TOÁN HỌC (Mathematical Invariants: Sum(Ratio) = 1.0)       │
-│ Lớp 3: KIỂM SOÁT TOÀN VẸN VÀ CHẤT LƯỢNG DỮ LIỆU  │
-│ Lớp 4: KIỂM TRA TÍNH HỢP LÝ NGHIỆP VỤ             │
-│ Lớp 5: TÍNH LẠI VÀ ĐỐI CHIẾU HỆ THỐNG       │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+| Lớp kiểm soát | Tên lớp đối soát dữ liệu | Nguyên tắc kiểm chứng cốt lõi |
+|:---:|---|---|
+| **Lớp 1** | **Đối soát số liệu sổ cái (GL Reconciliation)** | Bảo toàn tổng tiền: Tổng vùng sau phân bổ + Hội sở = Tổng sổ cái ngân hàng |
+| **Lớp 2** | **Kiểm tra điều kiện toán học (Mathematical Invariants)** | Tổng tỷ trọng phân bổ của từng tiêu thức đạt chính xác `Sum(Ratio) = 1.0` |
+| **Lớp 3** | **Kiểm soát toàn vẹn và chất lượng dữ liệu** | Đảm bảo không trùng lặp dòng, không rơi rớt bản ghi khi `JOIN` bảng danh mục |
+| **Lớp 4** | **Kiểm tra tính hợp lý nghiệp vụ** | Kiểm soát miền giá trị hợp lý của nợ xấu, dư nợ và biến động bất thường giữa các tháng |
+| **Lớp 5** | **Tính lại và đối chiếu chéo giữa các hệ thống** | Tính tay độc lập trên mẫu và đối soát số liệu giữa PostgreSQL, Power BI và Excel |
 
 ### Lớp 1 – Đối soát bảo toàn số liệu
 - **Rủi ro cần kiểm tra:** Thất thoát dòng tiền hoặc nhân đôi chi phí khi thực hiện phân bổ 181 bút toán Hội sở về các vùng.

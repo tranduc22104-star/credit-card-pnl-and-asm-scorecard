@@ -87,32 +87,11 @@ Translating initial requests into an analytical solution required determining wh
 
 ### Logical architecture from business requirements to reporting deliverables:
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        INITIAL BROAD EXECUTIVE GOVERNANCE MANDATE                      │
-│   1. Regional card business P&L reporting        │   2. Field sales management evaluation│
-└───────────────────────────────────┬────────────────────────────────────────────────────┘
-                                    │ (Domain analysis & Requirement refinement)
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                                TARGET REPORTING OUTPUT GROUPS                          │
-├────────────────────────────────────────┬───────────────────────────────────────────────┤
-│ GROUP 1: REGIONAL MANAGEMENT P&L       │ GROUP 2: AREA SALES MANAGEMENT RANKING        │
-│ • Gross card income, funding cost,     │ • Individual sales volume: Gross lending,     │
-│   operating expense, loan provisions   │   active credit cards, approval rate          │
-│ • Head Office cost allocation drivers  │ • Territorial stewardship: Regional NPL,      │
-│ • Monthly profit variance decomposition│   regional CIR, Margin, average profit / ASM  │
-└───────────────────────────────────┬────────────────────────────────────────────────────┘
-                                    │ (Translation to visual delivery layer)
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                          POWER BI MANAGEMENT DASHBOARD (7 PAGES)                       │
-│ • Page 1: Executive Overview           │ • Page 5: Regional Business Performance (P&L) │
-│ • Page 2: Data Glossary (68 metrics)   │ • Page 6: Regional ASM Ranking Dashboard      │
-│ • Page 3: Summary P&L Report           │ • Page 7: Deep-Dive Diagnosis & Conclusion    │
-│ • Page 4: Summary ASM Ranking Report   │ + 7-Sheet Excel Accounting Reconciliation Model│
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+| Transformation Stage | Track 1: Regional Business Performance (P&L) | Track 2: Area Sales Management Evaluation (ASM) |
+|---|---|---|
+| **1. Initial Broad Executive Mandate** | Regional credit card P&L performance reporting across 7 regions | Operational effectiveness evaluation for Area Sales Managers (ASMs) |
+| **2. Target Reporting Output Groups** *(Domain analysis & requirement refinement)* | • Gross card income, funding cost, operating expense, loan provisions<br>• Head Office cost allocation by economic drivers<br>• Cumulative and monthly profit variance decomposition | • **Individual sales volume**: New loan disbursement, active credit cards, approval rate<br>• **Territorial stewardship**: Regional NPL, regional CIR, Margin, average profit / ASM |
+| **3. Management Reporting System** *(Delivered across 7 Power BI pages & Excel)* | • **Page 1**: Executive Overview<br>• **Page 2**: Data Glossary (68 metrics)<br>• **Page 3**: Summary P&L Report<br>• **Page 5**: Regional Business Performance (P&L) | • **Page 4**: Summary ASM Ranking Report<br>• **Page 6**: Regional ASM Ranking Dashboard<br>• **Page 7**: Deep-Dive Diagnosis & Conclusion<br>• **Reconciliation**: 7-Sheet Excel Accounting Reconciliation Model |
 
 ### Roles of the two indicator groups:
 - **Commercial Performance Metrics (P&L, Regional NPL, CIR, Margin):** Reflect the comprehensive financial health of each region after absorbing indirect Head Office costs, supporting leadership decisions on capital and credit limit allocation.
@@ -205,19 +184,9 @@ $$\text{Extended Credit Risk Ratio} = \frac{\text{Bucket 3–5 Balances} + \text
 
 Unlike conventional accounting NPL (which tracks only on-balance Buckets 3–5 over total loans), this is a **custom management metric independently designed** through cash-flow analysis and credit risk management principles. Off-balance write-offs are accumulated from year-start to neutralize artificial cosmetic cleansing effects following debt write-off events. *Analytical Limitation:* This indicator reflects cumulative historical losses rather than exclusively point-in-time risk. Territories with mature card portfolios naturally accumulate larger write-off volumes than newly expanded regions, requiring cautious interpretation when comparing regions with divergent portfolio vintages:
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                 MULTI-DIMENSIONAL ASM OPERATIONAL SCORECARD (SCORECARD)                │
-├──────────────────────────────────────────┬─────────────────────────────────────────────┤
-│ PILLAR 1: COMMERCIAL RESULTS & QUALITY   │ PILLAR 2: FINANCIAL EFFICIENCY (diem_fin)   │
-│ GROWTH CONTROL (diem_qm)                 │                                             │
-│ • Average new loan disbursement (High)   │ • Cost-to-Income Ratio - CIR (Low is best)  │
-│ • Average active card count (High)       │ • Profit Margin (High is best)              │
-│ • Average approval rate (Evaluated)      │ • Capital productivity coefficient (High)   │
-│ • EXTENDED CREDIT RISK RATIO (Low)       │ • Profit per ASM Headcount (High is best)   │
-│   (Incorporates off-balance write-offs)  │   (Aligns stewardship with territory P&L)   │
-└──────────────────────────────────────────┴─────────────────────────────────────────────┘
-```
+| Pillar 1: Commercial Results & Quality Growth Control (`diem_qm`) | Pillar 2: Territorial Financial Efficiency (`diem_fin`) |
+|---|---|
+| • **Average new loan disbursement** *(Higher is better)*<br>• **Average active card count** *(Higher is better)*<br>• **Average approval rate** *(Evaluated alongside credit risk)*<br>• **Extended Credit Risk Ratio** *(Lower is better — incorporates off-balance write-offs)* | • **Cost-to-Income Ratio – CIR** *(Lower is better)*<br>• **Profit Margin** *(Higher is better)*<br>• **Capital productivity coefficient** *(Higher is better)*<br>• **Profit per ASM Headcount** *(Higher is better — aligns stewardship with territory P&L)* |
 
 **Detailed Matrix of 8 Area Sales Manager Evaluation Metrics (ASM):**
 
@@ -282,17 +251,13 @@ To transform multi-source raw data into a complete reporting system, the technic
 
 **Independent Verification Context:** In real-world enterprise deployments, executive leadership does not supply pre-computed benchmark answers. The validation framework was therefore designed with 5 independent quality control layers, ensuring internal consistency and calculation accuracy across the entire data pipeline.
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        5-LAYER DATA QUALITY ASSURANCE FRAMEWORK                        │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│ Layer 1: GL RECONCILIATION CONSERVATION (Sum of regions = Nationwide General Ledger)   │
-│ Layer 2: MATHEMATICAL INVARIANTS (Allocation ratio sum equals exactly 1.0)             │
-│ Layer 3: DATA INTEGRITY AND REFERENTIAL INTEGRITY (Zero orphaned or duplicated records)│
-│ Layer 4: BUSINESS SANITY AND FINANCIAL BOUNDARY CHECKS (MoM thresholds and NPL ranges) │
-│ Layer 5: INDEPENDENT RECALCULATION AND CROSS-AUDIT (Zero variance across systems)      │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+| Control Layer | Quality Assurance Dimension | Core Verification Principle |
+|:---:|---|---|
+| **Layer 1** | **GL Reconciliation Conservation** | Cash-flow conservation: Sum of allocated regions + Head Office = Nationwide General Ledger |
+| **Layer 2** | **Mathematical Invariants** | Allocation weight ratios for every economic driver sum to exactly `Sum(Ratio) = 1.0` |
+| **Layer 3** | **Data & Referential Integrity** | Zero duplicate records and zero orphaned rows across all dimensional `JOIN` operations |
+| **Layer 4** | **Business Sanity & Boundary Checks** | Domain range verification for regional NPL, loan balances, and month-over-month variances |
+| **Layer 5** | **Independent Recalculation & Cross-Audit** | Standalone manual sample recalculation and cross-system reconciliation across PostgreSQL, Power BI, and Excel |
 
 ### Layer 1 – General Ledger Balance Reconciliation
 - **Control Risk:** Financial leakage or cost duplication when disaggregating 181 Head Office entries across 7 regions.

@@ -2,9 +2,13 @@
 
 ## DANG DỞ
 
-- Phân tích toàn bộ 13 tệp SQL trong thư mục sql/ và viết lại hệ thống chú thích (comments) trong từng tệp rõ ràng, tường minh về mặt nghiệp vụ ngân hàng và kỹ thuật SQL để người đọc dễ hiểu.
+*(Trống)*
 
 ## ĐÃ XONG
+### 2026-11-08
+226. **Chuyển Đổi 3 Khung Sơ Đồ ASCII Trong README Việt – Anh Sang Bảng Markdown Chuẩn Mực**
+   - Thay thế toàn bộ 3 khung vẽ ASCII (`┌───...`) dễ bị lệch cột trên GitHub tại Mục 2 (*Quy trình chuyển từ yêu cầu quản trị đến hệ thống báo cáo*), Mục 4.2 (*Bộ chỉ tiêu đánh giá hiệu quả hoạt động quản lý vùng*) và Mục 6 (*Hệ thống kiểm soát và đối soát dữ liệu 5 lớp*) trong cả `README.md` và `README_eng.md` sang dạng **Bảng Markdown** phẳng, căn lề chuẩn xác.
+   - Kiểm tra `.staging/check_toc.py` (`ok`), `.staging/check_int_pair.py` (`ok`, 0 lệch số >= 10) và `.staging/push_check.py` (30 tệp chuẩn), sau đó commit và push lên GitHub.
 ### 2026-11-08
 222. **Đồng Bộ Toàn Diện 4 Tầng Hệ Thống Theo Quy Trình 3 Giai Đoạn & 3 View Chính Thức**
    - Thực hiện đồng bộ 100% giữa DBeaver (`banking_project`), mã nguồn `sql/`, thư mục `images/` và toàn bộ tài liệu dự án (`README.md`, `README_eng.md`, `docs/PIPELINE.md`, `docs/HIEN_TRANG_HE_THONG.md`):
@@ -615,15 +619,3 @@ if not m:
 127\\.\\s+\\*\\*Thêm Data Analyst Vào Dòng Định Vị', text)
 
 if m:
-
-176. **Tái Cấu Trúc Toàn Diện Mục 03 (Đông Nam Bộ) Theo Luồng Nghiệp Vụ 4 Khối Mạch Lạc**
-   - Triển khai tái thiết kế Mục 03 trên `performance_diagnosis_merged_chart_v2.html` theo chuẩn báo cáo phân tích điều hành C-Level:
-     + **Khối 1 (Điểm tài chính vùng)**: Khẳng định con số 26 điểm (Mức sàn bét bảng Hạng 66/66 toàn quốc) do vùng lỗ -48,8 tỷ đồng (CIR 105,4%); trực quan hóa dải 19 chấm cam đồng hạng chịu chung gánh nặng lỗ vùng.
-     + **Khối 2 (Bán hàng tự thân bị kéo oan)**: Nêu rõ thước đo năng lực bán hàng tự thân xuất sắc của Lê Văn Bình (Hạng #24, 107đ), Trần Văn Hải (Hạng #28, 124đ), Trần Văn Anh (Hạng #36, 155đ) trên thang đo xếp hạng phát triển kinh doanh độc lập.
-     + **Khối 3 (Hậu quả cụ thể)**: Chỉ rõ 14/19 quản lý (74%) bị đẩy vào nhóm 25% cuối bảng (Hạng 64–84); Trần Văn Hải từ Top 28 bị kéo tụt xuống Hạng #33; làm méo mó bản chất thi đua và triệt tiêu động lực nhân sự giỏi.
-     + **Khối 4 (Nhận xét điều hành & Kiến nghị chính sách)**: Đóng khung nổi bật kiến nghị chiến lược tách bạch thẻ điểm bán hàng cá nhân khỏi P&L cấp vùng (chuyển chỉ tiêu lỗ vùng vào KPI Giám đốc Vùng/Hội sở thay vì trừ điểm nhân viên).
-   - Tinh chỉnh CSS chống xén chữ (`grid-template-columns: 95px 1fr 65px`) và gỡ class flex gây vỡ chữ trong khung nhận xét.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/sec3_perfect_crop.png`) và soi chiếu thị giác máy tính, xác nhận 100% bố cục chuẩn mực, sắc nét.
-   - Cắt task 126 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (176 xuống 127).
-
-### 2026-11-05
