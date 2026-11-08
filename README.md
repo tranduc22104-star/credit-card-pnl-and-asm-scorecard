@@ -207,13 +207,13 @@ Khác với tỷ lệ NPL thông thường (chỉ tính dư nợ nhóm 3–5 n�
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│          BỘ CHỈ TIÊU ĐÁNH GIÁ HIỆU QUẢ HOẠT ĐỘNG QUẢN LÝ VÙNG              │
+│          BỘ CHỈ TIÊU ĐÁNH GIÁ HIỆU QUẢ HOẠT ĐỘNG QUẢN LÝ VÙNG                          │
 ├──────────────────────────────────────────┬─────────────────────────────────────────────┤
 │ TRỤ CỘT 1: KẾT QUẢ KINH DOANH & KIỂM SOÁT│ TRỤ CỘT 2: HIỆU QUẢ TÀI CHÍNH (diem_fin)    │
 │ CHẤT LƯỢNG TĂNG TRƯỞNG (diem_qm)         │                                             │
-│ • Doanh số cho vay mới bình quân (Cao tốt)│ • Tỷ lệ chi phí / thu nhập - CIR (Thấp tốt) │
+│ • Doanh số cho vay mới bình quân (Cao tốt)│ • Tỷ lệ chi phí / thu nhập - CIR (Thấp tốt)│
 │ • Số thẻ phát sinh dư nợ bình quân (Cao) │ • Biên lợi nhuận - Margin (Cao tốt)         │
-│ • Tỷ lệ phê duyệt hồ sơ bình quân (Đánh giá) │ • Hệ số hiệu quả vốn (Cao tốt)              │
+│ • Tỷ lệ phê duyệt hồ sơ bình quân (Đánh giá)│ • Hệ số hiệu quả vốn (Cao tốt)          │
 │ • TỶ LỆ RỦI RO TÍN DỤNG MỞ RỘNG (Thấp)   │ • Lợi nhuận bình quân / Quản lý (Cao tốt)   │
 │   (Bao gồm nợ đã xử lý rủi ro ngoại bảng)│   (Gắn trách nhiệm quản trị với địa bàn)    │
 └──────────────────────────────────────────┴─────────────────────────────────────────────┘
@@ -286,11 +286,11 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │                      HỆ THỐNG KIỂM SOÁT VÀ ĐỐI SOÁT DỮ LIỆU 5 LỚP                      │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
-│ Lớp 1: ĐỐI SOÁT SỐ LIỆU SỔ CÁI (GL Reconciliation: Tổng vùng = Tổng ngân hàng)       │
-│ Lớp 2: KIỂM TRA ĐIỀU KIỆN TOÁN HỌC (Mathematical Invariants: Sum(Ratio) = 1.0)       │
-│ Lớp 3: KIỂM SOÁT TOÀN VẸN VÀ CHẤT LƯỢNG DỮ LIỆU  │
-│ Lớp 4: KIỂM TRA TÍNH HỢP LÝ NGHIỆP VỤ             │
-│ Lớp 5: TÍNH LẠI VÀ ĐỐI CHIẾU HỆ THỐNG       │
+│ Lớp 1: ĐỐI SOÁT SỐ LIỆU SỔ CÁI (GL Reconciliation: Tổng vùng = Tổng ngân hàng)         │
+│ Lớp 2: KIỂM TRA ĐIỀU KIỆN TOÁN HỌC (Mathematical Invariants: Sum(Ratio) = 1.0)         │
+│ Lớp 3: KIỂM SOÁT TOÀN VẸN VÀ CHẤT LƯỢNG DỮ LIỆU                                        │
+│ Lớp 4: KIỂM TRA TÍNH HỢP LÝ NGHIỆP VỤ                                                  │
+│ Lớp 5: TÍNH LẠI VÀ ĐỐI CHIẾU HỆ THỐNG                                                  │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
