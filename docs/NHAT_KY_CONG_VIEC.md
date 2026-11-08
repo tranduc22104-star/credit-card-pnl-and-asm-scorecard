@@ -627,25 +627,3 @@ if m:
    - Cắt task 126 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (176 xuống 127).
 
 ### 2026-11-05
-175. **Chuyển Đổi Mục 01 Sang Biểu Đồ Cột Nhóm Kết Hợp Đường (Combo Chart)**
-   - Triển khai thay thế toàn bộ biểu đồ bong bóng tại Mục 01 của `performance_diagnosis_merged_chart_v2.html` sang Biểu đồ Cột nhóm kết hợp Đường (Combo Column & Line Chart) theo phê duyệt Phương án 1 của người dùng:
-     + Trục hoành xếp 7 vùng kinh doanh ngay ngắn từ trái qua phải.
-     + Cột đôi: Cột xanh dương (Tỷ trọng cho vay mới %) đứng cạnh Cột xanh ngọc (Tỷ trọng lợi nhuận %). Riêng Đông Nam Bộ có cột màu đỏ cắm xuống dưới trục 0% ở mức −19,5% (báo hiệu vùng duy nhất thua lỗ).
-     + Đường cam phía trên: Thể hiện Tỷ lệ nợ xấu (%) uốn lượn qua 7 vùng, gắn kèm đường nét đứt tham chiếu mức bình quân toàn hàng 17,3%.
-     + Tối ưu hóa hiển thị: Đưa nhãn 67% vào thân cột Tây Nam Bộ, đặt nhãn nợ xấu 22,0% lệch trái, đảm bảo 0% va chạm chữ.
-     + Bổ sung hộp ghi chú "Điểm nhấn điều hành" sắc bén ở đáy panel.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/v2_combo_crop_clean.png`) và soi chiếu thị giác máy tính, xác nhận độ thông thoáng và trực quan vượt trội so với biểu đồ bong bóng cũ.
-   - Cắt task 125 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (175 xuống 126).
-
-"""
-
-nhatky = nhatky.replace("## ĐÃ XONG\
-", "## ĐÃ XONG\
-" + task_175)
-
-# Cắt task 125
-split_pos = nhatky.find("125. **")
-if split_pos != -1:
-    line_start = nhatky.rfind("\
-", 0, split_pos)
-    h_idx = nhatky.rfind("### ", 0, line_start)
