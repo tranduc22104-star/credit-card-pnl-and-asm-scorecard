@@ -1,11 +1,18 @@
 # NHẬT KÝ CÔNG VIỆC
 
 ## DANG DỞ
-
 *(Hiện không có công việc đang dở)*
 
 ## ĐÃ XONG
 ### 2026-11-09
+241. **Gỡ tệp Excel đầu ra khỏi kho mã và đẩy lên GitHub**
+   - `git rm --cached` tệp `output/Bao cao lai lo luy ke tu dau nam 202305.xlsx` (giữ bản trên máy), thêm vào `NEVER_PUSH` của `.staging/push_check.py`; cập nhật phạm vi đẩy trong `docs/HIEN_TRANG_HE_THONG.md` (29 tệp).
+   - Commit Task 240–241 và push nhánh `main` (kèm commit Task 239 chưa đẩy được lần trước).
+240. **Viết lại README song ngữ bám sát Power BI: bỏ báo cáo Excel đầu ra, dùng đúng cách đặt tên Dữ liệu đầu vào và 4 Dashboard đầu ra của trang Tổng quan**
+   - Bỏ toàn bộ nội dung nhắc tới tệp Excel đầu ra (7 sheet đối soát); Excel chỉ còn là 3 tệp số liệu đầu vào. Việc đối soát chuyển sang PostgreSQL ↔ Power BI (bảng ma trận Trang 3).
+   - Mục 2: thêm bảng `ĐẦU RA: 4 DASHBOARD CẦN XÂY DỰNG ĐỂ GIẢI QUYẾT BÀI TOÁN CỦA BAN ĐIỀU HÀNH` (01–04, Chứa cái gì – Để làm cái gì) và bảng thiết kế 7 trang. Mục 3: bảng `DỮ LIỆU ĐẦU VÀO CẦN THU THẬP` theo cột CHỨA / DÙNG ĐỂ đúng tên trên Power BI.
+   - Mục 5: mô tả chi tiết từng trang (thẻ KPI, waterfall 8 bước, bong bóng Lợi nhuận–CIR, cột–đường Dư nợ mới–NPL, Quán quân 34/36 điểm, Leaderboard), nhúng 7 ảnh trang. Mục 7: bảng hành động dạng bảng, số liệu Đông Nam Bộ lấy từ measure `Page5_Part3_DongNamBo_HTML` (Loan 16đ hạng 18, Hùng 14đ hạng 21, Mai 11đ hạng 24).
+   - Sửa `docs/PIPELINE.md`, `docs/HIEN_TRANG_HE_THONG.md` bỏ chữ "Sheet 1 Excel". Kiểm tra `check_toc.py`, `check_int_pair.py` (0 lệch số >= 10), `push_check.py`.
 239. **Đẩy Bộ Cập Nhật Dự Án Lên GitHub (Mô Hình Power BI 100 Measure, Sơ Đồ Quy Trình Mới & Đồng Bộ Tài Liệu)**
    - Kiểm tra an toàn trước khi đẩy bằng `.staging/push_check.py`: 30 tệp (~4,49 MiB), 0 tệp vượt trần GitHub, 0 lộ mật khẩu, 0 liên kết gãy.
    - Stage đích danh các tệp được phép theo khuyến nghị của `push_check.py`, loại bỏ hoàn toàn các tệp nhạy cảm và dữ liệu thô (`ingestion/db_config.py`, `input/`, `CV/`, `docs/SESSION_PROMPT_LOG.md`, `output/duphong.pbix`).
