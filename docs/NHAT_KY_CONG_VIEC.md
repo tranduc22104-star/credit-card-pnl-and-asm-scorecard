@@ -5,6 +5,11 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+243. **Xóa bỏ hoàn toàn dải rìa trắng bên ngoài ảnh sơ đồ quy trình xử lý kỹ thuật (`images/quy-trinh.png`)**
+   - Loại bỏ 27px dải trắng thừa ở cạnh phải và cạnh đáy (do bước crop trước để dư margin), đưa kích thước ảnh về chuẩn xác `2400 × 940 px` đúng theo viền khung container.
+   - Áp dụng kênh trong suốt (Alpha channel) bo tròn 4 góc bên ngoài viền khung, giúp sơ đồ hiển thị liền mạch, không còn vệt trắng trên mọi nền trình duyệt/GitHub.
+   - Cập nhật đồng bộ ảnh vào `images/quy-trinh.png` và artifact `quy_trinh_ky_thuat_visual.png`.
+### 2026-11-09
 242. **Gỡ bỏ 7 ảnh chụp các trang Power BI khỏi README song ngữ và kho mã theo yêu cầu người dùng**
    - Loại bỏ 7 khối ảnh chụp các trang Power BI (`tong-quan.png`, `tu-dien.png`, `ket-qua-kinh-doanh.png`, `xh-asm.png`, `danh-gia-kinh-doanh.png`, `danh-gia-asm.png`, `insight.png`) khỏi `README.md` và `README_eng.md`.
    - Giữ lại đúng 2 sơ đồ kỹ thuật cốt lõi: `quy-trinh.png` (Sơ đồ quy trình kỹ thuật 3 giai đoạn) và `thiet-ke-schema.png` (Mô hình kho dữ liệu Star Schema).
@@ -589,19 +594,6 @@ if not m:
 
 if m:
 
-179. **Xây Dựng Biểu Đồ SVG Trực Quan Hóa Các Ca Bị Kéo Tụt Hạng Và Nguyên Nhân (Visual Chart)**
-   - Triển khai chuyển đổi toàn bộ Panel 02 trên `performance_diagnosis_merged_chart_v2.html` thành **Biểu đồ SVG Trực quan (Visual Shift & Slope Chart)** chuyên nghiệp theo phản hồi của người dùng:
-     + **Trục hoành phân 3 vùng thứ hạng đồ họa**: Vùng Xanh lá (#1–#25: Top đầu) ──► Vùng Vàng (#26–#55: Trung bình) ──► Vùng Đỏ (#56–#84: Nguy hiểm / Đáy bảng).
-     + **Nhóm 1 (Tụt dốc phong độ T1 ──► T5)**: Vẽ vector mũi tên đỏ trượt dốc dài từ chấm xanh T1 sang chấm đỏ T5 (Hoàng Văn Bình −31 bậc; Nguyễn Thị Bích −29 bậc; Lê Thị Thu −25 bậc).
-     + **Nhóm 2 (Bán giỏi bị kéo chìm do lỗ vùng)**: Thể hiện chấm xanh lá tự thân xuất sắc (Trần Văn Hải Top 28, Lê Văn Bình Top 24) bị vector phạt đỏ kéo dạt/ghìm điểm do gánh 26đ sàn ĐNB (−48,8 tỷ); dải 14/19 quản lý ĐNB bị đẩy chìm xuống đáy bảng.
-     + **Cột nguyên nhân đồ họa bên phải**: Tích hợp các thẻ visual có badge định lượng đo lường và dòng nguyên nhân cốt lõi song hành cùng từng dòng vector.
-     + Bổ sung Legend màu sắc chuẩn xác và khung Kết luận & Giải pháp can thiệp cấp thiết ở đáy.
-   - **Verify**: Dùng headless Edge kết xuất ảnh cận cảnh (`.staging/sec02_visual_perfect_crop.png`, `.staging/sec02_visual_bottom_actions.png`) và soi chiếu thị giác máy tính, xác nhận 100% hình ảnh đồ họa trực quan, chuẩn xác.
-   - Cắt task 129 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (179 xuống 130).
-
-"""
-
-if '## ĐÃ XONG\
 ### 2026-11-05\
 178.' in text:
     text = text.replace('## ĐÃ XONG\
