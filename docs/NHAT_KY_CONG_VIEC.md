@@ -2,9 +2,89 @@
 
 ## DANG DỞ
 
-*(Trống)*
+*(Hiện không có công việc đang dở)*
 
 ## ĐÃ XONG
+### 2026-11-09
+239. **Đẩy Bộ Cập Nhật Dự Án Lên GitHub (Mô Hình Power BI 100 Measure, Sơ Đồ Quy Trình Mới & Đồng Bộ Tài Liệu)**
+   - Kiểm tra an toàn trước khi đẩy bằng `.staging/push_check.py`: 30 tệp (~4,49 MiB), 0 tệp vượt trần GitHub, 0 lộ mật khẩu, 0 liên kết gãy.
+   - Stage đích danh các tệp được phép theo khuyến nghị của `push_check.py`, loại bỏ hoàn toàn các tệp nhạy cảm và dữ liệu thô (`ingestion/db_config.py`, `input/`, `CV/`, `docs/SESSION_PROMPT_LOG.md`, `output/duphong.pbix`).
+   - Commit và push an toàn lên nhánh `main` của GitHub repository.
+238. **Sửa nhãn kết nối dưới mũi tên DBeaver thành Import trên sơ đồ Quy trình xử lý kỹ thuật**
+   - Cập nhật tệp nguồn `workflow_quy_trinh_ky_thuat.html` tại mũi tên nối Giai đoạn 1 (Excel) sang Giai đoạn 2 (PostgreSQL + DBeaver): đổi nhãn từ `DirectQuery` thành `Import` đúng bản chất nạp liệu thô vào CSDL, giữ nguyên `DirectQuery` tại mũi tên nối sang Giai đoạn 3 (Power BI).
+   - Kết xuất lại ảnh độ phân giải cao `images/quy-trinh.png` (2427×967 px) và bản lưu trong artifact `quy_trinh_ky_thuat_visual.png`.
+237. **Đồng Bộ Hóa Toàn Bộ Tài Liệu Dự Án (`README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`, `docs/PIPELINE.md`) Theo Các Cập Nhật Mới Nhất Trên Power BI & Sơ Đồ Tổng Quan**
+   - **Cập nhật Giai đoạn 1 (3 nguồn dữ liệu đầu vào)**: Đồng bộ tên gọi, thứ tự nghiệp vụ (`1. Dữ liệu hạch toán mỗi tháng – GL`, `2. Dữ liệu sao kê thẻ mỗi tháng`, `3. Dữ liệu kết quả sale của ASM mỗi tháng`) và mô tả theo cấu trúc **Chứa ... – Dùng để ...** xuyên suốt hai bản README song ngữ và tài liệu kỹ thuật.
+   - **Cập nhật Giai đoạn 2 (Kho dữ liệu PostgreSQL + DBeaver)**: Đồng bộ thứ tự 3 bảng tiếp nhận (`stg_fact_txn_month`, `stg_fact_kpi_month`, `stg_asm_target`), ký hiệu bảng tạm 3 bước (`tmp_pnl_step1..3`, `tmp_xh_step1..3`) và bảng nhật ký `log_proc_run`.
+   - **Cập nhật Giai đoạn 3 (Power BI – Executive Orange Theme & 100 Measure DAX)**: Cập nhật số lượng measure DAX thực tế (**100** measure, gồm cả bộ **21** measure định dạng có điều kiện màu nền & màu chữ tương phản cao cho từng cột bảng P&L vùng và bộ visual HTML Content cỡ chữ lớn 19px – 48px trên trang Insight), đồng bộ tên gọi thực tế của 7 trang báo cáo (`GIỚI THIỆU ĐỀ TÀI`, `TỪ ĐIỂN DỮ LIỆU`, `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG`, `BÁO CÁO XẾP HẠNG ASM`, `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`, `ĐÁNH GIÁ HIỆU SUẤT ASM`, `INSIGHT`) theo hướng mô tả "Chứa cái gì – Để làm cái gì".
+   - Kiểm tra đối soát tự động: `check_toc.py` (`ok`), `check_int_pair.py` (`ok`, 0 lệch số >= 10 giữa bản Việt và bản Anh), `push_check.py` (0 liên kết gãy, 0 lộ mật khẩu).
+### 2026-11-09
+236. **Khắc Phục Triệt Để Chữ Mờ / Chìm Trên Bảng Ma Trận P&L Power BI (Tương Phản Tuyệt Đối Nền Tối & Nền Sáng)**
+   - **Xử lý dứt điểm hiện tượng chữ bị mờ chìm trong ảnh người dùng gửi**: Khi người dùng áp đồng thời Background Color (nền tối đen #0F172A, slate đậm #1E293B, cam cháy #B43806) và Font Color, các số âm màu đỏ sẫm #DC2626 và số dương màu đen #0F172A bị chìm hoàn toàn vào nền tối.
+   - **Tối ưu hóa thông minh cho toàn bộ 10 measure PnlTable_FontColor_***:
+     * **Tại các dòng nền tối (vSort 30, 40, 100, 150, 220, 230, 280, 290, 300)**: Tự động chuyển số âm sang **Hồng phấn rực sáng (#FECACA)** nổi bật bừng sáng trên nền đen/cam tối, số 0 sang **Trắng bạc (#E2E8F0)**, số dương sang **Trắng tinh (#FFFFFF)** và **Vàng kim (#FFBE2E)**. Cột Tiêu chí dùng chữ **Trắng tinh (#FFFFFF)**.
+     * **Tại các dòng chi tiết con (nền trắng sáng #FFFFFF hoặc kem #FFFAF5)**: Số âm giữ **Đỏ tươi đậm (#DC2626)**, số 0 màu **Xám (#94A3B8)**, số dương màu **Đen slate đậm nét (#0F172A)**.
+   - Cập nhật trực tiếp qua TOM API vào localhost:63565, 100% measure đạt State: Ready. Bảng Ma trận P&L hiển thị sắc nét, tương phản hoàn hảo và cực kỳ bắt mắt.
+### 2026-11-09
+235. **Nâng Cấp Cỡ Chữ Cực Đại (Executive Giant Scale: 19px – 48px) Cho 4 Measure Trang Insight Phù Hợp Canvas 1920x2250**
+   - **Tối ưu kích thước chữ trên khổ canvas mở rộng (1920x2250)**:
+     * Page5_Part1_KPICards_HTML: Phóng to số KPI lên 46px (font 900), nhãn thẻ lên 19px in hoa, phụ đề lên 20px (đọc rõ ở mọi góc nhìn).
+     * Page5_Part2_Waterfall_HTML: Tiêu đề khối lên 36px, mô tả lên 23px, pill tổng LNTT lên 38px; toàn bộ chữ trên trục SVG và nhãn nấc thang tăng lên 18.5px - 21px, 3 thẻ phân tích phía dưới tăng lên 26px / 32px / 22px.
+     * Page5_Part3_DongNamBo_HTML: Tiêu đề khối lên 34px, số lỗ lũy kế lên 36px, số điểm phạt lên 48px, chữ bảng so sánh 3 ASM lên 20px, nội dung giải pháp lên 21px.
+     * Page5_Part4_MatranHanhdong_HTML: Tiêu đề khối lên 34px, header bảng hành động lên 22px in hoa, tên địa bàn lên 25px, toàn bộ vấn đề & hành động lên 21px, số tiền tác động định lượng lên 25px.
+   - Nạp trực tiếp qua TOM API vào localhost:63565, 100% measure đạt State: Ready (0 lỗi).
+### 2026-11-09
+234. **Nâng Cấp Toàn Diện Cỡ Chữ & Màu Sắc Executive Orange Cho 4 Measure HTML Trang Insight Trên Power BI**
+   - **Phóng to toàn bộ hệ thống cỡ chữ (25% - 40%)**:
+     * Page5_Part1_KPICards_HTML: Nhãn thẻ tăng lên 14px, số liệu KPI chính phóng lên 34px, phụ đề tăng lên 15px.
+     * Page5_Part2_Waterfall_HTML: Tiêu đề khối lên 25px, mô tả 16px, pill tổng LNTT lên 26px, nhãn trục và số liệu SVG tăng lên 15-16px, thẻ phân tích chuyên sâu tăng lên 18.5px/24px/16.5px.
+     * Page5_Part3_DongNamBo_HTML: Tiêu đề khối lên 24px, huy hiệu lỗ lũy kế lên 25px, số điểm phạt kịch khung lên 36px, bảng xếp hạng 3 ASM và kiến nghị tăng lên 14.5px - 15.5px.
+     * Page5_Part4_MatranHanhdong_HTML: Tiêu đề khối lên 24px, tiêu đề cột bảng hành động nền Nâu Espresso chữ Vàng kim 16px in hoa, toàn bộ nội dung ô địa bàn/vấn đề/hành động tăng lên 15.5px - 17.5px, chỉ số tác động tài chính lên 18px.
+   - **Đồng bộ màu sắc Executive Orange / Orange Tree**: Thay thế toàn bộ gam màu Xanh Dương cũ (#2563eb, #1e3a8a, #eff6ff) sang tông Cam Hổ Phách (#FF7A00, #EA580C), Nâu Espresso (#2B1406), viền ấm (#FED7AA), giữ nguyên màu Đỏ cảnh báo (#DC2626) cho khoản lỗ Đông Nam Bộ và Xanh lục (#059669) cho chất lượng tín dụng tốt.
+   - Đã nạp trực tiếp qua TOM API vào localhost:63565, 100% measure đạt State: Ready (0 lỗi).
+### 2026-11-09
+233. **Khắc Phục Lỗi Chữ Mờ Tàng Hình Bảng Ma Trận P&L Power BI & Chuẩn Hóa Mô Tả 3 Nguồn Dữ Liệu Đầu Vào**
+   - **Xử lý triệt để lỗi hiển thị số liệu ở Ảnh 2**: Phát hiện nguyên nhân các dòng tổng/tiêu đề (như *Tổng thu nhập hoạt động, Chi phí thuần KDV, CP vốn, Chi phí dự phòng, Margin PnL...*) bị chữ trắng/vàng nhạt mờ căm trên nền sáng là do measure FontColor trước đó trả về #FFFFFF cho dòng tiêu đề khi chưa bật BackgroundColor nền tối. Đã cập nhật lại toàn bộ 10 measure PnlTable_FontColor_* trong bảng LAI LO (Visuals & DAX) của mô hình Power BI Desktop (localhost:63565) sang tông tương phản cao (LNTT cam đậm #C2410C/#9A2C00, dòng tổng đen slate #0F172A/#1E293B, số âm đỏ #DC2626, số 0 xám #94A3B8, dòng thường #1E293B), đảm bảo 100% số liệu hiển thị sắc nét và dễ đọc kể cả khi không bật Background Color.
+   - **Chuẩn hóa nội dung 3 nguồn dữ liệu ở Ảnh 1**: Cung cấp trọn bộ mô tả chuẩn nghiệp vụ ngân hàng cho 3 nguồn dữ liệu theo cấu trúc thẻ <span class='tag-label tag-chua'>Chứa</span> và <span class='tag-label tag-dung'>Dùng để</span> (1. GL: Bút toán thu - chi 7 vùng & Hội sở -> Gán thẳng vùng & tổng hợp P&L; 2. Sao kê thẻ: Dư nợ, hạn mức, doanh số & nhóm nợ thẻ -> Phân bổ chi phí Hội sở & tính NPL; 3. Sale ASM: Chỉ tiêu & kết quả mở thẻ, kích hoạt, doanh số -> Chấm điểm thi đua & xếp hạng ASM).
+### 2026-11-09
+232. **Tạo Hệ Thống Measure Định Dạng Màu Nền & Màu Chữ (Conditional Formatting) Cho Từng Cột Của Báo Cáo Kết Quả Kinh Doanh Vùng Theo Bộ Màu Executive Orange**
+   - Thiết lập trực tiếp 21 measure DAX trong bảng `LAI LO (Visuals & DAX)` của mô hình Power BI Desktop (`localhost:63565`) phục vụ định dạng có điều kiện (Cell elements: Background color & Font color) cho từng cột trong bảng Ma trận P&L vùng:
+     * **Cột TIÊU CHÍ**: `PnlTable_BgColor_TieuChi` (LNTT `#B43806`, Tổng cấp 1 `#0F172A`, Nhóm cấp 2 `#1E293B`, Nhân sự/Tài chính `#2B1406`, con `#FFFFFF`) và `PnlTable_FontColor_TieuChi` (tiêu đề trắng `#FFFFFF` / vàng kim `#FFBE2E`, con `#475569`).
+     * **8 Cột Khu Vực Vùng**: Tạo 8 cặp measure riêng biệt (`PnlTable_BgColor_*` & `PnlTable_FontColor_*` cho `HoiSo`, `NamTrungBo`, `TayBacBo`, `TayNamBo`, `DBSongHong`, `DongNamBo`, `DongBacBo`, `BacTrungBo`), tự động đổi màu số âm sang đỏ đậm `#DC2626` (hoặc `#FECACA` / `#FCA5A5` trên nền tối), số 0 sang `#94A3B8`, số dương sang `#1E293B`.
+     * **Cột Total**: `PnlTable_BgColor_Total` (LNTT `#9A2C00`, Tổng cấp 1 `#0F172A`, Nhóm cấp 2 `#1E293B`, con kem sáng `#FFFAF5`) và `PnlTable_FontColor_Total` (LNTT `#FFBE2E`, Tổng cấp 1 `#38BDF8`, Nhóm cấp 2 `#FDE047`, con `#0F172A` / âm `#DC2626`).
+   - Kiểm tra xác minh 100% measure đạt trạng thái `State: Ready` (0 lỗi DAX).
+### 2026-11-09
+231. **Đồng Nhất Ký Hiệu Bảng Tạm (step1..3) Và Tinh Gọn Ô Ghi Nhật Ký (log_proc_run) Trên Sơ Đồ Quy Trình**
+   - Cập nhật Bước 2 Giai đoạn 2 trên workflow_quy_trinh_ky_thuat.html và kết xuất lại images/quy-trinh.png (cùng quy_trinh_ky_thuat_visual.png):
+     * Ô 2. Bảng Tạm 3 Bước: đổi thành 	mp_pnl_step1..3, tmp_xh_step1..3 đồng nhất cả hai nhánh tính toán.
+     * Ô 4. Ghi Nhật Ký: xoá (208 bước), chỉ giữ tên bảng log_proc_run.
+### 2026-11-08
+230. **Tinh Chỉnh Sơ Đồ Quy Trình Xử Lý Kỹ Thuật: Đồng Bộ Giai Đoạn 1, Xoá Phụ Đề, Icon Báo Cáo Tối Giản & Chữ Lớn**
+   - Cập nhật workflow_quy_trinh_ky_thuat.html và kết xuất lại images/quy-trinh.png (cùng quy_trinh_ky_thuat_visual.png):
+     * Đồng bộ tên và thứ tự 3 nguồn dữ liệu ở Giai đoạn 1 (1. Dữ liệu hạch toán mỗi tháng (GL), 2. Dữ liệu sao kê thẻ mỗi tháng, 3. Dữ liệu kết quả sale của ASM mỗi tháng) và thứ tự 3 bảng staging ở Bước 1 (stg_fact_txn_month, stg_fact_kpi_month, stg_asm_target).
+     * Xoá dòng phụ đề bên phải tiêu đề QUY TRÌNH XỬ LÝ KỸ THUẬT.
+     * Thay hình minh họa ở Giai đoạn 3 bằng biểu tượng trang báo cáo tối giản, đồng thời thu gọn chiều rộng Giai đoạn 3 (206px) để mở rộng Giai đoạn 1 (344px) và Giai đoạn 2 (490px), giúp phóng to cỡ chữ toàn diện và dễ đọc rõ nét.
+### 2026-11-08
+229. **Thiết Kế Lại Sơ Đồ Quy Trình Xử Lý Kỹ Thuật Theo Bảng Màu Orange Tree, Chữ Lớn, Chế Độ DirectQuery & Logo Thực Tế**
+   - Cập nhật workflow_quy_trinh_ky_thuat.html và kết xuất lại ảnh độ phân giải cao images/quy-trinh.png (2400x940 px @2x) đồng bộ với orange_tree_theme.json và bố cục trang GIỚI THIỆU ĐỀ TÀI trên Power BI:
+     * Giữ nguyên bộ 3 logo ứng dụng thực tế (Microsoft Excel, PostgreSQL + DBeaver, Power BI) từ phiên bản gốc, đặt ngang cùng tiêu đề giai đoạn để tiết kiệm diện tích chiều dọc.
+     * Đồng bộ thanh tiêu đề QUY TRÌNH XỬ LÝ KỸ THUẬT (icon cam #FF7A00, chữ nâu cam đậm #9A3412, viền khung #FED7AA) và phóng to toàn bộ cỡ chữ tên tệp, mã bảng/view lên 35%–50%, hiển thị trọn vẹn trên 1 dòng.
+     * Thay toàn bộ nhãn Import / Import Mode thành DirectQuery / Power BI (DirectQuery).
+     * Xoá 3 dòng chữ mô tả ở Giai đoạn 3 và thay bằng hình ảnh biểu tượng màn hình Báo cáo Dashboard trực quan phối theo bảng màu orange_tree_theme.json.
+### 2026-11-08
+228. **Chuyển Đổi Bảng Màu Chủ Đạo Power BI Sang Tông Xám Than & Vàng Hổ Phách (Charcoal Gray & Orange Tree Gold)**
+   - Cập nhật trực tiếp 18 measure DAX chứa mã màu và giao diện HTML trong mô hình Power BI Desktop đang mở (`output/Bao cao quan tri va phan tich (Ngan Hang).pbix`) sang bảng màu tương phản cao **Web Gray / Charcoal (`#1F2937`, `#262626`, `#374151`, `#494848`)** kết hợp **Orange Tree Gold (`#F59E0B`, `#D97706`, `#FACC15`, `#FEF3C7`)**:
+     * **Trang 2 (`TỪ ĐIỂN DỮ LIỆU`)**: `Data_Glossary_HTML` dùng thanh tiêu đề gradient Charcoal `#1F2937 -> #374151`, huy hiệu Vàng `#F59E0B`, số thứ tự và tên chỉ số tông Charcoal/Amber.
+     * **Trang 3 (`BÁO CÁO TỔNG HỢP LÃI LỖ`)**: `PnlTable_BgColor_TieuChi`, `PnlTable_FontColor_TieuChi`, `PnlTable_BgColor_Values` đổi dòng `1. Lợi nhuận trước thuế` sang nền Xám than `#262626` chữ Vàng `#FACC15` (ô số liệu nền Vàng kem `#FEF3C7`), các dòng nhóm chính nền Xám `#494848` chữ Trắng (ô số liệu nền Xám bạc `#E5E7EB`).
+     * **Trang 6 (`XẾP HẠNG QUẢN LÝ VÙNG`)**: `ASM_Top1_HTML` và `ASM_Leaderboard_HTML` chuyển sang khung Charcoal viền/chữ Vàng `#FBBF24` / `#F59E0B`, cột Tổng điểm nền Vàng `#FDE68A` chữ `#92400E`.
+     * **Trang 7 (`PHÂN TÍCH CHUYÊN SÂU VÀ ĐƯA RA KẾT LUẬN`)**: `Page5_Part1..4_HTML` chuyển toàn bộ gam Navy/Xanh dương sang Charcoal `#494848` / `#1F2937`, nhấn cột dẫn đầu Tây Nam Bộ bằng màu Vàng Hổ Phách `#D97706`.
+   - Tạo sẵn tệp `.staging/Charcoal_Gold_Theme.json` để nạp nhanh bảng màu `dataColors` vào Power BI Desktop và hướng dẫn chi tiết các bước chỉnh màu cho các native visual trên giao diện.
+### 2026-11-08
+227. **Chuẩn Hóa 10 Measure DAX Khối KPI Cards Trên Trang Kết Quả Kinh Doanh Power BI**
+   - Cập nhật trực tiếp 10 measure trong thư mục `01. Khoi KPI Cards` của bảng `banking_project v_baocao_tonghop`:
+     * Đồng bộ `KPI NSBQ MoM Text` và `KPI NSBQ Color` theo `AVERAGE('banking_project v_baocao_tonghop'[nsbq_trieu_dong])` khớp với phép tính trung bình 7 vùng trên thẻ KPI.
+     * Sửa lỗi hiển thị ký tự `"â€”"` khi chọn Tháng 1 thành `UNICHAR(8212)` (`"—"`) trên cả 5 measure `* MoM Text`.
+     * Chuẩn hóa thứ tự điều kiện màu trong `KPI LNTT Color` và `KPI NSBQ Color` (xét dấu của `_pct` trước khi xét giá trị tuyệt đối).
 ### 2026-11-08
 226. **Chuyển Đổi 3 Khung Sơ Đồ ASCII Trong README Việt – Anh Sang Bảng Markdown Chuẩn Mực**
    - Thay thế toàn bộ 3 khung vẽ ASCII (`┌───...`) dễ bị lệch cột trên GitHub tại Mục 2 (*Quy trình chuyển từ yêu cầu quản trị đến hệ thống báo cáo*), Mục 4.2 (*Bộ chỉ tiêu đánh giá hiệu quả hoạt động quản lý vùng*) và Mục 6 (*Hệ thống kiểm soát và đối soát dữ liệu 5 lớp*) trong cả `README.md` và `README_eng.md` sang dạng **Bảng Markdown** phẳng, căn lề chuẩn xác.
@@ -313,12 +393,6 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
    - Cân đối lưới 50-50 cho Section 02 & 03: biểu đồ thanh ngang 7 vùng mượt mà và khối bóc tách 3 phân đoạn nghiệp vụ liền mạch tại Đông Nam Bộ; bảo toàn 100% văn phong diễn đạt tự nhiên, súc tích.
    - Verify headless Edge đạt chuẩn thẩm mỹ hiện đại. Cắt task 139 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task gần nhất (190 xuống 141).
 
-188. **Khôi Phục Thiết Kế Mốc Prompt 332 & Biên Tập Văn Phong Diễn Đạt Tự Nhiên**
-   - Roll back toàn bộ thiết kế giao diện về mốc kết thúc Prompt 332: Mục 01 cân đối nhãn số âm và nợ xấu đỉnh; Mục 02 biểu đồ cột ngang 7 vùng; Mục 03 lưới 50-50 với 4 card màu phân tầng trực quan (Đỏ, Xanh lam, Cam, Xanh lá).
-   - Viết lại toàn bộ câu từ theo phong cách tự nhiên, thực tế của chuyên viên kinh doanh / quản trị ngân hàng (loại bỏ cả hai thái cực: không giật gân kịch tính kiểu AI, và không hàn lâm cứng nhắc).
-   - Trình bày 3 điểm nhấn điều hành Mục 01, ghi chú chuyển tiếp Mục 02 và 4 card Mục 03 ngắn gọn, rõ ràng, tập trung vào bản chất số liệu và đề xuất tách bạch thẻ điểm bán hàng với P&L vùng.
-   - Verify bằng headless Edge kết xuất ảnh đối soát. Cắt task 138 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task gần nhất (190 xuống 141).
-
 187. **Khôi Phục Thiết Kế Màu Sắc Phân Tầng Trực Quan & Giữ Nguyên Văn Phong Chuẩn Mực**
    - Roll back thiết kế giao diện về hệ màu phân tầng trực quan trên `performance_diagnosis_merged_chart_v2.html`: hộp ghi chú điều hành Mục 01 nền xanh nhạt (`#f0f7ff`), khung chuyển tiếp Mục 02 nền cam ấm (`#fff7ed`), và 4 card Mục 03 với 4 nền pastel tương phản dịu mắt (Đỏ, Xanh lam, Cam, Xanh lục).
    - Bảo toàn 100% văn phong phân tích tài chính chuyên nghiệp đã chuẩn hóa: giữ nguyên các phân tích định lượng về P&L khu vực, rủi ro tập trung, cơ chế tính gộp điểm phạt và kiến nghị phân định 2 cấu phần đánh giá; tuyệt đối không dùng emoji và từ ngữ cảm tính.
@@ -582,17 +656,6 @@ if not m:
 
 if m:
 
-177. **Tinh Gọn Khối 1 Mục 03 (Điểm Tài Chính Đông Nam Bộ) Theo Hướng Trực Diện**
-   - Loại bỏ hoàn toàn dải 19 oval màu cam (`.dots19`) tại Khối 1 Mục 03 trong tệp `performance_diagnosis_merged_chart_v2.html` theo phản hồi của người dùng.
-   - Trình bày cô đọng và sắc bén 2 trọng tâm cốt lõi:
-     + **Con số điểm**: `26 điểm` (Đội sổ toàn hàng · Hạng #66) kèm badge `Do vùng lỗ −48,8 tỷ`.
-     + **Điểm này gây điều gì**: Cào bằng áp chung khoản phạt 26 điểm này vào kết quả của toàn bộ 19 quản lý, tự động kéo tụt thứ hạng chung cuộc của tất cả nhân sự tại Đông Nam Bộ bất kể năng lực bán hàng tự thân.
-   - **Verify**: Dùng headless Edge chụp ảnh màn hình và crop cận cảnh (`.staging/sec3_clean_crop3.png`), xác nhận giao diện thông thoáng, chuẩn xác 100%.
-   - Cắt task 127 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (177 xuống 128).
-
-'''
-
-if '## ĐÃ XONG\
 ### 2026-11-05\
 176.' in text:
     text = text.replace('## ĐÃ XONG\

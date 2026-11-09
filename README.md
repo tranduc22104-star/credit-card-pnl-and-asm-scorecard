@@ -91,7 +91,7 @@ Từ yêu cầu ban đầu, cần làm rõ Ban lãnh đạo muốn theo dõi nh�
 |---|---|---|
 | **1. Yêu cầu ban đầu của Ban Lãnh đạo** | Báo cáo kết quả kinh doanh thẻ tín dụng theo 7 vùng | Đánh giá hiệu quả hoạt động đội ngũ Quản lý vùng (ASM) |
 | **2. Các nhóm thông tin cần có trong báo cáo** *(Phân tích nghiệp vụ & làm rõ yêu cầu)* | • Thu nhập, chi phí vốn, chi phí hoạt động, trích lập dự phòng<br>• Phân bổ chi phí Hội sở theo tiêu thức kinh tế<br>• Biến động lợi nhuận lũy kế và phát sinh theo tháng | • **Chỉ tiêu bán hàng cá nhân**: Cho vay mới, thẻ phát sinh dư nợ, tỷ lệ phê duyệt hồ sơ<br>• **Trách nhiệm địa bàn**: Tỷ lệ nợ xấu vùng, CIR vùng, Margin, Lợi nhuận bình quân/ASM |
-| **3. Hệ thống báo cáo quản trị đầu ra** *(Trình bày thành 7 trang Power BI & Excel)* | • **Trang 1**: Tổng quan báo cáo<br>• **Trang 2**: Từ điển dữ liệu (68 chỉ tiêu)<br>• **Trang 3**: Báo cáo tổng hợp lãi lỗ<br>• **Trang 5**: Kết quả kinh doanh (Lãi lỗ) | • **Trang 4**: Báo cáo tổng hợp xếp hạng<br>• **Trang 6**: Xếp hạng quản lý vùng (ASM)<br>• **Trang 7**: Phân tích chuyên sâu & Kết luận<br>• **Đối soát**: Báo cáo Excel 7 sheet đối soát kế toán |
+| **3. Hệ thống báo cáo quản trị đầu ra** *(Trình bày thành 7 trang Power BI & Excel)* | • **Trang 1 – Giới thiệu đề tài**: Tổng quan bối cảnh, dữ liệu đầu vào, quy trình kỹ thuật và các báo cáo đầu ra<br>• **Trang 2 – Từ điển dữ liệu**: Chuẩn hóa 68 chỉ tiêu sang thuật ngữ nghiệp vụ ngân hàng<br>• **Trang 3 – Báo cáo kết quả kinh doanh vùng**: Chứa 32 chỉ tiêu tài chính để tra cứu và đối soát số liệu của 7 vùng<br>• **Trang 5 – Đánh giá hiệu quả kinh doanh vùng**: Trực quan hóa cơ cấu thu – chi – dự phòng để so sánh hiệu quả sinh lời giữa 7 vùng | • **Trang 4 – Báo cáo xếp hạng ASM**: Tổng hợp bảng điểm xếp hạng 84 ASM để khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu<br>• **Trang 6 – Đánh giá hiệu suất ASM**: Biểu đồ hóa tương quan doanh số bán hàng và nợ xấu (NPL) để nhận diện các ASM đánh đổi rủi ro lấy quy mô<br>• **Trang 7 – Insight (Phân tích chuyên sâu & Kết luận)**: Bóc tách điểm nghẽn và đề xuất hành động điều hành định lượng<br>• **Đối soát**: Báo cáo Excel 7 sheet đối soát kế toán |
 
 ### Vai trò của hai nhóm chỉ tiêu:
 - **Nhóm chỉ tiêu kết quả kinh doanh (P&L, NPL vùng, CIR, Margin):** Cho thấy tình hình tài chính của từng vùng sau khi tính đầy đủ chi phí từ Hội sở, giúp Ban lãnh đạo đưa ra quyết định phân bổ vốn và hạn mức tín dụng.
@@ -106,9 +106,9 @@ Ngân hàng chưa có kho dữ liệu tập trung hoặc một bảng số liệ
 
 | Phòng ban cung cấp | Nguồn dữ liệu | Quy mô | Dữ liệu cung cấp và khóa liên kết |
 |---|---|---:|---|
-| **Khối Kế toán & Tài chính** | Sổ cái tài khoản kế toán (`fact_txn_month`) | **63.134** bút toán | Cung cấp số liệu thu - chi thực tế; gồm 62.953 dòng gắn mã tỉnh thành (được ghi nhận trực tiếp về vùng) và 181 dòng chi phí chung hạch toán tại Hội sở (mã tỉnh `'00'`, cần phân bổ). Khóa dùng để liên kết: `city_code`, `account_code`. |
-| **Khối Vận hành Thẻ** | Sao kê hợp đồng thẻ tín dụng (`fact_kpi_month`) | **2.932.922** dòng | Ghi nhận dư nợ theo 5 nhóm nợ, các khoản đã xử lý rủi ro (write-off) và doanh số của từng hợp đồng trong 5 tháng. Dữ liệu này được dùng để tính tỷ lệ nợ xấu và xây dựng tiêu thức phân bổ chi phí Hội sở. Khóa dùng để liên kết: `branch_code`, `month_key`. |
-| **Khối Quản lý Mạng lưới** | Bảng chỉ tiêu kinh doanh (`kpi_asm_data`) | **420** dòng | Cung cấp kết quả kinh doanh của từng ASM, gồm doanh số giải ngân mới, số thẻ phát sinh dư nợ bình quân và tỷ lệ phê duyệt hồ sơ của 74 đến 84 quản lý vùng theo tháng để làm căn cứ xếp hạng. Khóa dùng để liên kết: `asm_id`, `month_key`. |
+| **Khối Kế toán & Tài chính** | Dữ liệu hạch toán mỗi tháng – GL (`fact_txn_month`) | **63.134** bút toán | **Chứa** bút toán thu - chi thực tế phát sinh tại 7 vùng (62.953 dòng gắn mã tỉnh thành) và Hội sở (181 dòng chi phí chung mã `'00'`). **Dùng để** gán trực tiếp vào vùng, phân bổ chi phí chung và lập **báo cáo lãi lỗ (P&L) lũy kế 7 vùng**. Khóa dùng để liên kết: `city_code`, `account_code`. |
+| **Khối Vận hành Thẻ** | Dữ liệu sao kê thẻ mỗi tháng (`fact_kpi_month`) | **2.932.922** dòng | **Chứa** sao kê dư nợ theo 5 nhóm nợ, các khoản đã xử lý rủi ro (write-off), hạn mức và doanh số của từng hợp đồng trong 5 tháng. **Dùng để** tính **tỷ lệ phân bổ chi phí Hội sở** và đo lường, kiểm soát **nợ xấu (NPL)**. Khóa dùng để liên kết: `branch_code`, `month_key`. |
+| **Khối Quản lý Mạng lưới** | Dữ liệu kết quả sale của ASM mỗi tháng (`kpi_asm_data`) | **420** dòng | **Chứa** chỉ tiêu giao và doanh số bán hàng thực tế (giải ngân mới, số thẻ phát sinh dư nợ bình quân, tỷ lệ phê duyệt hồ sơ) của 74 đến 84 quản lý vùng theo tháng. **Dùng để** tính **điểm quy mô** và **chấm điểm xếp hạng ASM**. Khóa dùng để liên kết: `asm_id`, `month_key`. |
 | **Phòng Kế hoạch & Quản trị Dữ liệu** | Bảng tham số địa bàn và biểu mẫu đối chiếu | **64** tỉnh thành | Cung cấp quy tắc ánh xạ 64 tỉnh thành vào 8 vùng địa lý (Hội sở `'A'` và 7 vùng kinh doanh `'B'..'H'`) kèm mẫu biểu trình bày báo cáo. Khóa dùng để liên kết: `city_code`, `area_code`. |
 
 ### Đánh giá mức độ đáp ứng của dữ liệu:
@@ -224,11 +224,11 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 ### Quy trình xử lý kỹ thuật gồm 3 giai đoạn:
 
 - **Giai đoạn 1 – Tìm dữ liệu đầu vào (Excel – 3 File Số Liệu):**
-  Thu thập và chuẩn bị 3 nguồn dữ liệu thô từ các khối nghiệp vụ: Sổ hợp đồng tín dụng (`fact_kpi_month` gồm **2.932.922** dòng, dung lượng **117,2 MB**), Sổ bút toán kế toán GL (`fact_txn_month` gồm **63.134** dòng) và Chỉ tiêu quản lý vùng (`kpi_asm_data` gồm **420** dòng của **84** nhân sự ASM trong 5 tháng).
+  Thu thập và chuẩn bị 3 nguồn dữ liệu thô theo thứ tự nghiệp vụ: **Dữ liệu hạch toán mỗi tháng – GL** (`fact_txn_month` gồm **63.134** dòng: *chứa* bút toán thu - chi tại 7 vùng & Hội sở, *dùng để* gán trực tiếp vào vùng và tổng hợp báo cáo lãi lỗ P&L lũy kế), **Dữ liệu sao kê thẻ mỗi tháng** (`fact_kpi_month` gồm **2.932.922** dòng, dung lượng **117,2 MB**: *chứa* sao kê dư nợ, nhóm nợ và trạng thái thẻ, *dùng để* tính tỷ lệ phân bổ Hội sở và đo lường nợ xấu NPL) và **Dữ liệu kết quả sale của ASM mỗi tháng** (`kpi_asm_data` gồm **420** dòng của **84** nhân sự ASM trong 5 tháng: *chứa* doanh số bán hàng, *dùng để* tính điểm quy mô và chấm điểm xếp hạng ASM).
 
 - **Giai đoạn 2 – Lưu trữ và xử lý dữ liệu tự động (PostgreSQL + DBeaver):**
   Kho dữ liệu được tổ chức theo mô hình Kimball Star Schema trong schema `banking_project`, gồm **19 bảng, 3 `view` và 11 `stored procedure`**, vận hành qua 3 bước:
-  - **Bước 1 – Nạp liệu (DBeaver Import trực tiếp):** Sử dụng DBeaver đưa trực tiếp dữ liệu thô từ 3 tệp Excel vào 3 bảng tiếp nhận trong PostgreSQL (`stg_fact_kpi_month` **2.932.922** dòng, `stg_fact_txn_month` **63.134** dòng, `stg_asm_target` **420** dòng) và chuẩn hóa chuỗi tên địa danh (`pos_city_norm`) bảo toàn hơn **36.000** hợp đồng thẻ.
+  - **Bước 1 – Nạp liệu (DBeaver Import trực tiếp):** Sử dụng DBeaver đưa trực tiếp dữ liệu thô từ 3 tệp Excel vào 3 bảng tiếp nhận tương ứng trong PostgreSQL (`stg_fact_txn_month` **63.134** dòng, `stg_fact_kpi_month` **2.932.922** dòng, `stg_asm_target` **420** dòng) và chuẩn hóa chuỗi tên địa danh (`pos_city_norm`) bảo toàn hơn **36.000** hợp đồng thẻ.
   - **Bước 2 – Tính toán (Thực thi script SQL & Stored Procedure):**
     - *7 bảng danh mục (`dim_`)*: `dim_area` (8 vùng), `dim_param_area` (64 tỉnh thành), `dim_month` (5 tháng), `dim_date` (151 ngày), `dim_asm` (84 nhân sự), `dim_report_detail` (55 chỉ tiêu), `dim_sm_headcount` (35 dòng).
     - *6 bảng tạm 3 bước (`tmp_`)*: Cùng cấu trúc dữ liệu dạng dọc (`month_key`, `area_code`, `report_id`, `value`) phục vụ tính trung gian cho P&L (`tmp_pnl_step1..3`) và Xếp hạng (`tmp_xh_step1..3`).
@@ -242,8 +242,8 @@ $$\text{Điểm tổng} = \text{Điểm Quy mô } (diem\_qm) + \text{Điểm Tà
 
 </div>
 
-- **Giai đoạn 3 – Trực quan các báo cáo (Power BI Import Mode):**
-  Kết nối trực tiếp từ Power BI vào PostgreSQL theo chế độ Import, kết hợp **72** measure DAX và từ điển dữ liệu **68** chỉ tiêu để xuất bản 3 bộ sản phẩm báo cáo trên **7 trang**: **2 Bản Báo Cáo Tổng Hợp** (Báo cáo tổng hợp lãi lỗ 32 chỉ tiêu, Báo cáo tổng hợp xếp hạng 84 ASM), **2 Bản Báo Cáo Được Trực Quan Hoá** (Kết quả kinh doanh, Xếp hạng quản lý vùng) và **1 Bản Phân Tích Sâu** (Phân tích chuyên sâu và đưa ra kết luận).
+- **Giai đoạn 3 – Trực quan các báo cáo (Power BI):**
+  Kết nối trực tiếp từ Power BI vào PostgreSQL, kết hợp **100** measure DAX (bao gồm bộ measure tính chỉ số KPI, hệ thống **21** measure định dạng có điều kiện màu nền – màu chữ tương phản cao cho từng cột bảng P&L vùng và các visual HTML Content cỡ chữ lớn) cùng từ điển dữ liệu **68** chỉ tiêu trên bảng màu chủ đạo **Executive Orange / Orange Tree** (`#FF7A00`, `#EA580C`, `#2B1406`, `#FFBE2E`, `#FED7AA`) để xuất bản **7 trang** báo cáo: **2 Trang Nền Tảng** (`GIỚI THIỆU ĐỀ TÀI`, `TỪ ĐIỂN DỮ LIỆU`), **2 Bản Báo Cáo Tra Cứu & Tổng Hợp** (`BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` chứa **32** chỉ tiêu tài chính để tra cứu và đối soát số liệu 7 vùng; `BÁO CÁO XẾP HẠNG ASM` tổng hợp bảng điểm **84** ASM để khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu), **2 Bản Báo Cáo Trực Quan Hoá Đánh Giá** (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` trực quan hóa cơ cấu thu – chi – dự phòng; `ĐÁNH GIÁ HIỆU SUẤT ASM` biểu đồ hóa tương quan doanh số và nợ xấu NPL) và **1 Bản Phân Tích Chuyên Sâu** (`INSIGHT` – Phân tích chuyên sâu và đưa ra kết luận).
 
 ---
 
@@ -298,7 +298,7 @@ Mọi phép chia đều sử dụng `NULLIF(denominator, 0)` để tránh lỗi 
 - **Nguyên tắc kiểm soát:** Tính lại kết quả trên một số trường hợp mẫu (*Single-Case Reverse Audit*), đối soát chéo đa tầng giữa các hệ thống và kiểm chứng cân đối kế toán tổng thể (*Accounting Reconciliation*).
 - **Cách thức triển khai:**
   1. *Tính lại độc lập trên mẫu:* Chọn ngẫu nhiên 3 trường hợp đại diện (Vùng Đông Nam Bộ, Vùng Tây Bắc Bộ và 1 quản lý vùng (ASM) cụ thể), tự tính lại bằng công thức kế toán quản trị riêng, không sử dụng hệ thống SQL và so sánh kết quả.
-  2. *Đối chiếu giữa các hệ thống:* So sánh **91 ô dữ liệu** (13 chỉ tiêu tài chính cốt lõi $\times$ 7 vùng tại tháng 5/2023) giữa kết quả truy vấn PostgreSQL và 72 measure DAX trên Power BI.
+  2. *Đối chiếu giữa các hệ thống:* So sánh **91 ô dữ liệu** (13 chỉ tiêu tài chính cốt lõi $\times$ 7 vùng tại tháng 5/2023) giữa kết quả truy vấn PostgreSQL và 100 measure DAX trên Power BI.
   3. *Kiểm chứng cân đối kế toán tổng thể:* Đối soát tổng lợi nhuận và doanh thu sau phân bổ của các vùng với tổng số dư phát sinh trên toàn bộ sổ cái kế toán (GL), đảm bảo nguyên tắc bảo toàn dòng tiền: Lợi nhuận trước thuế toàn hệ thống (tháng 2/2023 đạt 92.226,35 triệu đồng, tháng 5/2023 đạt 250.450,06 triệu đồng) khớp tuyệt đối với sổ cái kế toán, chứng minh việc phân bổ chi phí gián tiếp từ Hội sở không làm phát sinh hay thất thoát bất kỳ đồng vốn nào của ngân hàng.
 - **Kết quả thực tế:**
   - Kết quả tính lại bằng tay khớp với kết quả do Stored Procedure SQL tạo ra.
@@ -412,7 +412,7 @@ Các công cụ được chọn theo yêu cầu của từng giai đoạn trong 
 |---|---|---|---|
 | **DBeaver 24** | Data Import, ER Diagram | Nạp trực tiếp dữ liệu thô từ 3 tệp Excel (117,2 MB) vào bảng `staging`, quản lý 9 khoá ngoại ảo và thực thi kịch bản SQL | Công cụ quản trị cơ sở dữ liệu trực quan, hỗ trợ nạp tệp dữ liệu lớn và kiểm tra sơ đồ quan hệ nhanh chóng |
 | **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), thực thi tự động logic phân bổ chi phí và xếp hạng | Khả năng xử lý tập dữ liệu lớn với độ chính xác số học cao và kiểm soát transaction chặt chẽ |
-| **Power BI Desktop** | Import Mode, 72 Measure DAX | Xây dựng 7 trang báo cáo quản trị (2 báo cáo tổng hợp, 2 báo cáo trực quan hóa, 1 bản phân tích sâu và từ điển 68 chỉ tiêu) | Giúp Ban lãnh đạo theo dõi, lọc tương tác và phân tích số liệu trực quan |
+| **Power BI Desktop** | Executive Orange Theme, 100 Measure DAX | Xây dựng 7 trang báo cáo quản trị (2 trang nền tảng, 2 báo cáo tra cứu tổng hợp, 2 báo cáo trực quan hóa đánh giá, 1 bản phân tích sâu và từ điển 68 chỉ tiêu) | Giúp Ban lãnh đạo theo dõi, lọc tương tác, đối soát số liệu và phân tích chuyên sâu trực quan |
 | **Microsoft Excel** | XLSX, Nguồn dữ liệu & Đối chiếu | Cung cấp 3 tệp dữ liệu nguồn (sao kê hợp đồng, sổ bút toán GL, chỉ tiêu ASM) và báo cáo 7 sheet đối soát | Phục vụ lưu trữ dữ liệu gốc của các phòng ban và đối soát số liệu chi tiết của Phòng Kế toán - Quản trị |
 
 ---

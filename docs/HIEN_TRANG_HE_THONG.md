@@ -1,22 +1,29 @@
-# HIỆN TRẠNG HỆ THỐNG (cập nhật 2026-11-08)
+# HIỆN TRẠNG HỆ THỐNG (cập nhật 2026-11-09)
 
 ## 1. Kiến trúc tổng thể & Kết nối (Quy trình 3 giai đoạn)
-- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (chế độ **Import**).
+- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (bảng màu chủ đạo **Executive Orange / Orange Tree**).
 - **Quy trình xử lý kỹ thuật 3 giai đoạn**:
   1. **Giai đoạn 1 — Tìm dữ liệu đầu vào (Excel – 3 File Số Liệu)**:
-     - `fact_kpi_month_raw_data_202402020653.xlsx`: Sổ hợp đồng tín dụng (**2.932.922** dòng, 117,2 MB).
-     - `fact_txn_month_raw_data_202402020504.xlsx`: Sổ bút toán kế toán GL (**63.134** dòng: 62.953 dòng đơn vị mạng lưới + 181 dòng Hội sở).
-     - `kpi_asm_data_202305.xlsx`: Chỉ tiêu quản lý vùng (**420** dòng cho **84** nhân sự ASM trong 5 tháng).
+     - **1. Dữ liệu hạch toán mỗi tháng (GL)** (`fact_txn_month_raw_data_202402020504.xlsx` — **63.134** dòng: 62.953 dòng đơn vị mạng lưới + 181 dòng Hội sở mã `'00'`): *Chứa* bút toán thu - chi thực tế của 7 vùng & Hội sở ➔ *Dùng để* gán trực tiếp vào vùng và tổng hợp báo cáo lãi lỗ (P&L) lũy kế 7 vùng.
+     - **2. Dữ liệu sao kê thẻ mỗi tháng** (`fact_kpi_month_raw_data_202402020653.xlsx` — **2.932.922** dòng, 117,2 MB): *Chứa* dư nợ, hạn mức, doanh số chi tiêu & nhóm nợ của từng hợp đồng thẻ ➔ *Dùng để* tính tỷ lệ phân bổ chi phí Hội sở và kiểm soát nợ xấu (NPL).
+     - **3. Dữ liệu kết quả sale của ASM mỗi tháng** (`kpi_asm_data_202305.xlsx` — **420** dòng cho **84** nhân sự ASM trong 5 tháng): *Chứa* chỉ tiêu giao & kết quả thực hiện bán hàng (thẻ mới, kích hoạt, doanh số) ➔ *Dùng để* tính tỷ lệ hoàn thành KPI, điểm quy mô và chấm điểm xếp hạng ASM.
   2. **Giai đoạn 2 — Lưu trữ & Xử lý dữ liệu tự động (PostgreSQL + DBeaver)**:
-     - **Bước 1 (Nạp liệu)**: Khởi tạo bảng qua `sql/dim/init_staging_tables.sql` và dùng DBeaver Import nạp trực tiếp 3 tệp Excel vào 3 bảng `stg_fact_kpi_month`, `stg_fact_txn_month`, `stg_asm_target`.
-     - **Bước 2 (Tính toán)**: Thực thi kịch bản SQL tạo 7 bảng danh mục (`dim_`), 6 bảng tạm 3 bước (`tmp_`), 2 bảng sự kiện (`fct_`) và 1 bảng nhật ký (`log_proc_run`) thông qua **11 Stored Procedures** (điều phối tự động toàn bộ 5 tháng bằng lệnh `CALL banking_project.sp_run_all_months();`).
+     - **Bước 1 (Nạp liệu)**: Khởi tạo bảng qua `sql/dim/init_staging_tables.sql` và dùng DBeaver Import nạp trực tiếp 3 tệp Excel vào 3 bảng `stg_fact_txn_month`, `stg_fact_kpi_month`, `stg_asm_target` (khớp thứ tự 1–2–3 của Giai đoạn 1).
+     - **Bước 2 (Tính toán)**: Thực thi kịch bản SQL tạo 7 bảng danh mục (`dim_`), 6 bảng tạm 3 bước (`tmp_pnl_step1..3`, `tmp_xh_step1..3`), 2 bảng sự kiện (`fct_pnl_value`, `fct_asm_value`) và 1 bảng nhật ký (`log_proc_run`) thông qua **11 Stored Procedures** (điều phối tự động toàn bộ 5 tháng bằng lệnh `CALL banking_project.sp_run_all_months();`).
      - **Bước 3 (Đầu ra View báo cáo)**: Dựng **3 View sạch** trong `sql/rpt/` (`v_baocao_tonghop`, `v_xephang_asm`, `v_baocao_pnl_excel_pivoted`) phục vụ trực tiếp cho Power BI.
-  3. **Giai đoạn 3 — Trực quan các báo cáo (Power BI Import Mode)**:
-     - Mô hình `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` kết nối Import vào PostgreSQL, vận hành **72 measure DAX** và bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa** chia làm 5 phân nhóm).
-     - Xuất bản **7 trang báo cáo** gồm 2 trang nền tảng (`TỔNG QUAN BÁO CÁO`, `TỪ ĐIỂN DỮ LIỆU`) và 3 bộ sản phẩm hỗ trợ quyết định:
-       * **2 Bản Báo Cáo Tổng Hợp**: `BÁO CÁO TỔNG HỢP LÃI LỖ` (32 chỉ tiêu P&L chuẩn Excel từ `v_baocao_pnl_excel_pivoted`) và `BÁO CÁO TỔNG HỢP XẾP HẠNG` (84 ASM từ `v_xephang_asm`).
-       * **2 Bản Báo Cáo Được Trực Quan Hoá**: `KẾT QUẢ KINH DOANH` và `XẾP HẠNG QUẢN LÝ VÙNG`.
-       * **1 Bản Phân Tích Sâu**: `PHÂN TÍCH CHUYÊN SÂU VÀ ĐƯA RA KẾT LUẬN` (4 thẻ KPI, Biểu đồ Thác nước LNTT 7 vùng 250,5 tỷ đồng, Nghịch lý cơ chế phạt vùng Đông Nam Bộ +26 điểm khiến 84% tức 16/19 quản lý rơi xuống nhóm 25% cuối bảng, và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng).
+  3. **Giai đoạn 3 — Trực quan các báo cáo (Power BI)**:
+     - Mô hình `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` kết nối vào PostgreSQL, vận hành **100 measure DAX** (bao gồm bộ measure KPI, hệ thống 21 measure định dạng có điều kiện màu nền `PnlTable_BgColor_*` & màu chữ `PnlTable_FontColor_*` tương phản cao cho từng cột bảng P&L vùng, cùng các measure HTML Content cỡ chữ lớn) và bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa** chia làm 5 phân nhóm).
+     - Xuất bản **7 trang báo cáo** đồng bộ theo bảng màu **Executive Orange / Orange Tree** (`#FF7A00`, `#EA580C`, `#2B1406`, `#FFBE2E`, `#FED7AA`):
+       * **2 Trang Nền Tảng**:
+         - Trang 1 (`GIỚI THIỆU ĐỀ TÀI`): Tổng quan bối cảnh nghiệp vụ, 3 nguồn dữ liệu đầu vào (theo cấu trúc *Chứa – Dùng để*), sơ đồ quy trình kỹ thuật 3 giai đoạn và 4 dashboard đầu ra.
+         - Trang 2 (`TỪ ĐIỂN DỮ LIỆU`): Tra cứu 68 trường biến và chỉ tiêu nghiệp vụ ngân hàng.
+       * **4 Trang Báo Cáo & Đánh Giá Trọng Tâm (Trang 3 đến Trang 6)**:
+         - Trang 3 (`BÁO CÁO KẾT QUẢ KINH DOANH VÙNG`): *Chứa* 32 chỉ tiêu tài chính P&L (từ `v_baocao_pnl_excel_pivoted`) *để* tra cứu và đối soát số liệu thu – chi – lãi lỗ của 7 vùng và Hội sở (tự động phân cấp dòng nền tối chữ sáng `#FFFFFF`/`#FECACA` và dòng chi tiết nền sáng chữ đậm `#0F172A`/`#DC2626`).
+         - Trang 4 (`BÁO CÁO XẾP HẠNG ASM`): *Chứa* bảng điểm xếp hạng tổng hợp 84 ASM *để* khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu.
+         - Trang 5 (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`): *Chứa* các biểu đồ trực quan hóa cơ cấu thu – chi – dự phòng *để* so sánh hiệu quả sinh lời giữa 7 vùng.
+         - Trang 6 (`ĐÁNH GIÁ HIỆU SUẤT ASM`): *Chứa* biểu đồ tương quan doanh số bán hàng và nợ xấu (NPL) *để* nhận diện các ASM đánh đổi rủi ro lấy quy mô.
+       * **1 Trang Phân Tích Chuyên Sâu**:
+         - Trang 7 (`INSIGHT` / `PHÂN TÍCH CHUYÊN SÂU VÀ ĐƯA RA KẾT LUẬN`): Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét (19px – 48px), gồm 4 thẻ KPI điều hành, Biểu đồ Thác nước LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ (+26 điểm khiến 84% tức 16/19 quản lý rơi xuống nhóm đáy bảng) và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng.
 
 ---
 
@@ -32,8 +39,8 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 | `dim_` | `dim_sm_headcount` | 35 | 3 | Định biên nhân sự Sale Manager theo 7 vùng × 5 tháng |
 | `dim_` | `dim_asm` | 84 | 4 | Danh mục 84 Quản lý vùng (`asm_id`, `sale_name`, `email`, `area_code`) |
 | `dim_` | `dim_report_detail` | 55 | 6 | Cây chỉ tiêu báo cáo (33 dòng/tiêu đề P&L `sort_order` 30..340 + 22 chỉ tiêu Xếp hạng ASM) |
-| `stg_` | `stg_fact_kpi_month` | 2.932.922 | 10 | Sao kê dư nợ hợp đồng thẻ 5 tháng |
 | `stg_` | `stg_fact_txn_month` | 63.134 | 8 | Sổ cái kế toán GL (62.953 dòng mạng lưới + 181 dòng Hội sở) |
+| `stg_` | `stg_fact_kpi_month` | 2.932.922 | 10 | Sao kê dư nợ hợp đồng thẻ 5 tháng |
 | `stg_` | `stg_asm_target` | 420 | 9 | Chỉ tiêu kinh doanh 84 ASM × 5 tháng |
 | `tmp_` | `tmp_pnl_step1_driver` | 315 | 4 | 9 tiêu thức phân bổ P&L theo 7 vùng × 5 tháng |
 | `tmp_` | `tmp_pnl_step2_ratio` | 560 | 4 | 16 tỷ lệ phân bổ (`SUM = 1` cho mỗi `report_id`) |
@@ -71,5 +78,5 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 ---
 
 ## 4. Phạm vi bộ tệp đẩy lên GitHub (`.staging/push_check.py`)
-- Bộ đẩy hiện tại gồm **30 tệp** (~4,35 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 9 tệp ảnh chính thức trong `images/` (`tong-quan.png`, `tu-dien.png`, `chi-so-pnl.png`, `chi-so-xh-asm.png`, `ket-qua-lai-lo.png`, `xep-hang.png`, `ket-luan.png`, `quy-trinh.png`, `thiet-ke-schema.png`), 2 tệp sản phẩm trong `output/` (`.pbix` và `.xlsx`) và 13 tệp SQL trong `sql/`.
+- Bộ đẩy hiện tại gồm **30 tệp** (~4,5 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 9 tệp ảnh chính thức trong `images/` (`tong-quan.png`, `tu-dien.png`, `ket-qua-kinh-doanh.png`, `xh-asm.png`, `danh-gia-kinh-doanh.png`, `danh-gia-asm.png`, `insight.png`, `quy-trinh.png`, `thiet-ke-schema.png`), 2 tệp sản phẩm trong `output/` (`.pbix` và `.xlsx`) và 13 tệp SQL trong `sql/`.
 - Kiểm tra an toàn bằng `python .staging/push_check.py`, `python .staging/check_toc.py` và `python .staging/check_int_pair.py` trước mỗi lần commit/push: đảm bảo 0 lộ mật khẩu, 0 tệp vượt trần GitHub, 0 liên kết gãy và 0 lệch số liệu giữa hai bản README song ngữ.

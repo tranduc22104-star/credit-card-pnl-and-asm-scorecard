@@ -91,7 +91,7 @@ Translating initial requests into an analytical solution required determining wh
 |---|---|---|
 | **1. Initial Broad Executive Mandate** | Regional credit card P&L performance reporting across 7 regions | Operational effectiveness evaluation for Area Sales Managers (ASMs) |
 | **2. Target Reporting Output Groups** *(Domain analysis & requirement refinement)* | • Gross card income, funding cost, operating expense, loan provisions<br>• Head Office cost allocation by economic drivers<br>• Cumulative and monthly profit variance decomposition | • **Individual sales volume**: New loan disbursement, active credit cards, approval rate<br>• **Territorial stewardship**: Regional NPL, regional CIR, Margin, average profit / ASM |
-| **3. Management Reporting System** *(Delivered across 7 Power BI pages & Excel)* | • **Page 1**: Executive Overview<br>• **Page 2**: Data Glossary (68 metrics)<br>• **Page 3**: Summary P&L Report<br>• **Page 5**: Regional Business Performance (P&L) | • **Page 4**: Summary ASM Ranking Report<br>• **Page 6**: Regional ASM Ranking Dashboard<br>• **Page 7**: Deep-Dive Diagnosis & Conclusion<br>• **Reconciliation**: 7-Sheet Excel Accounting Reconciliation Model |
+| **3. Management Reporting System** *(Delivered across 7 Power BI pages & Excel)* | • **Page 1 – Project Introduction**: Overview of business context, source data, technical pipeline, and output dashboards<br>• **Page 2 – Data Glossary**: Standardizes 68 metrics into banking domain terminology<br>• **Page 3 – Regional P&L Report**: Contains 32 financial metrics to look up and reconcile figures across 7 regions<br>• **Page 5 – Regional Business Performance Evaluation**: Visualizes revenue – cost – provision structure to compare profitability across 7 regions | • **Page 4 – ASM Ranking Report**: Summarizes the 84-ASM ranking scorecard to reward top performers and coach underperformers<br>• **Page 6 – ASM Performance Evaluation**: Charts sales volume against non-performing loans (NPL) to identify ASMs trading credit risk for scale<br>• **Page 7 – Insight (Deep-Dive Diagnosis & Conclusion)**: Pinpoints core bottlenecks and proposes quantitative executive actions<br>• **Reconciliation**: 7-Sheet Excel Accounting Reconciliation Model |
 
 ### Roles of the two indicator groups:
 - **Commercial Performance Metrics (P&L, Regional NPL, CIR, Margin):** Reflect the comprehensive financial health of each region after absorbing indirect Head Office costs, supporting leadership decisions on capital and credit limit allocation.
@@ -106,9 +106,9 @@ The bank lacked a centralized data mart or single comprehensive table meeting al
 
 | Supplying Department | Source Dataset | Volume | Role In Fulfilling Desired Outputs & Key Joins |
 |---|---|---:|---|
-| **Accounting & Finance** | General Ledger (`fact_txn_month`) | **63,134** entries | Captures line-item revenue and cost entries; includes 62,953 branch-tagged entries (direct regional assignment) and 181 centralized Head Office entries (pool `'00'`, requiring allocation). Join keys: `city_code`, `account_code`. |
-| **Card Operations** | Card Contract Statements (`fact_kpi_month`) | **2,932,922** rows | Records customer-level credit balances across 5 debt buckets, written-off accounts, and turnover across 5 months; serves as the basis for regional NPL calculation and allocation driver ratios. Join keys: `branch_code`, `month_key`. |
-| **Network Sales Management** | Commercial Target Sheet (`kpi_asm_data`) | **420** rows | Tracks individual monthly sales targets: gross lending volume, active card count, and credit approval rates for 74 to 84 Area Sales Managers. Join keys: `asm_id`, `month_key`. |
+| **Accounting & Finance** | Monthly General Ledger – GL (`fact_txn_month`) | **63,134** entries | **Contains** actual revenue and cost entries across 7 regions (62,953 branch-tagged entries) and Head Office (181 shared overhead entries coded `'00'`). **Used to** assign direct regional figures, allocate shared costs, and compile the **cumulative 7-region P&L report**. Join keys: `city_code`, `account_code`. |
+| **Card Operations** | Monthly Card Statements (`fact_kpi_month`) | **2,932,922** rows | **Contains** customer-level credit balances across 5 debt buckets, written-off accounts, credit limits, and turnover across 5 months. **Used to** compute **Head Office cost allocation ratios** and measure **non-performing loans (NPL)**. Join keys: `branch_code`, `month_key`. |
+| **Network Sales Management** | Monthly ASM Sales Results (`kpi_asm_data`) | **420** rows | **Contains** assigned targets and actual sales results (new loan disbursement, average active card count, credit approval rate) for 74 to 84 Area Sales Managers across months. **Used to** calculate **scale scores** and **rank ASMs**. Join keys: `asm_id`, `month_key`. |
 | **Planning & Data Governance** | Parameter Matrix & Template Mapping | **64** provinces | Maps 64 administrative provinces into 8 geographic management zones (Head Office `'A'` and 7 regions `'B'..'H'`) with standardized reporting layouts. Join keys: `city_code`, `area_code`. |
 
 ### Data feasibility and granularity assessment (Gap Analysis):
@@ -224,11 +224,11 @@ To transform multi-source raw data into a complete reporting system, the technic
 ### Technical workflow across 3 stages:
 
 - **Stage 1 – Source Data Acquisition (Excel – 3 Data Files):**
-  Collected and prepared 3 raw datasets from operational divisions: Credit Card Contract Statements (`fact_kpi_month` with **2,932,922** rows, weighing **117.2 MB**), General Ledger Journal Entries (`fact_txn_month` with **63,134** rows), and Area Sales Manager Targets (`kpi_asm_data` with **420** rows for **84** ASMs across 5 months).
+  Collected and prepared 3 raw datasets in operational sequence: **Monthly General Ledger – GL** (`fact_txn_month` with **63,134** rows: *contains* revenue and cost entries across 7 regions & Head Office, *used to* trace direct regional figures and compile cumulative P&L), **Monthly Card Statements** (`fact_kpi_month` with **2,932,922** rows, weighing **117.2 MB**: *contains* credit balances, delinquency buckets, and card statuses, *used to* compute Head Office allocation ratios and measure NPL), and **Monthly ASM Sales Results** (`kpi_asm_data` with **420** rows for **84** ASMs across 5 months: *contains* sales performance figures, *used to* calculate scale scores and rank ASMs).
 
 - **Stage 2 – Automated Data Storage and Processing (PostgreSQL + DBeaver):**
   Structured according to Kimball Star Schema within schema `banking_project`, encompassing **19 tables, 3 `views`, and 11 `stored procedures`** across 3 internal steps:
-  - **Step 1 – Data Ingestion (DBeaver Direct Import):** Utilized DBeaver to directly import raw data from the 3 Excel files into 3 PostgreSQL staging tables (`stg_fact_kpi_month` **2,932,922** rows, `stg_fact_txn_month` **63,134** rows, `stg_asm_target` **420** rows) while normalizing province names (`pos_city_norm`) to preserve over **36,000** card contracts.
+  - **Step 1 – Data Ingestion (DBeaver Direct Import):** Utilized DBeaver to directly import raw data from the 3 Excel files into 3 corresponding PostgreSQL staging tables (`stg_fact_txn_month` **63,134** rows, `stg_fact_kpi_month` **2,932,922** rows, `stg_asm_target` **420** rows) while normalizing province names (`pos_city_norm`) to preserve over **36,000** card contracts.
   - **Step 2 – Computation (SQL Scripts & Stored Procedures):**
     - *7 Dimension Tables (`dim_`)*: `dim_area` (8 zones), `dim_param_area` (64 provinces), `dim_month` (5 months), `dim_date` (151 days), `dim_asm` (84 personnel), `dim_report_detail` (55 metrics), `dim_sm_headcount` (35 rows).
     - *6 Temporary Processing Tables (`tmp_`)*: Unified vertical schema (`month_key`, `area_code`, `report_id`, `value`) storing intermediate computations for P&L (`tmp_pnl_step1..3`) and Ranking (`tmp_xh_step1..3`).
@@ -242,8 +242,8 @@ To transform multi-source raw data into a complete reporting system, the technic
 
 </div>
 
-- **Stage 3 – Report Visualization (Power BI Import Mode):**
-  Connected Power BI directly to PostgreSQL in Import Mode, combining **72** DAX measures and a **68**-metric data glossary to deliver 3 report sets across **7 pages**: **2 Summary Reports** (32-metric Summary P&L Report, 84-ASM Summary Ranking Report), **2 Visualized Core Reports** (Business Performance Dashboard, ASM Ranking Dashboard), and **1 Deep-Dive Analysis** (Deep-Dive Diagnosis & Executive Conclusion).
+- **Stage 3 – Report Visualization (Power BI):**
+  Connected Power BI directly to PostgreSQL, combining **100** DAX measures (including KPI calculation measures, **21** high-contrast conditional formatting background and font color measures across regional P&L columns, and large-scale HTML Content visuals) and a **68**-metric data glossary styled in the **Executive Orange / Orange Tree** palette (`#FF7A00`, `#EA580C`, `#2B1406`, `#FFBE2E`, `#FED7AA`) to deliver **7 pages**: **2 Foundation Pages** (`GIỚI THIỆU ĐỀ TÀI`, `TỪ ĐIỂN DỮ LIỆU`), **2 Lookup & Summary Reports** (`BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` containing **32** financial metrics to look up and reconcile figures across 7 regions; `BÁO CÁO XẾP HẠNG ASM` summarizing the **84**-ASM scorecard to reward top performers and coach underperformers), **2 Visualized Evaluation Reports** (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` visualizing revenue – cost – provision structure; `ĐÁNH GIÁ HIỆU SUẤT ASM` charting sales volume against NPL ratios), and **1 Deep-Dive Analysis** (`INSIGHT` – Deep-Dive Diagnosis & Executive Conclusion).
 
 ---
 
@@ -298,7 +298,7 @@ All division expressions are guarded with `NULLIF(denominator, 0)`.
 - **Control Principle:** Single-case reverse auditing, multi-platform cross-validation, and total general ledger accounting balancing.
 - **Implementation Method:**
   1. *Sample Reverse Audit:* Randomly sampled 3 representative entities (Southeast Region, Northwest Region, and 1 specific Area Sales Manager - ASM); recalculated numbers manually outside SQL via standalone managerial accounting formulas.
-  2. *Cross-System Audit:* Exhaustive **91-cell matrix audit** (13 core financial indicators $\times$ 7 regions for May 2023) between PostgreSQL SQL queries and 72 DAX measures in Power BI.
+  2. *Cross-System Audit:* Exhaustive **91-cell matrix audit** (13 core financial indicators $\times$ 7 regions for May 2023) between PostgreSQL SQL queries and 100 DAX measures in Power BI.
   3. *Accounting Reconciliation & Flow Conservation:* Reconciled total allocated profits and revenues across all regions against total balance-sheet movements in the General Ledger (GL), verifying zero capital leakage: Nationwide Profit Before Tax (February 2023 reached 92,226.35 million VND, May 2023 reached 250,450.06 million VND) perfectly reconciled with the general ledger without creating or losing any capital.
 - **Observed Result:**
   - Independent manual calculations matched stored procedure outputs with zero variance.
@@ -412,7 +412,7 @@ Tools were selected to fit each stage of the 3-stage architecture:
 |---|---|---|---|
 | **DBeaver 24** | Data Import, ER Diagram | Direct import of 3 raw Excel files (117.2 MB) into `staging` tables, management of 9 virtual foreign keys, and SQL execution | Visual database administration tool supporting large file imports and rapid schema inspection |
 | **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedures | Kimball Star Schema repository (19 tables, 3 `views`), automated cost allocation, and ranking logic | High-performance relational calculation with exact numeric precision and strict ACID transaction controls |
-| **Power BI Desktop** | Import Mode, 72 DAX Measures | 7-page interactive reporting suite (2 summary reports, 2 visualized dashboards, 1 deep-dive analysis, and a 68-metric glossary) | Delivers instant executive exploration, interactive filtering, and diagnostic drill-downs |
+| **Power BI Desktop** | Executive Orange Theme, 100 DAX Measures | 7-page interactive reporting suite (2 foundation pages, 2 lookup summary reports, 2 visualized evaluation dashboards, 1 deep-dive analysis, and a 68-metric glossary) | Delivers instant executive exploration, interactive filtering, figure reconciliation, and diagnostic drill-downs |
 | **Microsoft Excel** | XLSX, Source Data & Reconciliation | Supplies 3 raw operational datasets (card statements, GL entries, ASM targets) and 7-sheet reconciliation workbooks | Supports departmental source data storage and cell-level accounting verification |
 
 ---
