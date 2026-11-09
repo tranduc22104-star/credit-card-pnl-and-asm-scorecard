@@ -5,6 +5,12 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+247. **Xóa bỏ chữ `(DirectQuery)` tại tiêu đề Giai đoạn 3 trên sơ đồ `images/quy-trinh.png`**
+   - Chỉnh sửa tệp nguồn `workflow_quy_trinh_ky_thuat.html`, xóa bỏ cụm `(DirectQuery)` tại tiêu đề Card Giai đoạn 3 (đưa về nhãn ngắn gọn, chuẩn mực `Power BI`).
+   - Kết xuất lại sơ đồ bằng msedge headless với chuẩn hiển thị `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel).
+   - Cập nhật đồng bộ vào `images/quy-trinh.png` và artifact `quy_trinh_ky_thuat_visual.png`.
+
+### 2026-11-09
 246. **Cập nhật toàn bộ README song ngữ theo bản văn phong tự nhiên, súc tích và đồng bộ lên GitHub**
    - Áp dụng bản văn bản tiếng Việt mới người dùng cung cấp vào `README.md`, viết lại câu chữ tự nhiên, ngắn gọn và mạch lạc hơn; tinh chỉnh hoàn toàn cụm từ 'trang' tại Mục 8 để biến tài liệu thành báo cáo dự án độc lập 100%.
    - Dịch và cập nhật đối ứng song ngữ chuẩn xác từng câu, từng số liệu sang `README_eng.md`.
