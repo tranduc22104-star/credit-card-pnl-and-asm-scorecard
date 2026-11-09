@@ -5,6 +5,12 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+246. **Cập nhật toàn bộ README song ngữ theo bản văn phong tự nhiên, súc tích và đồng bộ lên GitHub**
+   - Áp dụng bản văn bản tiếng Việt mới người dùng cung cấp vào `README.md`, viết lại câu chữ tự nhiên, ngắn gọn và mạch lạc hơn; tinh chỉnh hoàn toàn cụm từ 'trang' tại Mục 8 để biến tài liệu thành báo cáo dự án độc lập 100%.
+   - Dịch và cập nhật đối ứng song ngữ chuẩn xác từng câu, từng số liệu sang `README_eng.md`.
+   - Kiểm tra đối soát tự động: `check_toc.py` (`ok`, 11 mục), `check_int_pair.py` (`ok`, 0 lệch số >= 10), `push_check.py` (22 tệp an toàn, 3.52 MiB).
+
+### 2026-11-09
 245. **Gỡ bỏ Mục 6 (Kiểm tra và đối soát dữ liệu) khỏi hai bản README song ngữ, lưu trữ vào .staging/**
    - Trích xuất toàn bộ nội dung 5 lớp kiểm soát đối soát của Mục 6 và lưu trữ dự phòng nguyên vẹn tại `.staging/archived_section_06_audit_vi.md` (9.613 byte) và `.staging/archived_section_06_audit_en.md` (7.132 byte) để sẵn sàng tái sử dụng khi cần.
    - Gỡ bỏ hoàn toàn Mục 6 khỏi `README.md` và `README_eng.md`, tinh gọn tài liệu từ 12 mục xuống còn 11 mục; đánh số lại các tiêu đề từ Mục 6 (Kết quả phân tích và đề xuất quản trị) đến Mục 11 (Tác giả) và cập nhật đường dẫn neo mục lục.
