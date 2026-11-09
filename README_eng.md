@@ -279,7 +279,7 @@ The data flow from the 3 input Excel files to the management reporting system is
      - *Combo Column & Line Chart – Team Quality Across 7 Regions*: Plots `New Customer Loan Disbursement` (Columns: Red River Delta **55,010** million, Southwest **35,955** million, Southeast **26,666** million, Northwest **17,617** million, Northeast **17,517** million, North Central Coast **15,443** million, South Central Coast **11,635** million) against `NPL Ratio` (Line: Southwest **22.0%**, Southeast **19.9%**, Northeast **18.1%**, Northwest **15.9%**, North Central Coast **14.7%**, Red River Delta **13.9%**, South Central Coast **11.2%**).
      - *Regional Director Team Governance Commentary*: Analyzes safe scale leadership in the Red River Delta, the scale-versus-quality paradox between the Southwest and South Central Coast, and the red-zone risk alert in the Southeast.
 
-  6. **Deep-Dive Diagnostic & Executive Proposals**: Synthesizes multi-dimensional strategic findings and the quantitative executive action matrix for Executive Leadership (detailed in Section 7 – Part C).
+  6. **Deep-Dive Diagnostic & Executive Proposals**: Synthesizes multi-dimensional strategic findings and the quantitative executive action matrix for Executive Leadership (detailed in Section 6 – Part C).
 
 ---
 
@@ -344,7 +344,7 @@ All division expressions are guarded with `NULLIF(denominator, 0)`.
 
 ---
 
-## 7. 📊 Business Insights And Management Recommendations
+## 6. 📊 Business Insights And Management Recommendations
 
 ### Part A – Evaluation of Executive Leadership Requirement Fulfillment:
 
@@ -422,7 +422,7 @@ Findings from macro 7-region business performance to micro ASM scoring mechanics
 
 ---
 
-## 8. 📚 Key Takeaways
+## 7. 📚 Key Takeaways
 
 1. **Understand banking domain fundamentals before writing code:**
    In banking financial data systems, understanding why funding costs carry negative signs and why Head Office expenses carry province code `'00'` and zone `'A'` is a prerequisite for writing accurate SQL allocation queries. Banking data problems cannot be solved through a purely technical lens alone.
@@ -441,7 +441,7 @@ Findings from macro 7-region business performance to micro ASM scoring mechanics
 
 ---
 
-## 9. 🛠️ Tools Used
+## 8. 🛠️ Tools Used
 
 Tools were selected to align with the 3 stages in the **`QUY TRÌNH XỬ LÝ KỸ THUẬT`** diagram:
 
@@ -454,7 +454,7 @@ Tools were selected to align with the 3 stages in the **`QUY TRÌNH XỬ LÝ K�
 
 ---
 
-## 10. 📂 Project Repository Structure
+## 9. 📂 Project Repository Structure
 
 The project is organized into core directories:
 
@@ -484,7 +484,7 @@ Project guides and operational records are stored in `docs/`:
 
 ---
 
-## 12. 👤 Author
+## 11. 👤 Author
 
 <div align="center">
 

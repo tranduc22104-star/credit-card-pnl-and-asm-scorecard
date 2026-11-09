@@ -5,6 +5,12 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+245. **Gỡ bỏ Mục 6 (Kiểm tra và đối soát dữ liệu) khỏi hai bản README song ngữ, lưu trữ vào .staging/**
+   - Trích xuất toàn bộ nội dung 5 lớp kiểm soát đối soát của Mục 6 và lưu trữ dự phòng nguyên vẹn tại `.staging/archived_section_06_audit_vi.md` (9.613 byte) và `.staging/archived_section_06_audit_en.md` (7.132 byte) để sẵn sàng tái sử dụng khi cần.
+   - Gỡ bỏ hoàn toàn Mục 6 khỏi `README.md` và `README_eng.md`, tinh gọn tài liệu từ 12 mục xuống còn 11 mục; đánh số lại các tiêu đề từ Mục 6 (Kết quả phân tích và đề xuất quản trị) đến Mục 11 (Tác giả) và cập nhật đường dẫn neo mục lục.
+   - Kiểm tra đối soát tự động: `check_toc.py` (`ok`, 11 mục lục khớp tiêu đề hai chiều), `check_int_pair.py` (`ok`, 0 lệch số >= 10), `push_check.py` (22 tệp an toàn, 3.53 MiB).
+
+### 2026-11-09
 244. **Chuẩn hóa triệt để README song ngữ thành tài liệu độc lập, tách biệt hoàn toàn khỏi việc dẫn chiếu các trang Power BI**
    - Loại bỏ toàn bộ lối viết tường thuật / dẫn chiếu phụ thuộc vào Power BI (như *'Trên trang mở đầu GIỚI THIỆU ĐỀ TÀI...'*, *'tương ứng từ Trang 3 đến Trang 6 trên Power BI'*, *'Tab tương ứng trên Power BI'*, *'7 trang báo cáo liên hoàn'*, *'Trang 1..7'*, *'trên trang INSIGHT'*, *'trên trang TỪ ĐIỂN DỮ LIỆU'*).
    - Tái cấu trúc nội dung để hai bản README trở thành tài liệu dự án độc lập, hoàn chỉnh: người đọc có thể chọn mở riêng Power BI hoặc đọc riêng README trên GitHub mà vẫn nắm trọn vẹn 100% bối cảnh, 4 dashboard quản trị đầu ra, 3 nguồn dữ liệu, quy trình kỹ thuật 3 giai đoạn và các phát hiện điều hành sâu sắc.

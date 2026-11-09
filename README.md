@@ -20,13 +20,12 @@
 3. [🔍 Khảo sát dữ liệu và đánh giá mức độ đáp ứng](#3--khảo-sát-dữ-liệu-và-đánh-giá-mức-độ-đáp-ứng)
 4. [🧮 Xây dựng cách tính và các chỉ tiêu quản trị](#4--xây-dựng-cách-tính-và-các-chỉ-tiêu-quản-trị)
 5. [🔄 Thiết kế quy trình xử lý và kho dữ liệu](#5--thiết-kế-quy-trình-xử-lý-và-kho-dữ-liệu)
-6. [🧪 Kiểm tra và đối soát dữ liệu](#6--kiểm-tra-và-đối-soát-dữ-liệu)
-7. [📊 Kết quả phân tích và đề xuất quản trị](#7--kết-quả-phân-tích-và-đề-xuất-quản-trị)
-8. [📚 Kinh nghiệm rút ra](#8--kinh-nghiệm-rút-ra)
-9. [🛠️ Công cụ và công nghệ sử dụng](#9--công-cụ-và-công-nghệ-sử-dụng)
-10. [📂 Cấu trúc thư mục dự án](#10--cấu-trúc-thư-mục-dự-án)
-11. [📖 Tài liệu dự án](#11--tài-liệu-dự-án)
-12. [👤 Tác giả](#12--tác-giả)
+6. [📊 Kết quả phân tích và đề xuất quản trị](#6--kết-quả-phân-tích-và-đề-xuất-quản-trị)
+7. [📚 Kinh nghiệm rút ra](#7--kinh-nghiệm-rút-ra)
+8. [🛠️ Công cụ và công nghệ sử dụng](#8--công-cụ-và-công-nghệ-sử-dụng)
+9. [📂 Cấu trúc thư mục dự án](#9--cấu-trúc-thư-mục-dự-án)
+10. [📖 Tài liệu dự án](#10--tài-liệu-dự-án)
+11. [👤 Tác giả](#11--tác-giả)
 
 ---
 
@@ -279,72 +278,11 @@ Luồng xử lý dữ liệu từ 3 file Excel đầu vào đến hệ thống b
      - *Biểu đồ kết hợp Cột & Đường – Chất lượng đội ngũ theo 7 vùng*: Đặt `Dư nợ cho vay khách hàng mới` (Cột: ĐB Sông Hồng **55.010** triệu, Tây Nam Bộ **35.955** triệu, Đông Nam Bộ **26.666** triệu, Tây Bắc Bộ **17.617** triệu, Đông Bắc Bộ **17.517** triệu, Bắc Trung Bộ **15.443** triệu, Nam Trung Bộ **11.635** triệu) cạnh đường `Tỷ lệ nợ xấu NPL` (Tây Nam Bộ **22,0%**, Đông Nam Bộ **19,9%**, Đông Bắc Bộ **18,1%**, Tây Bắc Bộ **15,9%**, Bắc Trung Bộ **14,7%**, ĐB Sông Hồng **13,9%**, Nam Trung Bộ **11,2%**).
      - *Khung Nhận xét quản trị đội ngũ Giám đốc vùng*: Phân tích sâu mô hình tăng trưởng an toàn tại ĐB Sông Hồng, nghịch lý quy mô – chất lượng giữa Tây Nam Bộ và Nam Trung Bộ, cùng cảnh báo đỏ tại Đông Nam Bộ.
 
-  6. **Phân tích chuyên sâu & Căn cứ điều hành**: Phân tích đa chiều các phát hiện chiến lược và bảng hành động điều hành định lượng dành cho Ban Điều Hành (trình bày chi tiết tại Mục 7 – Phần C).
+  6. **Phân tích chuyên sâu & Căn cứ điều hành**: Phân tích đa chiều các phát hiện chiến lược và bảng hành động điều hành định lượng dành cho Ban Điều Hành (trình bày chi tiết tại Mục 6 – Phần C).
 
 ---
 
-## 6. 🧪 Kiểm tra và đối soát dữ liệu
-
-**Cách kiểm tra kết quả:** Trong quá trình triển khai, không có sẵn bảng kết quả mẫu để đối chiếu từng con số. Vì vậy, quy trình kiểm tra được chia thành 5 lớp nhằm rà soát số liệu, công thức và kết quả qua từng bước xử lý từ kho dữ liệu PostgreSQL lên các bảng và biểu đồ Power BI.
-
-| Lớp kiểm soát | Tên lớp đối soát dữ liệu | Nguyên tắc kiểm chứng cốt lõi |
-|:---:|---|---|
-| **Lớp 1** | **Đối soát số liệu sổ cái (GL Reconciliation)** | Bảo toàn tổng tiền: Tổng vùng sau phân bổ + Hội sở = Tổng sổ cái ngân hàng |
-| **Lớp 2** | **Kiểm tra điều kiện toán học (Mathematical Invariants)** | Tổng tỷ trọng phân bổ của từng tiêu thức đạt chính xác `Sum(Ratio) = 1.0` |
-| **Lớp 3** | **Kiểm soát toàn vẹn và chất lượng dữ liệu** | Đảm bảo không trùng lặp dòng, không rơi rớt bản ghi khi `JOIN` bảng danh mục |
-| **Lớp 4** | **Kiểm tra tính hợp lý nghiệp vụ** | Kiểm soát miền giá trị hợp lý của nợ xấu, dư nợ và biến động bất thường giữa các tháng |
-| **Lớp 5** | **Tính lại và đối chiếu chéo giữa các hệ thống** | Tính tay độc lập trên mẫu và đối soát 100% số liệu giữa PostgreSQL và Power BI |
-
-### Lớp 1 – Đối soát bảo toàn số liệu
-- **Rủi ro cần kiểm tra:** Thất thoát dòng tiền hoặc nhân đôi chi phí khi thực hiện phân bổ 181 bút toán Hội sở về các vùng.
-- **Nguyên tắc kiểm soát:** Tổng chi phí và thu nhập sau phân bổ của 7 vùng cộng với phần Hội sở còn lại phải khớp chính xác 100% tổng phát sinh trên sổ cái kế toán toàn ngân hàng:
-$$\left| \sum_{k=1}^7 \text{Chi phí phân bổ vùng } k - \text{Chi phí Hội sở} \right| \le 10^{-6}$$
-- **Cách thức triển khai:** Chạy truy vấn SQL tổng hợp đối chiếu chênh lệch giữa bảng dữ liệu thô `stg_fact_txn_month` và bảng dữ liệu sau phân bổ `fct_pnl_allocation`.
-- **Kết quả thực tế:** Sai lệch bằng đúng $0,00$ VNĐ trên toàn bộ 63.134 dòng bút toán sổ cái của cả 5 tháng phân tích.
-- **Giới hạn còn tồn tại:** Cách kiểm tra này chỉ xác nhận phép phân bổ không làm thay đổi tổng số liệu, không phát hiện được sai sót nếu bản thân bút toán gốc trên sổ cái GL bị hạch toán sai tài khoản.
-
-### Lớp 2 – Kiểm tra tính đúng đắn của công thức
-- **Rủi ro cần kiểm tra:** Lỗi chia cho 0 khi mẫu số bằng 0, tỷ trọng phân bổ không trọn vẹn gây hao hụt chi phí, hoặc sai quy tắc dấu của các khoản mục chi phí âm/dương.
-- **Nguyên tắc kiểm soát:** Tổng tỷ trọng phân bổ của từng tiêu thức kinh tế phải bằng chính xác 1:
-$$\sum_{i=1}^7 w_i = 1,000000 \quad (\text{với mọi tiêu thức phân bổ})$$
-Mọi phép chia đều sử dụng `NULLIF(denominator, 0)` để tránh lỗi khi mẫu số bằng 0.
-- **Cách thức triển khai:** Chạy các câu lệnh tự động để kiểm tra tổng trọng số của 9 tiêu thức kinh tế trong bảng tạm `tmp_pnl_step2_head_alloc_ratio`.
-- **Kết quả thực tế:** $100\%$ các tiêu thức phân bổ có tổng tỷ lệ đạt đúng 1; không phát sinh lỗi chia cho 0 hay giá trị không xác định (`NaN`/`Infinity`).
-- **Giới hạn còn tồn tại:** Phương pháp giả định chi phí phân bổ tăng tuyến tính theo quy mô của tiêu thức phân bổ, chưa xét đến các mô hình chi phí phi tuyến tính hoặc chi phí biên.
-
-### Lớp 3 – Kiểm soát chất lượng dữ liệu
-- **Rủi ro cần kiểm tra:** Dữ liệu có thể bị trùng khi nạp từ 3 file Excel đầu vào, thiếu dòng khi thực hiện `JOIN`, hoặc có mã chi nhánh không ánh xạ được vào 7 vùng.
-- **Nguyên tắc kiểm soát:** Kiểm tra tính toàn vẹn của các mối liên kết (*Referential Integrity*) và tính duy nhất của dữ liệu (*Uniqueness*).
-- **Cách thức triển khai:** Kiểm tra đếm dòng trước và sau câu lệnh `JOIN`; kiểm tra các bản ghi có mã tỉnh không nằm trong danh mục `dim_param_area`.
-- **Kết quả thực tế:** Toàn bộ 2.932.922 dòng sao kê hợp đồng thẻ và 63.134 dòng bút toán sổ cái được nạp đầy đủ; không có bản ghi không tìm được thông tin tương ứng trong bảng danh mục (*orphan records*). 181 dòng bút toán Hội sở mang mã tỉnh `'00'` được chuyển hướng xử lý thành công qua luồng phân bổ gián tiếp.
-- **Giới hạn còn tồn tại:** Trường hợp khách hàng thay đổi địa chỉ cư trú giữa các tháng nhưng chi nhánh mở thẻ không đổi thì hợp đồng vẫn được tính cho vùng của chi nhánh mở ban đầu.
-
-### Lớp 4 – Kiểm tra tính hợp lý nghiệp vụ
-- **Rủi ro cần kiểm tra:** Kết quả tính toán vi phạm các giới hạn lý thuyết kinh tế hoặc biến động bất thường mà không có nguyên nhân nghiệp vụ giải thích.
-- **Nguyên tắc kiểm soát:** Đặt ra các giới hạn hợp lý cho các chỉ tiêu:
-  - Tỷ lệ nợ xấu vùng $NPL \in [0\%, 100\%]$; Dư nợ, số thẻ, định biên nhân sự $\ge 0$.
-  - Cần xem xét chi phí dự phòng cùng với biến động dư nợ nhóm 3 đến nhóm 5.
-  - Đánh dấu cảnh báo (*Red Flag*) đối với các khoản mục chi phí có mức biến động tháng $MoM > \pm 50\%$.
-- **Cách thức triển khai:** Thực hiện các truy vấn kiểm tra miền giá trị trên bảng sự kiện và theo dõi biến động theo chuỗi thời gian từ tháng 1 đến tháng 5/2023.
-- **Kết quả thực tế:** Trong 5 tháng, tỷ lệ nợ xấu của 7 vùng dao động từ 10,11% đến 21,99% (riêng tháng 5/2023 từ 11,24% đến 21,99%). Chi phí dự phòng tăng mạnh trong tháng 5/2023; báo cáo lý giải biến động này bằng khoản trích lập cho dư nợ nhóm 3 đến nhóm 5 phát sinh từ đợt mở rộng tín dụng trong quý trước.
-- **Giới hạn còn tồn tại:** Phương pháp kiểm tra ngưỡng biến động không phân biệt được biến động do hoạt động kinh doanh tự nhiên với các điều chỉnh chính sách kế toán hồi tố nếu phòng kế toán không cung cấp thuyết minh đi kèm.
-
-### Lớp 5 – Tính lại kết quả và đối chiếu chéo giữa PostgreSQL và Power BI
-- **Rủi ro cần kiểm tra:** Sai lệch logic ẩn trong quá trình chuyển đổi giữa cơ sở dữ liệu PostgreSQL và tầng trình diễn Power BI.
-- **Nguyên tắc kiểm soát:** Tính lại kết quả trên một số trường hợp mẫu (*Single-Case Reverse Audit*), đối soát chéo đa tầng giữa PostgreSQL và Power BI, đồng thời kiểm chứng cân đối kế toán tổng thể (*Accounting Reconciliation*).
-- **Cách thức triển khai:**
-  1. *Tính lại độc lập trên mẫu:* Chọn ngẫu nhiên 3 trường hợp đại diện (Vùng Đông Nam Bộ, Vùng Tây Bắc Bộ và 1 quản lý vùng ASM cụ thể), tự tính lại bằng công thức kế toán quản trị riêng, không sử dụng hệ thống SQL và so sánh kết quả.
-  2. *Đối chiếu giữa các hệ thống:* So sánh **91 ô dữ liệu** (13 chỉ tiêu tài chính cốt lõi $\times$ 7 vùng tại tháng 5/2023) giữa kết quả truy vấn PostgreSQL và hệ thống **100** measure DAX trên Power BI (đối soát trực tiếp ngay trên bảng ma trận Báo cáo kết quả kinh doanh vùng).
-  3. *Kiểm chứng cân đối kế toán tổng thể:* Đối soát tổng lợi nhuận và doanh thu sau phân bổ của các vùng với tổng số dư phát sinh trên toàn bộ sổ cái kế toán (GL), đảm bảo nguyên tắc bảo toàn dòng tiền: Lợi nhuận trước thuế toàn hệ thống (tháng 2/2023 đạt 92.226,35 triệu đồng, tháng 5/2023 đạt 250.450,06 triệu đồng) khớp tuyệt đối với sổ cái kế toán, chứng minh việc phân bổ chi phí gián tiếp từ Hội sở không làm phát sinh hay thất thoát bất kỳ đồng vốn nào của ngân hàng.
-- **Kết quả thực tế:**
-  - Kết quả tính lại bằng tay khớp với kết quả do Stored Procedure SQL tạo ra.
-  - Cả **91 ô dữ liệu được đối chiếu giữa PostgreSQL và Power BI đều không có chênh lệch**.
-  - Cân đối kế toán toàn hàng được bảo toàn trọn vẹn: LNTT toàn hệ thống đạt **92.226,35 triệu đồng** (tháng 2/2023) và **250.450,06 triệu đồng** (tháng 5/2023), phản ánh chính xác kết quả kinh doanh hợp nhất sau khi đã phân bổ 100% chi phí Hội sở; đồng thời nhân sự dẫn đầu thi đua ASM toàn quốc đạt **34 điểm** (Tháng 2) và **36 điểm** (Tháng 5).
-- **Giới hạn còn tồn tại:** Việc tính lại bằng tay chỉ thực hiện trên một số trường hợp mẫu; việc kiểm tra toàn bộ hàng triệu giao dịch vẫn dựa vào 4 lớp kiểm tra tự động trước đó.
-
----
-
-## 7. 📊 Kết quả phân tích và đề xuất quản trị
+## 6. 📊 Kết quả phân tích và đề xuất quản trị
 
 ### Phần A – Đánh giá mức độ đáp ứng yêu cầu của Ban Điều Hành:
 
@@ -422,7 +360,7 @@ Toàn bộ phát hiện từ kết quả kinh doanh vĩ mô 7 vùng đến cơ c
 
 ---
 
-## 8. 📚 Kinh nghiệm rút ra
+## 7. 📚 Kinh nghiệm rút ra
 
 1. **Hiểu rõ bản chất nghiệp vụ trước khi viết code:**
    Trong hệ thống dữ liệu tài chính ngân hàng, việc hiểu rõ tại sao chi phí vốn mang dấu âm, vì sao chi phí Hội sở mang mã tỉnh `'00'` và vùng `'A'` là điều kiện tiên quyết để xây dựng câu lệnh SQL phân bổ chính xác. Không thể giải quyết bài toán dữ liệu ngân hàng nếu chỉ tiếp cận thuần túy dưới góc độ công nghệ.
@@ -441,7 +379,7 @@ Toàn bộ phát hiện từ kết quả kinh doanh vĩ mô 7 vùng đến cơ c
 
 ---
 
-## 9. 🛠️ Công cụ và công nghệ sử dụng
+## 8. 🛠️ Công cụ và công nghệ sử dụng
 
 Các công cụ được lựa chọn bám sát 3 giai đoạn trong sơ đồ **`QUY TRÌNH XỬ LÝ KỸ THUẬT`**:
 
@@ -454,7 +392,7 @@ Các công cụ được lựa chọn bám sát 3 giai đoạn trong sơ đồ *
 
 ---
 
-## 10. 📂 Cấu trúc thư mục dự án
+## 9. 📂 Cấu trúc thư mục dự án
 
 Dự án được tổ chức thành các thư mục chính:
 
@@ -474,7 +412,7 @@ Dự án được tổ chức thành các thư mục chính:
 
 ---
 
-## 11. 📖 Tài liệu dự án
+## 10. 📖 Tài liệu dự án
 
 Tài liệu hướng dẫn và ghi chép dự án được lưu trong thư mục `docs/`:
 - [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Chi tiết hiện trạng kho dữ liệu, số dòng của 19 bảng và 3 `view`, mô hình Power BI 100 measure DAX và các mốc đối soát chuẩn.
@@ -484,7 +422,7 @@ Tài liệu hướng dẫn và ghi chép dự án được lưu trong thư mục
 
 ---
 
-## 12. 👤 Tác giả
+## 11. 👤 Tác giả
 
 <div align="center">
 
