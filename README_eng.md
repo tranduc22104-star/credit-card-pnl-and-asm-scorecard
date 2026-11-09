@@ -75,12 +75,6 @@ From this context, 5 core management questions were defined:
 ### Clarifying business requirements and defining target outputs
 From the initial mandate, it was necessary to clarify what information Executive Leadership needed to monitor regarding regional business results and ASM team effectiveness. The reporting system was designed using an *Output-First* approach, followed by surveying actual source data to construct a calculation pipeline satisfying both detailed figure lookup/reconciliation and visual chart analysis.
 
-<div align="center">
-
-![Project Overview Page — Business Context, 4 Output Dashboards, 3 Required Source Datasets, and Technical Processing Pipeline](images/tong-quan.png)
-
-</div>
-
 ### Output Structure: 4 Dashboards Required To Solve Executive Leadership's Problem
 
 Directly on the **`GIỚI THIỆU ĐỀ TÀI`** page, the output solution is structured into **4 Core Dashboards** (corresponding to Pages 3 through 6 in Power BI), each fulfilling a distinct governance objective under the *"What it contains – What it is used for"* framework:
@@ -151,12 +145,6 @@ The bank lacked a single pre-aggregated table capable of immediately feeding the
 ## 4. 🧮 Business Logic And Metric Design
 
 **Business Context:** Executive Leadership provided a high-level governance mandate without pre-existing calculation formulas, KPI scorecards, or sample benchmark figures. Consequently, the entire P&L cost allocation methodology and ASM ranking scorecard were constructed from cash-flow analysis and banking management accounting principles.
-
-<div align="center">
-
-![Data Dictionary Page — Standardizing 68 Business Indicators and Calculation Formulas in Power BI](images/tu-dien.png)
-
-</div>
 
 ### 4.1. Revenue And Cost Allocation Logic (Compiling the 7-Region P&L Report)
 
@@ -277,19 +265,7 @@ Matching the **`QUY TRÌNH XỬ LÝ KỸ THUẬT`** (Technical Processing Pipeli
   2. **Page 2 – `TỪ ĐIỂN DỮ LIỆU` *(Data Dictionary)***: Standardized lookup table of **68** indicators and data variables grouped into 5 domain categories (`0. Identification & Hierarchy`, `1. Profit & Loss Report (P&L)`, `2. Financial & Headcount Ratios`, `3. Head Office Allocation Drivers`, `4. ASM Evaluation & Ranking`), displaying `No.`, `Dataset Variable Name`, `Business Metric Name`, `Unit`, `Domain Group`, `Data Type`, `Business Definition & Meaning`, and `Formula / Calculation Method`.
   3. **Page 3 – `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` *(Output Dashboard 01)***: Matrix table containing all **32** financial, headcount, and efficiency indicators to look up and reconcile figures across `HỘI SỞ`, **7** commercial regions (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`), and `Total`. Conditional formatting automatically highlights row `1. Profit before tax` (deep orange background, white/gold text), Tier-1 totals and Tier-2 group headers (dark backgrounds, high-contrast light text, bright rose-pink negative numbers), and detail rows (light backgrounds, crimson negative numbers, muted gray zeros).
 
-<div align="center">
-
-![Page 3: Regional P&L Report — 32-Indicator Financial Matrix for 7-Region Lookup and Reconciliation](images/ket-qua-kinh-doanh.png)
-
-</div>
-
   4. **Page 4 – `BÁO CÁO XẾP HẠNG ASM` *(Output Dashboard 02)***: Comprehensive scorecard and ranking table for the entire ASM cohort (**74 – 84** personnel per month) to reward top performers and coach underperforming staff. Users can filter by month and region to inspect `Total Score`, `Total Rank` (highlighted in emerald green), alongside actual values and ranks for every component metric (`New Loan Volume`, `New Loan Rank`, `PSDN`, `PSDN Rank`, `Approval Rate`, `Approval Rate Rank`, `NPL Ratio`...).
-
-<div align="center">
-
-![Page 4: ASM Ranking Report — Detailed Ranking Scorecard for Rewarding and Coaching](images/xh-asm.png)
-
-</div>
 
   5. **Page 5 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` *(Output Dashboard 03)***: Visualizes the revenue – cost – provision structure to compare profitability across **7** regions through 5 interactive visual blocks:
      - *5 Executive KPI Cards*: `INCOME` (**1,353,898 million**, +1.8%), `PROFIT` (**250,450 million**, +8.4%), `OPERATING EXPENSE` (**-235,122 million**, +1.1%), `PROVISION EXPENSE` (**-868,327 million**, +0.0%), `AVERAGE PRODUCTIVITY` (**4,100 million**, +6.0%).
@@ -298,23 +274,11 @@ Matching the **`QUY TRÌNH XỬ LÝ KỸ THUẬT`** (Technical Processing Pipeli
      - *Combo Column & Line Chart – Profit Trend & Capital Utilization Efficiency*: Contrasts Profit Before Tax (Column) with Return on Capital (Line) across 7 regions (scale leader Southwest at **167,883** million with **131.7%** capital return; capital efficiency leader South Central Coast at **203.5%** with **50,036** million profit; sole loss-making region Southeast at **-48,763** million with **-78.0%** capital return).
      - *Performance Evaluation & Key Takeaways Panel*: Automatically summarizes 3 insight groups covering leading territories, loss-making region warnings, and cross-selling opportunities for Bancassurance (currently **1.69%** of TOI) and card service fees (**5.6%** of TOI), while performing interest accounts for **92.6%** and provision expenses consume **64.1%** of total operating income.
 
-<div align="center">
-
-![Page 5: Regional Business Performance Evaluation — Visualizing Revenue, Cost, and Provision Across 7 Regions](images/danh-gia-kinh-doanh.png)
-
-</div>
-
   6. **Page 6 – `ĐÁNH GIÁ HIỆU SUẤT ASM` *(Output Dashboard 04)***: Charts the correlation between sales volume and non-performing loans (NPL) to identify ASMs trading credit risk for scale across 4 blocks:
      - *Regional Champion Achievement Card (Rank #1)*: Highlights the top nationwide performer (Hoang Van Nam – Red River Delta Region, achieving **34 points** in February and **36 points** in May with New Loan Disbursement of **5,326 million VND**, Application Approval Rate of **53.6%**, NPL Ratio of **13.9%** below the **17.3%** bank-wide average, Return on Capital of **109.9%**, Scale Score of **23 points**, and Financial Score of **13 points**).
      - *Bank-Wide Leaderboard*: Compares top-ranked managers across Total Score, PTKD Score, FIN Score, New Disbursement, Approval Rate, NPL Ratio, and Capital Efficiency.
      - *Combo Column & Line Chart – Team Quality Across 7 Regions*: Plots `New Customer Loan Disbursement` (Columns: Red River Delta **55,010** million, Southwest **35,955** million, Southeast **26,666** million, Northwest **17,617** million, Northeast **17,517** million, North Central Coast **15,443** million, South Central Coast **11,635** million) against `NPL Ratio` (Line: Southwest **22.0%**, Southeast **19.9%**, Northeast **18.1%**, Northwest **15.9%**, North Central Coast **14.7%**, Red River Delta **13.9%**, South Central Coast **11.2%**).
      - *Regional Director Team Governance Commentary*: Analyzes safe scale leadership in the Red River Delta, the scale-versus-quality paradox between the Southwest and South Central Coast, and the red-zone risk alert in the Southeast.
-
-<div align="center">
-
-![Page 6: ASM Performance Evaluation — Charting Sales Volume vs NPL Correlation](images/danh-gia-asm.png)
-
-</div>
 
   7. **Page 7 – `INSIGHT`**: Synthesizes strategic findings and the quantitative executive action matrix for Executive Leadership (detailed in Section 7 – Part C).
 
@@ -419,12 +383,6 @@ All division expressions are guarded with `NULLIF(denominator, 0)`.
 
 On the **`INSIGHT`** page of Power BI, findings from macro 7-region business performance to micro ASM scoring mechanics are connected across **4 executive information tiers**:
 
-<div align="center">
-
-![Page 7: Insight — Analyzing Profit Flows, Southeast Downward Drag, and Proposed Action Matrix](images/insight.png)
-
-</div>
-
 1. **Four Executive KPI Cards:**
    - **Highest Profit Contribution – `67.0%`:** Southwest leads the bank, contributing +167.9 billion VND to total system profit.
    - **Peak NPL Ratio – `22.0%`:** Southwest far exceeds the safe bank-wide average benchmark.
@@ -508,7 +466,7 @@ The project is organized into core directories:
 │   ├── tmp/            # Temporary tables and intermediate calculation procedures for P&L (step 1-3) and ASM Ranking (step 1-3)
 │   ├── fct/            # Core fact tables and orchestration procedures: fct_pnl_allocation, fct_xephang_asm, sp_pipeline
 │   └── rpt/            # 3 clean reporting views: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
-├── images/             # 3-stage technical pipeline diagram, data warehouse schema, and screenshots of 7 Power BI pages
+├── images/             # 3-stage technical pipeline diagram and Star Schema data warehouse architecture
 ├── docs/               # Operational documentation suite: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
 ├── output/             # Output management reporting deliverable in Power BI (.pbix)
 ├── README.md           # Project documentation in Vietnamese (default)

@@ -78,5 +78,5 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 ---
 
 ## 4. Phạm vi bộ tệp đẩy lên GitHub (`.staging/push_check.py`)
-- Bộ đẩy hiện tại gồm **29 tệp** (~4,4 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 9 tệp ảnh chính thức trong `images/` (`tong-quan.png`, `tu-dien.png`, `ket-qua-kinh-doanh.png`, `xh-asm.png`, `danh-gia-kinh-doanh.png`, `danh-gia-asm.png`, `insight.png`, `quy-trinh.png`, `thiet-ke-schema.png`), 1 tệp sản phẩm trong `output/` (mô hình Power BI `.pbix`; tệp Excel đầu ra đã gỡ khỏi kho mã từ 2026-11-09) và 13 tệp SQL trong `sql/`.
+- Bộ đẩy hiện tại gồm **22 tệp** (~3,3 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 2 tệp sơ đồ kỹ thuật trong `images/` (`quy-trinh.png`, `thiet-ke-schema.png`), 1 tệp sản phẩm `.pbix` trong `output/` và 13 tệp SQL trong `sql/`.
 - Kiểm tra an toàn bằng `python .staging/push_check.py`, `python .staging/check_toc.py` và `python .staging/check_int_pair.py` trước mỗi lần commit/push: đảm bảo 0 lộ mật khẩu, 0 tệp vượt trần GitHub, 0 liên kết gãy và 0 lệch số liệu giữa hai bản README song ngữ.

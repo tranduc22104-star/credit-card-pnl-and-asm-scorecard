@@ -5,6 +5,12 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+242. **Gỡ bỏ 7 ảnh chụp các trang Power BI khỏi README song ngữ và kho mã theo yêu cầu người dùng**
+   - Loại bỏ 7 khối ảnh chụp các trang Power BI (`tong-quan.png`, `tu-dien.png`, `ket-qua-kinh-doanh.png`, `xh-asm.png`, `danh-gia-kinh-doanh.png`, `danh-gia-asm.png`, `insight.png`) khỏi `README.md` và `README_eng.md`.
+   - Giữ lại đúng 2 sơ đồ kỹ thuật cốt lõi: `quy-trinh.png` (Sơ đồ quy trình kỹ thuật 3 giai đoạn) và `thiet-ke-schema.png` (Mô hình kho dữ liệu Star Schema).
+   - Di chuyển 7 tệp ảnh trang PBI sang `.staging/pbi_screenshots/` để lưu trữ nội bộ trên máy, rút gọn phạm vi đẩy lên kho mã còn đúng 22 tệp (~3,51 MiB).
+   - Cập nhật tài liệu hiện trạng `docs/HIEN_TRANG_HE_THONG.md` và hoàn tất commit & push lên GitHub.
+### 2026-11-09
 241. **Gỡ tệp Excel đầu ra khỏi kho mã và đẩy lên GitHub**
    - `git rm --cached` tệp `output/Bao cao lai lo luy ke tu dau nam 202305.xlsx` (giữ bản trên máy), thêm vào `NEVER_PUSH` của `.staging/push_check.py`; cập nhật phạm vi đẩy trong `docs/HIEN_TRANG_HE_THONG.md` (29 tệp).
    - Commit Task 240–241 và push nhánh `main` (kèm commit Task 239 chưa đẩy được lần trước).
@@ -623,19 +629,6 @@ if not m:
 
 if m:
 
-178. **Hợp Nhất Biểu Đồ 2 & 3 Thành Panel Bóc Tách Các Trường Hợp Bị Kéo Tụt Hạng Và Nguyên Nhân**
-   - Triển khai gộp toàn bộ Biểu đồ 02 (Dumbbell chart biến động) và Biểu đồ 03 (Nghịch lý ĐNB) trên `performance_diagnosis_merged_chart_v2.html` thành 1 panel điều hành cấp cao:
-     + **Tiêu đề**: `02 · BÓC TÁCH CÁC TRƯỜNG HỢP BỊ KÉO TỤT HẠNG & NGUYÊN NHÂN CỐT LÕI`.
-     + **Cột 1 (Tụt dốc phong độ T1 ──► T5)**: Bóc tách 3 ca tụt nặng nhất hệ thống: Hoàng Văn Bình (−31 bậc do hụt bán & nợ xấu 18,1%), Nguyễn Thị Bích (−29 bậc do nợ xấu vùng 22,0% đỉnh toàn hàng), Lê Thị Thu (−25 bậc do CIR 19,7% bào mòn).
-     + **Cột 2 (Bị kéo oan do cơ chế điểm vùng T5)**: Bóc tách nghịch lý ĐNB: Trần Văn Hải (bán tự thân Top 28 bị phạt 26đ kéo tụt xuống Top 33), Lê Văn Bình (Top 24 bị ghìm chặt), 14/19 quản lý ĐNB (74%) bị đẩy xuống nhóm 25% cuối bảng (Hạng 64–84).
-     + **Khung kết luận & giải pháp cấp thiết**: Phân định giải pháp siết rủi ro với nhóm 1 và tách bạch Thẻ điểm cá nhân khỏi P&L toàn vùng với nhóm 2.
-     + Đổi số thứ tự panel cuối thành `03 · CÁC TRỌNG TÂM ĐIỀU HÀNH`, chuẩn hóa 3 phần báo cáo xuyên suốt.
-   - **Verify**: Dùng headless Edge chụp ảnh toàn trang (`.staging/v2_merged_full1600.png`) và crop cận cảnh, xác nhận 100% cân đối, thông thoáng và chuẩn mực.
-   - Cắt task 128 ở cuối danh sách, duy trì nghiêm ngặt trần 50 task (178 xuống 129).
-
-"""
-
-if '## ĐÃ XONG\
 ### 2026-11-05\
 177.' in text:
     text = text.replace('## ĐÃ XONG\

@@ -75,12 +75,6 @@ Từ bối cảnh đó, 5 câu hỏi quản trị trọng tâm được xác đ�
 ### Làm rõ yêu cầu nghiệp vụ và xác định đầu ra
 Từ yêu cầu ban đầu, cần làm rõ Ban Điều Hành muốn theo dõi những thông tin nào về kết quả kinh doanh vùng và hiệu quả hoạt động của đội ngũ ASM. Hệ thống báo cáo được thiết kế theo hướng xác định rõ sản phẩm đầu ra trước (*Output-First*), sau đó khảo sát dữ liệu thực tế để xây dựng quy trình tính toán đáp ứng đầy đủ cả nhu cầu tra cứu đối soát số liệu chi tiết lẫn phân tích trực quan bằng biểu đồ.
 
-<div align="center">
-
-![Trang Giới thiệu đề tài — Bối cảnh nghiệp vụ, 4 Dashboard đầu ra, 3 nguồn dữ liệu đầu vào và Quy trình xử lý kỹ thuật](images/tong-quan.png)
-
-</div>
-
 ### Cấu trúc đầu ra: 4 Dashboard cần xây dựng để giải quyết bài toán của Ban Điều Hành
 
 Ngay trên trang **`GIỚI THIỆU ĐỀ TÀI`**, giải pháp đầu ra được xác định gồm **4 Dashboard trọng tâm** (tương ứng từ Trang 3 đến Trang 6 trên Power BI), mỗi dashboard đảm nhận một mục tiêu quản trị rõ ràng theo cấu trúc *"Chứa cái gì – Để làm cái gì"*:
@@ -151,12 +145,6 @@ Ngân hàng chưa có sẵn một bảng dữ liệu tổng hợp duy nhất đ�
 ## 4. 🧮 Xây dựng cách tính và các chỉ tiêu quản trị
 
 **Bối cảnh của bài toán:** Ban Điều Hành chỉ đưa ra yêu cầu quản trị định hướng, không cung cấp sẵn công thức tính, bảng điểm KPI hay bộ số liệu mẫu. Vì vậy, toàn bộ phương pháp phân bổ P&L và cơ chế chấm điểm xếp hạng ASM được xây dựng từ việc phân tích bản chất dòng tiền và vận dụng nguyên tắc kế toán quản trị ngân hàng.
-
-<div align="center">
-
-![Trang Từ điển dữ liệu — Chuẩn hóa 68 chỉ tiêu và công thức tính trên Power BI](images/tu-dien.png)
-
-</div>
 
 ### 4.1. Xây dựng logic phân bổ thu nhập và chi phí (Lập Báo cáo P&L 7 vùng)
 
@@ -277,19 +265,7 @@ $$\text{Tổng Điểm} = \text{Điểm Quy Mô } (diem\_qm) + \text{Điểm Tà
   2. **Trang 2 – `TỪ ĐIỂN DỮ LIỆU`**: Bảng tra cứu chuẩn hóa **68** chỉ tiêu và biến dữ liệu chia thành 5 phân nhóm nghiệp vụ (`0. Định danh & Phân cấp`, `1. Báo cáo Lãi Lỗ (P&L)`, `2. Chỉ số Tài chính & Nhân sự`, `3. Tiêu thức Phân bổ Hội sở`, `4. Đánh giá & Xếp hạng ASM`), hiển thị rõ `STT`, `Tên Biến Trong Dữ Liệu`, `Tên Nghiệp Vụ / Chỉ Số`, `Đơn Vị Tính`, `Nhóm Nghiệp Vụ`, `Kiểu Dữ Liệu`, `Định Nghĩa & Ý Nghĩa Nghiệp Vụ` và `Công Thức / Cách Tính`.
   3. **Trang 3 – `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` *(Dashboard đầu ra 01)***: Bảng ma trận chứa đầy đủ **32** chỉ tiêu tài chính, nhân sự và tỷ số hiệu quả để tra cứu và đối soát số liệu của `HỘI SỞ`, **7** vùng kinh doanh (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`) và cột `Total`. Hệ thống định dạng có điều kiện tự động tô nổi bật dòng `1. Lợi nhuận trước thuế` (nền cam đậm, chữ trắng/vàng kim), các dòng tổng cấp 1 và nhóm cấp 2 (nền tối, chữ sáng tương phản cao, số âm màu hồng phấn sáng), và các dòng chi tiết con (nền sáng, số âm màu đỏ tươi, số 0 màu xám).
 
-<div align="center">
-
-![Trang 3: Báo cáo kết quả kinh doanh vùng — Bảng ma trận 32 chỉ tiêu tài chính tra cứu và đối soát 7 vùng](images/ket-qua-kinh-doanh.png)
-
-</div>
-
   4. **Trang 4 – `BÁO CÁO XẾP HẠNG ASM` *(Dashboard đầu ra 02)***: Bảng tổng hợp điểm và thứ hạng chi tiết của toàn bộ đội ngũ ASM (**74 – 84** nhân sự theo tháng) để khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu. Người dùng có thể lọc theo từng tháng, từng vùng để tra cứu `Tổng Điểm`, `Tổng Hạng` (tô màu xanh ngọc nổi bật) cùng giá trị thực tế và thứ hạng của từng chỉ tiêu thành phần (`Dư Nợ Mới`, `Hạng Dư Nợ Mới`, `PSDN`, `Hạng PSDN`, `Tỷ Lệ Duyệt`, `Hạng Tỷ Lệ Duyệt`, `Tỷ Lệ Nợ Xấu`...).
-
-<div align="center">
-
-![Trang 4: Báo cáo xếp hạng ASM — Bảng điểm xếp hạng chi tiết phục vụ khen thưởng và chấn chỉnh](images/xh-asm.png)
-
-</div>
 
   5. **Trang 5 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` *(Dashboard đầu ra 03)***: Trực quan hóa cơ cấu thu – chi – dự phòng để so sánh hiệu quả sinh lời giữa **7** vùng thông qua 5 khối biểu đồ tương tác:
      - *Dải 5 thẻ KPI điều hành*: `THU NHẬP` (**1.353.898 triệu**, +1,8%), `LỢI NHUẬN` (**250.450 triệu**, +8,4%), `CHI PHÍ HOẠT ĐỘNG` (**-235.122 triệu**, +1,1%), `CHI PHÍ DỰ PHÒNG` (**-868.327 triệu**, +0,0%), `NĂNG SUẤT BÌNH QUÂN` (**4.100 triệu**, +6,0%).
@@ -298,23 +274,11 @@ $$\text{Tổng Điểm} = \text{Điểm Quy Mô } (diem\_qm) + \text{Điểm Tà
      - *Biểu đồ kết hợp Cột & Đường – Xu hướng lợi nhuận & hiệu quả sử dụng vốn*: Đối chiếu trực quan Lợi nhuận trước thuế (Cột) với Hệ số sinh lời trên vốn (Đường) của 7 vùng (dẫn đầu quy mô là Tây Nam Bộ **167.883** triệu với hiệu suất vốn **131,7%**; dẫn đầu hiệu suất vốn là Nam Trung Bộ **203,5%** với lợi nhuận **50.036** triệu; duy nhất Đông Nam Bộ âm **-48.763** triệu với hiệu suất vốn **-78,0%**).
      - *Khung Đánh giá hiệu quả & các điểm cần lưu ý*: Tóm tắt tự động 3 nhóm kết luận về khu vực dẫn đầu, cảnh báo vùng thua lỗ và cơ hội bán chéo bảo hiểm Bancas (mới chiếm **1,69%** TOI) cùng thu dịch vụ thẻ (**5,6%** TOI) khi thu lãi trong hạn đang chiếm tới **92,6%** còn chi phí dự phòng ăn mòn **64,1%** tổng thu nhập hoạt động.
 
-<div align="center">
-
-![Trang 5: Đánh giá hiệu quả kinh doanh vùng — Trực quan hóa cơ cấu thu – chi – dự phòng 7 vùng](images/danh-gia-kinh-doanh.png)
-
-</div>
-
   6. **Trang 6 – `ĐÁNH GIÁ HIỆU SUẤT ASM` *(Dashboard đầu ra 04)***: Biểu đồ hóa tương quan doanh số bán hàng và nợ xấu (NPL) để nhận diện các ASM đánh đổi rủi ro lấy quy mô qua 4 khối:
      - *Thẻ vinh danh Thành tích Quán quân tại các khu vực (Hạng #1)*: Hiển thị nổi bật hồ sơ nhân sự dẫn đầu (Hoàng Văn Nam – Vùng Đồng Bằng Sông Hồng, đạt **34 điểm** tại Tháng 2 và **36 điểm** tại Tháng 5 với Giải ngân mới **5.326 Tr.Đ**, Tỷ lệ duyệt hồ sơ **53,6%**, Nợ xấu NPL **13,9%** thấp hơn mức trung bình toàn hàng **17,3%**, Hệ số sinh lời vốn **109,9%**, Điểm Quy mô **23 điểm**, Điểm Tài chính **13 điểm**).
      - *Bảng xếp hạng toàn hàng (Leaderboard)*: Đối chiếu Top nhân sự dẫn đầu kèm chỉ số Tổng điểm, Điểm PTKD, Điểm FIN, Giải ngân mới, Tỷ lệ duyệt, Nợ xấu và Hiệu suất vốn.
      - *Biểu đồ kết hợp Cột & Đường – Chất lượng đội ngũ theo 7 vùng*: Đặt `Dư nợ cho vay khách hàng mới` (Cột: ĐB Sông Hồng **55.010** triệu, Tây Nam Bộ **35.955** triệu, Đông Nam Bộ **26.666** triệu, Tây Bắc Bộ **17.617** triệu, Đông Bắc Bộ **17.517** triệu, Bắc Trung Bộ **15.443** triệu, Nam Trung Bộ **11.635** triệu) cạnh đường `Tỷ lệ nợ xấu NPL` (Tây Nam Bộ **22,0%**, Đông Nam Bộ **19,9%**, Đông Bắc Bộ **18,1%**, Tây Bắc Bộ **15,9%**, Bắc Trung Bộ **14,7%**, ĐB Sông Hồng **13,9%**, Nam Trung Bộ **11,2%**).
      - *Khung Nhận xét quản trị đội ngũ Giám đốc vùng*: Phân tích sâu mô hình tăng trưởng an toàn tại ĐB Sông Hồng, nghịch lý quy mô – chất lượng giữa Tây Nam Bộ và Nam Trung Bộ, cùng cảnh báo đỏ tại Đông Nam Bộ.
-
-<div align="center">
-
-![Trang 6: Đánh giá hiệu suất ASM — Biểu đồ hóa tương quan doanh số bán hàng và nợ xấu NPL](images/danh-gia-asm.png)
-
-</div>
 
   7. **Trang 7 – `INSIGHT`**: Trang tổng hợp các phát hiện chiến lược và bảng hành động điều hành định lượng dành cho Ban Điều Hành (chi tiết tại Mục 7 – Phần C).
 
@@ -419,12 +383,6 @@ Mọi phép chia đều sử dụng `NULLIF(denominator, 0)` để tránh lỗi 
 
 Trên trang **`INSIGHT`** của Power BI, toàn bộ phát hiện từ kết quả kinh doanh vĩ mô 7 vùng đến cơ chế đánh giá vi mô của đội ngũ ASM được kết nối thành **4 tầng thông tin điều hành**:
 
-<div align="center">
-
-![Trang 7: Insight — Phân tích dòng chảy lợi nhuận, tác động suy giảm tại Đông Nam Bộ và Bảng hành động đề xuất](images/insight.png)
-
-</div>
-
 1. **Bốn thẻ chỉ số điều hành trọng yếu (KPI Cards):**
    - **Đóng góp lợi nhuận cao nhất – `67,0%`:** Tây Nam Bộ dẫn đầu toàn hàng, đóng góp +167,9 tỷ đồng trên tổng lợi nhuận hệ thống.
    - **Tỷ lệ nợ xấu đỉnh điểm – `22,0%`:** Tây Nam Bộ vượt xa ngưỡng an toàn bình quân toàn ngân hàng.
@@ -508,7 +466,7 @@ Dự án được tổ chức thành các thư mục chính:
 │   ├── tmp/            # Bảng tạm và thủ tục tính trung gian cho P&L (step 1-3) và Xếp hạng ASM (step 1-3)
 │   ├── fct/            # Bảng sự kiện chính và thủ tục điều phối: fct_pnl_allocation, fct_xephang_asm, sp_pipeline
 │   └── rpt/            # 3 khung nhìn báo cáo sạch: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
-├── images/             # Sơ đồ quy trình kỹ thuật 3 giai đoạn, kiến trúc kho dữ liệu và ảnh chụp 7 trang Power BI
+├── images/             # Sơ đồ quy trình kỹ thuật 3 giai đoạn và kiến trúc kho dữ liệu Star Schema
 ├── docs/               # Bộ tài liệu vận hành chi tiết: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
 ├── output/             # Sản phẩm báo cáo quản trị đầu ra trên Power BI (.pbix)
 ├── README.md           # Tài liệu dự án bằng tiếng Việt (mặc định)
