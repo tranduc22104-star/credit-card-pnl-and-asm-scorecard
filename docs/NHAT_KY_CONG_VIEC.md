@@ -5,6 +5,12 @@
 
 ## ĐÃ XONG
 ### 2026-11-09
+244. **Chuẩn hóa triệt để README song ngữ thành tài liệu độc lập, tách biệt hoàn toàn khỏi việc dẫn chiếu các trang Power BI**
+   - Loại bỏ toàn bộ lối viết tường thuật / dẫn chiếu phụ thuộc vào Power BI (như *'Trên trang mở đầu GIỚI THIỆU ĐỀ TÀI...'*, *'tương ứng từ Trang 3 đến Trang 6 trên Power BI'*, *'Tab tương ứng trên Power BI'*, *'7 trang báo cáo liên hoàn'*, *'Trang 1..7'*, *'trên trang INSIGHT'*, *'trên trang TỪ ĐIỂN DỮ LIỆU'*).
+   - Tái cấu trúc nội dung để hai bản README trở thành tài liệu dự án độc lập, hoàn chỉnh: người đọc có thể chọn mở riêng Power BI hoặc đọc riêng README trên GitHub mà vẫn nắm trọn vẹn 100% bối cảnh, 4 dashboard quản trị đầu ra, 3 nguồn dữ liệu, quy trình kỹ thuật 3 giai đoạn và các phát hiện điều hành sâu sắc.
+   - Đồng bộ chuẩn xác song ngữ giữa `README.md` và `README_eng.md`, vượt qua toàn bộ 3 công cụ kiểm soát: `check_toc.py` (ok), `check_int_pair.py` (0 lệch số >= 10), và `push_check.py` (22 tệp an toàn, 3.54 MiB).
+
+### 2026-11-09
 243. **Xóa bỏ hoàn toàn dải rìa trắng bên ngoài ảnh sơ đồ quy trình xử lý kỹ thuật (`images/quy-trinh.png`)**
    - Loại bỏ 27px dải trắng thừa ở cạnh phải và cạnh đáy (do bước crop trước để dư margin), đưa kích thước ảnh về chuẩn xác `2400 × 940 px` đúng theo viền khung container.
    - Áp dụng kênh trong suốt (Alpha channel) bo tròn 4 góc bên ngoài viền khung, giúp sơ đồ hiển thị liền mạch, không còn vệt trắng trên mọi nền trình duyệt/GitHub.
