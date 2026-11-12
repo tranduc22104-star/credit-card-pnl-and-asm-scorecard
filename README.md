@@ -71,47 +71,21 @@ Từ những vấn đề trên, dự án tập trung trả lời 5 câu hỏi qu
 
 ## 2. 🎯 Phân tích yêu cầu và thiết kế báo cáo
 
-### Làm rõ yêu cầu nghiệp vụ và xác định đầu ra
-Từ yêu cầu ban đầu, dự án xác định những thông tin Ban Điều Hành cần theo dõi về kết quả kinh doanh của từng vùng và hiệu quả làm việc của ASM. Trước hết, dự án xác định các báo cáo cần xây dựng, sau đó khảo sát dữ liệu để thiết kế cách tính và quy trình xử lý phù hợp. Báo cáo cần hỗ trợ cả việc tra cứu, đối soát số liệu lẫn phân tích qua biểu đồ.
+### Quá trình đi từ bối cảnh quản trị đến hệ thống báo cáo đầu ra
 
-### Bốn Dashboard đầu ra
+Từ yêu cầu ban đầu của Ban Điều Hành, dự án không đi thẳng vào dựng báo cáo mà trải qua quá trình phân tích nghiệp vụ để bóc tách bài toán thành 2 nhánh quản trị song song, từ đó xác định các thông tin cốt lõi và xây dựng hệ thống báo cáo phục vụ điều hành:
 
-Dự án xây dựng **4 Dashboard chính**, mỗi dashboard phục vụ một nhu cầu quản lý:
-
-| Mã số | Tên Dashboard | Nội dung và mục đích sử dụng |
-|:---:|---|---|
-| **01** | **BÁO CÁO KẾT QUẢ KINH DOANH** | **Tổng hợp 32 chỉ tiêu tài chính** về kết quả kinh doanh của **7 vùng** (cùng cột Hội sở và Tổng toàn hàng) để tra cứu, đối soát chi tiết. |
-| **02** | **BÁO CÁO XẾP HẠNG ASM** | **Tổng hợp điểm số và thứ hạng** của **74 – 84 nhân sự ASM** để hỗ trợ xét khen thưởng cá nhân làm tốt và chấn chỉnh nhân sự chưa đạt yêu cầu. |
-| **03** | **HIỆU QUẢ KINH DOANH THEO VÙNG** | **So sánh hiệu quả kinh doanh và mức đóng góp** giữa **7 vùng** (thu – chi – dự phòng, CIR, hiệu suất vốn) để xác định vùng nào đang kinh doanh hiệu quả. |
-| **04** | **ĐÁNH GIÁ NĂNG LỰC ASM** | **Đánh giá toàn diện năng lực ASM qua biểu đồ mạng nhện (Radar)** gồm 4 khối: nhóm Top 3 dẫn đầu, nhóm Top 3 nguy cơ, mặt bằng 7 vùng và gợi ý phân loại nhân sự 4 nhóm để hỗ trợ hoặc chấn chỉnh kịp thời. |
-
-### Từ yêu cầu ban đầu đến các phần báo cáo:
-
-Ngoài 4 dashboard, dự án còn có phần tổng quan, từ điển dữ liệu và phân tích chuyên sâu. Các phần này giúp người đọc hiểu bối cảnh, tra cứu cách tính và theo dõi những vấn đề cần xử lý:
-
-| Yêu cầu ban đầu | Nội dung cần làm rõ | Kết quả phân tích | Phần báo cáo đề xuất |
-|---|---|---|---|
-| **Định hình bài toán & chuẩn hóa thuật ngữ** | Người đọc cần nắm nhanh bối cảnh, nguồn dữ liệu, luồng xử lý và công thức của từng chỉ tiêu | Cần có tài liệu tổng quan toàn dự án và bộ từ điển dữ liệu giải thích rõ định nghĩa, công thức tính | • **Tổng quan bài toán**: Tóm tắt Bối cảnh nghiệp vụ, 4 Dashboard đầu ra, 3 Dữ liệu đầu vào và Quy trình xử lý kỹ thuật<br>• **Từ điển dữ liệu**: Chuẩn hóa **68 chỉ tiêu** thuộc 5 nhóm nghiệp vụ kèm công thức tính |
-| **Tra cứu & đối soát kết quả kinh doanh vùng** | Lãi lỗ từng vùng có tính chi phí Hội sở không? Làm sao tra cứu và đối soát từng khoản mục thu – chi? | Phải phân bổ đầy đủ chi phí gián tiếp (vốn, vận hành, dự phòng) về 7 vùng và trình bày dạng bảng ma trận phân cấp | • **Báo cáo kết quả kinh doanh vùng (Dashboard 01)**: Bảng ma trận **32 chỉ tiêu tài chính** trải ngang qua `HỘI SỞ`, 7 vùng và `Total`, tích hợp **21 measure định dạng màu nền & màu chữ tự động** |
-| **Tra cứu bảng điểm & xếp hạng nhân sự ASM** | Đánh giá ASM bằng những chỉ tiêu nào để vừa khuyến khích bán hàng vừa kiểm soát rủi ro địa bàn? | Kết hợp 4 chỉ tiêu Quy mô kinh doanh (`diem_qm`) và 4 chỉ tiêu Hiệu quả tài chính địa bàn (`diem_fin`) | • **Báo cáo xếp hạng ASM (Dashboard 02)**: Bảng điểm chi tiết của **74 – 84 ASM** (Tổng điểm, Tổng hạng, giá trị và thứ hạng từng chỉ tiêu thành phần) để khen thưởng và chấn chỉnh |
-| **Phân tích trực quan hiệu quả sinh lời 7 vùng** | Lợi nhuận hình thành từ đâu? Vùng nào sinh lời cao, vùng nào chi phí lớn hoặc đang thua lỗ? | Cần bóc tách bậc thang thu – chi – dự phòng, đối chiếu lợi nhuận với CIR và hệ số sinh lời trên vốn của 7 vùng | • **Hiệu quả kinh doanh theo vùng (Dashboard 03)**: Gồm **5 thẻ KPI**, biểu đồ thác nước **8 bước** hình thành LNTT, biểu đồ bong bóng **Lợi nhuận vs CIR**, biểu đồ **Lợi nhuận & Hiệu suất vốn**, và khung **Đánh giá hiệu quả** |
-| **Theo dõi kết quả và rủi ro của ASM** | ASM nào tăng trưởng tốt và giữ nợ xấu an toàn? Ai đang có dấu hiệu rủi ro cao? | Cần so sánh đa chiều giữa người làm tốt và người làm yếu trên cùng thước đo kinh doanh – rủi ro, bấm chuyển tab xem từng người ngay trên báo cáo | • **Đánh giá năng lực ASM (Dashboard 04)**: Gồm **4 khối trực quan**: Top 3 dẫn đầu, Top 3 nguy cơ (bấm chuyển tab xem từng người), so sánh mặt bằng **7 vùng**, và bảng **Gợi ý quản trị 4 nhóm nhân sự** |
-| **Tổng hợp kết quả và đề xuất điều hành** | Nguyên nhân nào khiến vùng bị lỗ hoặc ASM tụt hạng? Cần làm gì và ảnh hưởng tài chính dự kiến ra sao? | Cần xem kết quả kinh doanh của 7 vùng cùng với bảng điểm ASM để xác định vấn đề và thứ tự xử lý | • **Phân tích chuyên sâu & Đề xuất điều hành**: Gồm **4 chỉ số chính**, biểu đồ thể hiện phần đóng góp LNTT của 7 vùng, phân tích khoản lỗ **−48,8 tỷ** và mức phạt **+26 điểm** tại Đông Nam Bộ (khiến **84% ASM** trong vùng rơi vào nhóm cuối bảng), cùng **Bảng hành động đề xuất** |
-
-### Từ yêu cầu quản trị đến hệ thống báo cáo:
-
-| Bước chuyển đổi | Nhánh 1: Quản trị kết quả kinh doanh vùng (P&L) | Nhánh 2: Đánh giá hiệu quả hoạt động Quản lý vùng (ASM) |
+| Quá trình chuyển đổi | Nhánh 1: Quản trị kết quả kinh doanh vùng (P&L) | Nhánh 2: Đánh giá hiệu quả hoạt động Quản lý vùng (ASM) |
 |---|---|---|
-| **1. Yêu cầu ban đầu của Ban Điều Hành** | Theo dõi kết quả kinh doanh thẻ tín dụng tại 7 vùng | Đánh giá hiệu quả hoạt động đội ngũ Quản lý vùng (ASM) |
-| **2. Các nhóm thông tin cần có trong báo cáo** *(Phân tích nghiệp vụ & làm rõ yêu cầu)* | • Thu nhập hoạt động thẻ, chi phí thuần KDV, chi phí hoạt động, chi phí dự phòng<br>• Phân bổ chi phí Hội sở theo tiêu thức kinh tế<br>• Tỷ lệ CIR, biên lợi nhuận (Margin), hiệu suất sinh lời trên vốn và năng suất bình quân/SM | • **Chỉ tiêu quy mô bán hàng cá nhân**: Dư nợ cho vay mới, số thẻ phát sinh dư nợ (PSDN), tỷ lệ phê duyệt hồ sơ<br>• **Chỉ tiêu trách nhiệm tài chính & rủi ro địa bàn**: Tỷ lệ nợ xấu mở rộng (NPL), CIR vùng, Margin, Hiệu suất vốn, LNTT bình quân/SM |
-| **3. Hệ thống báo cáo quản trị đầu ra** | • **Chuẩn hóa & Từ điển**: Tổng quan bối cảnh và chuẩn hóa 68 chỉ tiêu nghiệp vụ<br>• **Báo cáo kết quả kinh doanh vùng**: Bảng tra cứu & đối soát 32 chỉ tiêu P&L<br>• **Hiệu quả kinh doanh theo vùng**: Biểu đồ hóa cơ cấu thu – chi – dự phòng 7 vùng | • **Báo cáo xếp hạng ASM**: Bảng tổng hợp điểm & thứ hạng 84 ASM<br>• **Đánh giá hiệu suất ASM**: Biểu đồ hóa tương quan doanh số & nợ xấu NPL, vinh danh Top 1 & Leaderboard<br>• **Phân tích chuyên sâu**: Phân tích các khoản thu chi, ảnh hưởng của điểm phạt theo vùng và đề xuất hành động |
+| **Bước 1: Bối cảnh & Đề bài ban đầu** | Ban Điều Hành cần theo dõi kết quả kinh doanh và lãi lỗ thực tế của mảng thẻ tín dụng tại 7 vùng | Cần đánh giá hiệu quả hoạt động và xếp hạng công bằng đội ngũ 74 – 84 Quản lý vùng (ASM) |
+| **Bước 2: Phân tích nghiệp vụ & Làm rõ thông tin** | • Cần bóc tách doanh thu hoạt động thẻ, chi phí thuần nguồn vốn, chi phí vận hành và chi phí dự phòng rủi ro.<br>• Phải phân bổ chi phí gián tiếp hạch toán tập trung tại Hội sở về 7 vùng theo các tiêu thức thực tế (dư nợ bình quân, số lượng thẻ và định biên nhân sự).<br>• Xác định bộ chỉ tiêu tài chính: Tỷ lệ CIR, biên lợi nhuận (Margin), hiệu suất vốn và năng suất bình quân/SM. | • **Chỉ tiêu quy mô bán hàng cá nhân**: Dư nợ cho vay mới (LTN), số thẻ phát sinh dư nợ (PSDN), tỷ lệ phê duyệt hồ sơ.<br>• **Chỉ tiêu trách nhiệm tài chính & rủi ro địa bàn**: Tỷ lệ nợ xấu mở rộng (NPL), CIR vùng, Margin, Hiệu suất sinh lời trên vốn, LNTT bình quân/SM (ngăn chặn việc chạy theo doanh số mà bỏ qua rủi ro tín dụng). |
+| **Bước 3: Giải pháp hệ thống báo cáo đầu ra** | • **Tổng quan & Từ điển dữ liệu**: Thống nhất bối cảnh và chuẩn hóa **68 chỉ tiêu** thuộc 5 nhóm nghiệp vụ kèm công thức tính.<br>• **Báo cáo kết quả kinh doanh vùng (Dashboard 01)**: Bảng tổng hợp **32 chỉ tiêu tài chính** trải ngang qua `HỘI SỞ`, 7 vùng và `Total`, tích hợp **21 measure định dạng màu tự động**.<br>• **Hiệu quả kinh doanh theo vùng (Dashboard 03)**: Gồm **5 thẻ KPI**, biểu đồ thác nước **8 bước** hình thành LNTT, biểu đồ **Lợi nhuận vs CIR**, và **Lợi nhuận & Hiệu suất sinh lời trên vốn**. | • **Báo cáo xếp hạng ASM (Dashboard 02)**: Bảng điểm chi tiết của **74 – 84 ASM** kết hợp 4 chỉ tiêu Quy mô (`diem_qm`) và 4 chỉ tiêu Tài chính (`diem_fin`) để khen thưởng người làm tốt và hỗ trợ người còn yếu.<br>• **Đánh giá năng lực ASM (Dashboard 04)**: Biểu đồ Radar 4 trục gồm Top 3 dẫn đầu, Top 3 nguy cơ (chuyển tab xem từng người), mặt bằng **7 vùng**, và bảng gợi ý quản trị 4 nhóm nhân sự.<br>• **Kết quả kinh doanh toàn quốc**: Gồm **4 chỉ số chính**, biểu đồ thác nước LNTT 7 vùng, bóc tách khoản lỗ **−48,8 tỷ** và mức phạt **+26 điểm** tại Đông Nam Bộ (khiến **84% ASM** rơi vào nhóm cuối bảng), cùng kế hoạch hành động đề xuất. |
 
-### Hai nhóm chỉ tiêu được dùng để làm gì?
-- **Nhóm chỉ tiêu kết quả kinh doanh vùng (32 chỉ tiêu P&L, NPL vùng, CIR, Margin, Hiệu suất trên vốn):** Cho thấy kết quả tài chính của từng vùng sau khi phân bổ chi phí Hội sở. Từ đó, Ban Điều Hành có thêm căn cứ để phân bổ vốn, giao chỉ tiêu và kiểm soát chi phí.
-- **Nhóm chỉ tiêu đánh giá quản lý vùng (8 chỉ tiêu xếp hạng ASM trên 2 trụ cột Quy mô & Tài chính):** Kết hợp kết quả bán hàng cá nhân với chất lượng tín dụng và hiệu quả tài chính của địa bàn. Cách đánh giá này hạn chế việc chạy theo doanh số mà bỏ qua rủi ro tín dụng.
+### Ý nghĩa thực tiễn của hai nhóm chỉ tiêu quản trị
+- **Nhóm chỉ tiêu kết quả kinh doanh vùng (32 chỉ tiêu P&L, NPL vùng, CIR, Margin, Hiệu suất trên vốn)**: Phản ánh thực chất hiệu quả tài chính sau khi phân bổ đầy đủ chi phí Hội sở, giúp Ban Điều Hành có số liệu rõ ràng để giao vốn, giao chỉ tiêu và kiểm soát chi tiêu.
+- **Nhóm chỉ tiêu đánh giá quản lý vùng (8 chỉ tiêu xếp hạng ASM trên 2 trụ cột Quy mô & Tài chính)**: Gắn kết quả bán hàng cá nhân với tỷ lệ nợ xấu và hiệu quả tài chính của cả vùng, giúp tăng trưởng lành mạnh mà không bỏ quên rủi ro.
 
 ---
-
 ## 3. 🔍 Khảo sát dữ liệu và đánh giá mức độ đáp ứng
 
 ### Dữ liệu đầu vào cần thu thập
@@ -127,12 +101,12 @@ Ngân hàng chưa có sẵn một bảng dữ liệu tổng hợp để xây d�
 
 ### Dữ liệu đáp ứng yêu cầu đến đâu?
 
-| Dashboard cần xây dựng | Thông tin cần có | Nguồn dữ liệu đáp ứng | Đánh giá mức độ đáp ứng và cấp dữ liệu |
+| Dashboard cần xây dựng | Thông tin cần có | Nguồn dữ liệu đáp ứng | Đặc điểm dữ liệu & Cách tổng hợp |
 |---|---|---|---|
-| **01. Báo cáo kết quả kinh doanh** & **03. Đánh giá hiệu quả kinh doanh vùng** | Thu nhập, chi phí chi tiết, mã tỉnh, mã tài khoản GL, tiêu thức phân bổ Hội sở | `1. Dữ liệu hạch toán mỗi tháng (GL)` & `2. Dữ liệu sao kê thẻ mỗi tháng` | **Đáp ứng đầy đủ**: 62.953 dòng GL có mã tỉnh để gán trực tiếp; 181 dòng chi phí Hội sở (mã `'00'`) được phân bổ chính xác về 7 vùng nhờ các tiêu thức dư nợ và số lượng thẻ tính từ 2.932.922 dòng sao kê |
-| **Đo lường nợ xấu (NPL) & kiểm soát rủi ro vùng** | Dư nợ 5 nhóm nợ, nợ write-off lũy kế theo chi nhánh và vùng | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | **Thực hiện ở cấp vùng**: Dữ liệu gắn mã chi nhánh nên tổng hợp được chính xác dư nợ nhóm 1..5 và nợ write-off cho 7 vùng trong 5 tháng |
-| **02. Báo cáo xếp hạng ASM** & **04. Đánh giá năng lực ASM** (Trụ cột Quy mô) | Doanh số giải ngân mới, số thẻ PSDN, tỷ lệ duyệt hồ sơ của từng ASM | `3. Dữ liệu kết quả sale của ASM mỗi tháng` (`kpi_asm_data`) | **Đáp ứng ở cấp cá nhân**: Có đầy đủ dữ liệu theo từng tháng của 74 đến 84 quản lý vùng để xếp hạng trực tiếp từng cá nhân |
-| **Đánh giá nợ xấu & hiệu quả tài chính trong thẻ điểm ASM** (Trụ cột Tài chính & Rủi ro) | Tỷ lệ nợ xấu NPL, CIR, Margin, Hiệu suất vốn, LNTT bình quân theo ASM | Kết hợp kết quả cấp vùng từ `fact_txn_month` và `fact_kpi_month` | **Áp dụng ở cấp vùng cho các ASM cùng địa bàn**: Do hợp đồng thẻ không gắn mã nhân sự ASM, các chỉ tiêu nợ xấu và tài chính được tính ở cấp vùng rồi gắn chung cho các ASM thuộc vùng đó để ràng buộc trách nhiệm địa bàn |
+| **01. Báo cáo kết quả kinh doanh** & **03. Đánh giá hiệu quả kinh doanh vùng** | Thu nhập, chi phí chi tiết, mã tỉnh, mã tài khoản GL, tiêu thức phân bổ Hội sở | `1. Dữ liệu hạch toán mỗi tháng (GL)` & `2. Dữ liệu sao kê thẻ mỗi tháng` | Gán trực tiếp 62.953 dòng GL có mã tỉnh về 7 vùng; phân bổ 181 dòng chi phí chung Hội sở (mã `'00'`) dựa trên tỷ trọng dư nợ và số lượng thẻ tính từ 2.932.922 dòng sao kê |
+| **Đo lường nợ xấu (NPL) & kiểm soát rủi ro vùng** | Dư nợ 5 nhóm nợ, nợ write-off lũy kế theo chi nhánh và vùng | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | Dữ liệu gắn mã chi nhánh nên tổng hợp chính xác dư nợ nhóm 1..5 và nợ write-off cho 7 vùng trong 5 tháng |
+| **02. Báo cáo xếp hạng ASM** & **04. Đánh giá năng lực ASM** (Trụ cột Quy mô) | Doanh số giải ngân mới, số thẻ PSDN, tỷ lệ duyệt hồ sơ của từng ASM | `3. Dữ liệu kết quả sale của ASM mỗi tháng` (`kpi_asm_data`) | Dữ liệu ghi nhận chi tiết theo từng tháng của 74 đến 84 quản lý vùng để chấm điểm và xếp hạng trực tiếp từng cá nhân |
+| **Đánh giá nợ xấu & hiệu quả tài chính trong thẻ điểm ASM** (Trụ cột Tài chính & Rủi ro) | Tỷ lệ nợ xấu mở rộng (NPL), CIR, Margin, Hiệu suất sinh lời trên vốn, LNTT bình quân/SM | Kết hợp kết quả cấp vùng từ `fact_txn_month` và `fact_kpi_month` | Hợp đồng thẻ không lưu mã nhân sự ASM, vì vậy các chỉ tiêu tài chính và nợ xấu được tính ở cấp vùng rồi áp dụng chung cho các ASM thuộc vùng đó để gắn trách nhiệm địa bàn |
 
 ### Ba vấn đề trong dữ liệu đầu vào:
 1. **Dữ liệu sao kê thẻ có dung lượng lớn, không phù hợp để xử lý bằng bảng tính thông thường:** Tệp dữ liệu gồm **2.932.922 dòng**, có dung lượng **117,2 MB**, khó xử lý bằng bảng tính thông thường, nên cần nạp vào PostgreSQL.
@@ -147,7 +121,7 @@ Ngân hàng chưa có sẵn một bảng dữ liệu tổng hợp để xây d�
 
 ### 4.1. Xây dựng logic phân bổ thu nhập và chi phí (Lập Báo cáo P&L 7 vùng)
 
-Câu hỏi đặt ra là: *Làm thế nào tính được kết quả kinh doanh của từng vùng khi nhiều khoản thu và chi phí được hạch toán tập trung tại Hội sở?*
+Thách thức lớn nhất khi lập báo cáo P&L vùng là xử lý các khoản thu và chi phí lớn hạch toán tập trung tại Hội sở thay vì phát sinh tại chi nhánh.
 
 Quy trình xây dựng cách phân bổ gồm 9 bước:
 1. Phân tích toàn bộ 63.134 bút toán trong **Dữ liệu hạch toán mỗi tháng (GL)**.
@@ -182,23 +156,23 @@ $$V_{\text{tháng } M} = V_{\text{lũy kế } M} - V_{\text{lũy kế } (M-1)}$$
 
 ### 4.2. Xây dựng bộ chỉ tiêu đánh giá hiệu quả hoạt động Quản lý vùng (ASM)
 
-Câu hỏi đặt ra là: *Chỉ nhìn vào doanh số giải ngân hoặc số thẻ mở mới đã đủ để đánh giá hiệu quả của ASM hay chưa? Cách đánh giá đó có phản ánh được lợi nhuận và chất lượng tín dụng không?*
+Nếu chỉ nhìn vào doanh số giải ngân hoặc số thẻ mở mới, việc đánh giá sẽ kích thích ASM chạy theo số lượng mà bỏ qua khâu thẩm định rủi ro. Hệ thống đánh giá cần phản ánh đồng thời cả năng lực bán hàng, hiệu quả sinh lời và chất lượng tín dụng trên địa bàn.
 
 **Bộ chỉ tiêu kết hợp kết quả bán hàng với hiệu quả tài chính và rủi ro của địa bàn:**
 Dự án kết hợp **Dữ liệu kết quả sale của ASM mỗi tháng** với kết quả P&L và nợ xấu của từng vùng để xây dựng bộ đánh giá gồm **8 chỉ tiêu**, chia thành **2 trụ cột**, mỗi trụ cột có 4 chỉ tiêu. Mỗi chỉ tiêu được xếp hạng riêng từ 1 đến $N$:
-- **Trụ cột 1: Kết quả kinh doanh và kiểm soát chất lượng tăng trưởng (`diem_qm` – Điểm Quy mô / PTKD):** Gồm **3 chỉ tiêu bán hàng cá nhân** (`Dư nợ cho vay mới bình quân`, `Số thẻ phát sinh dư nợ bình quân – PSDN`, `Tỷ lệ phê duyệt hồ sơ`) lấy từ *Dữ liệu kết quả sale của ASM mỗi tháng* cùng **1 chỉ tiêu kiểm soát chất lượng tín dụng địa bàn** (`Tỷ lệ rủi ro tín dụng mở rộng – NPL vùng`) lấy từ *Dữ liệu sao kê thẻ mỗi tháng*. **Tỷ lệ phê duyệt cao chưa chắc đã tốt.** Tỷ lệ này có thể cao vì hồ sơ khách hàng tốt, nhưng cũng có thể do khâu thẩm định được nới lỏng. Vì vậy, dự án đánh giá tỷ lệ duyệt cùng với NPL để cân bằng giữa tăng trưởng và kiểm soát rủi ro.
-- **Trụ cột 2: Hiệu quả tài chính địa bàn (`diem_fin` – Điểm Tài chính / FIN):** Gồm **4 chỉ tiêu cấp vùng** tính từ báo cáo P&L sau phân bổ (`Hệ số chi phí/thu nhập – CIR`, `Biên lợi nhuận – Margin`, `Hệ số sinh lời trên vốn`, `Lợi nhuận trước thuế bình quân/SM`). Sao kê thẻ chỉ có mã chi nhánh, không có mã ASM. Vì vậy, 4 chỉ tiêu tài chính được tính ở cấp vùng và dùng chung cho các ASM trong vùng, qua đó gắn kết quả cá nhân với hiệu quả chung của địa bàn.
+- **Trụ cột 1: Kết quả kinh doanh và kiểm soát chất lượng tăng trưởng (`diem_qm` – Điểm Quy mô / PTKD):** Gồm **3 chỉ tiêu bán hàng cá nhân** (`Dư nợ cho vay mới bình quân`, `Số thẻ phát sinh dư nợ bình quân – PSDN`, `Tỷ lệ phê duyệt hồ sơ`) lấy từ *Dữ liệu kết quả sale của ASM mỗi tháng* cùng **1 chỉ tiêu kiểm soát chất lượng tín dụng địa bàn** (`Tỷ lệ nợ xấu mở rộng (NPL) – NPL vùng`) lấy từ *Dữ liệu sao kê thẻ mỗi tháng*. **Tỷ lệ phê duyệt cao chưa chắc đã tốt.** Tỷ lệ này có thể cao vì hồ sơ khách hàng tốt, nhưng cũng có thể do khâu thẩm định được nới lỏng. Vì vậy, dự án đánh giá tỷ lệ duyệt cùng với NPL để cân bằng giữa tăng trưởng và kiểm soát rủi ro.
+- **Trụ cột 2: Hiệu quả tài chính địa bàn (`diem_fin` – Điểm Tài chính / FIN):** Gồm **4 chỉ tiêu cấp vùng** tính từ báo cáo P&L sau phân bổ (`Hệ số chi phí/thu nhập – CIR`, `Biên lợi nhuận – Margin`, `Hiệu suất sinh lời trên vốn`, `LNTT bình quân/SM`). Sao kê thẻ chỉ có mã chi nhánh, không có mã ASM. Vì vậy, 4 chỉ tiêu tài chính được tính ở cấp vùng và dùng chung cho các ASM trong vùng, qua đó gắn kết quả cá nhân với hiệu quả chung của địa bàn.
 
 **Cách tính tỷ lệ rủi ro tín dụng mở rộng (bao gồm nợ đã xử lý rủi ro ngoại bảng):**
 Trong Stored Procedure SQL (`report_id = 204`), chỉ tiêu tỷ lệ nợ xấu mở rộng được tính như sau:
 
-$$\text{Tỷ lệ rủi ro tín dụng mở rộng} = \frac{\text{Dư nợ nhóm 3–5} + \text{Write-off lũy kế}}{\text{Tổng dư nợ} + \text{Write-off lũy kế}} \times 100$$
+$$\text{Tỷ lệ nợ xấu mở rộng (NPL)} = \frac{\text{Dư nợ nhóm 3–5} + \text{Write-off lũy kế}}{\text{Tổng dư nợ} + \text{Write-off lũy kế}} \times 100$$
 
 Khác với tỷ lệ NPL nội bảng thông thường (chỉ tính dư nợ nhóm 3–5 trên tổng dư nợ nội bảng), đây là **chỉ tiêu do dự án xây dựng** để tính cả phần nợ xấu đã xóa khỏi bảng cân đối kế toán (*write-off lũy kế* từ đầu năm). Cách tính này ngăn chặn hiện tượng tỷ lệ nợ xấu nội bảng giảm giả tạo sau khi ngân hàng thực hiện bút toán xử lý rủi ro ngoại bảng. *Giới hạn cần lưu ý:* Chỉ tiêu bao gồm cả tổn thất từ các kỳ trước. Vì vậy, vùng có danh mục thẻ lâu năm có thể có số dư write-off lớn hơn vùng mới mở rộng.
 
 | Trụ cột 1: Kết quả kinh doanh & Kiểm soát chất lượng tăng trưởng (`diem_qm`) | Trụ cột 2: Hiệu quả tài chính địa bàn (`diem_fin`) |
 |---|---|
-| • **Dư nợ cho vay mới bình quân (`ltn_avg`)** *(Càng cao càng tốt)*<br>• **Số thẻ phát sinh dư nợ bình quân (`psdn_avg`)** *(Càng cao càng tốt)*<br>• **Tỷ lệ phê duyệt hồ sơ bình quân (`approval_rate_avg`)** *(Đánh giá kèm rủi ro)*<br>• **Tỷ lệ rủi ro tín dụng mở rộng (`npl_truoc_wo_luy_ke`)** *(Càng thấp càng tốt — bao gồm nợ đã xử lý rủi ro ngoại bảng)* | • **Tỷ lệ chi phí / thu nhập – `CIR`** *(Càng thấp càng tốt)*<br>• **Biên lợi nhuận – `Margin`** *(Càng cao càng tốt)*<br>• **Hệ số hiệu quả vốn (`hs_von`)** *(Càng cao càng tốt)*<br>• **Lợi nhuận bình quân / Quản lý (`hs_nhan_su`)** *(Càng cao càng tốt — gắn trách nhiệm quản trị với địa bàn)* |
+| • **Dư nợ cho vay mới bình quân (`ltn_avg`)** *(Càng cao càng tốt)*<br>• **Số thẻ phát sinh dư nợ bình quân (`psdn_avg`)** *(Càng cao càng tốt)*<br>• **Tỷ lệ phê duyệt hồ sơ bình quân (`approval_rate_avg`)** *(Đánh giá kèm rủi ro)*<br>• **Tỷ lệ nợ xấu mở rộng (NPL) (`npl_truoc_wo_luy_ke`)** *(Càng thấp càng tốt — bao gồm nợ đã xử lý rủi ro ngoại bảng)* | • **Tỷ lệ chi phí / thu nhập – `CIR`** *(Càng thấp càng tốt)*<br>• **Biên lợi nhuận – `Margin`** *(Càng cao càng tốt)*<br>• **Hiệu suất sinh lời trên vốn (`hs_von`)** *(Càng cao càng tốt)*<br>• **LNTT bình quân/SM (`hs_nhan_su`)** *(Càng cao càng tốt — gắn trách nhiệm quản trị với địa bàn)* |
 
 **Bảng chi tiết 8 chỉ tiêu đánh giá quản lý vùng (ASM):**
 
@@ -210,8 +184,8 @@ Khác với tỷ lệ NPL nội bảng thông thường (chỉ tính dư nợ nh
 | **Tỷ lệ nợ xấu mở rộng (NPL)** | Kiểm soát rủi ro tín dụng | Phản ánh chất lượng tín dụng thực chất của địa bàn | `2. Dữ liệu sao kê thẻ mỗi tháng` | Càng thấp càng tốt | Cấp vùng | Hợp đồng thẻ không có mã ASM nên tính chung theo vùng |
 | **Hệ số CIR của vùng** | Hiệu quả kiểm soát chi phí | Tỷ lệ tổng chi phí hoạt động trên tổng thu nhập | `1. Dữ liệu hạch toán mỗi tháng (GL)` | Càng thấp càng tốt | Cấp vùng | Phụ thuộc vào tiêu thức phân bổ chi phí từ Hội sở |
 | **Biên lợi nhuận (Margin)** | Khả năng sinh lời trên thu nhập | Cho biết tỷ suất sinh lời ròng từ doanh thu thẻ | `1. Dữ liệu hạch toán mỗi tháng (GL)` | Càng cao càng tốt | Cấp vùng | Nhạy cảm với biến động chi phí vốn điều chuyển nội bộ |
-| **Hệ số hiệu quả vốn** | Hiệu suất sinh lời trên vốn | Mức lợi nhuận tạo ra trên chi phí thuần KDV | `1. Dữ liệu GL` & `2. Sao kê thẻ` | Càng cao càng tốt | Cấp vùng | Phản ánh hiệu quả sử dụng vốn tổng hợp toàn vùng |
-| **Lợi nhuận bình quân/SM** | Năng suất tài chính bình quân | Lợi nhuận trước thuế bình quân trên mỗi Sale Manager | `1. Dữ liệu GL` & Định biên nhân sự | Càng cao càng tốt | Cấp vùng | Tính bình quân theo số lượng định biên SM của vùng |
+| **Hiệu suất sinh lời trên vốn** | Hiệu suất sinh lời trên vốn | Mức lợi nhuận tạo ra trên chi phí thuần KDV | `1. Dữ liệu GL` & `2. Sao kê thẻ` | Càng cao càng tốt | Cấp vùng | Phản ánh hiệu quả sử dụng vốn tổng hợp toàn vùng |
+| **LNTT bình quân/SM** | Năng suất tài chính bình quân | Lợi nhuận trước thuế bình quân trên mỗi Sale Manager | `1. Dữ liệu GL` & Định biên nhân sự | Càng cao càng tốt | Cấp vùng | Tính bình quân theo số lượng định biên SM của vùng |
 
 *Cách tổng hợp điểm giữa các chỉ tiêu có đơn vị đo khác nhau:*
 Vì 8 chỉ tiêu sử dụng các đơn vị khác nhau (triệu đồng, số thẻ và tỷ lệ phần trăm), dự án xếp hạng riêng từng chỉ tiêu:
@@ -261,24 +235,24 @@ Dữ liệu được xử lý qua 3 giai đoạn, từ các file Excel đầu v�
   Power BI kết nối trực tiếp với kho dữ liệu bằng DirectQuery. Báo cáo sử dụng **82 measure DAX**, trong đó có các measure tính KPI, **21** measure định dạng màu nền `PnlTable_BgColor_*` và màu chữ `PnlTable_FontColor_*` cho bảng P&L, cùng các visual HTML Content và từ điển gồm **68** chỉ tiêu. Giao diện sử dụng tông màu **Executive Orange / Orange Tree**. Các phần chính gồm:
 
   1. **Chuẩn hóa & Từ điển dữ liệu**: Chuẩn hóa **68** chỉ tiêu và biến dữ liệu thành 5 nhóm nghiệp vụ (`0. Định danh & Phân cấp`, `1. Báo cáo Lãi Lỗ (P&L)`, `2. Chỉ số Tài chính & Nhân sự`, `3. Tiêu thức Phân bổ Hội sở`, `4. Đánh giá & Xếp hạng ASM`), hiển thị rõ định nghĩa, đơn vị tính, ý nghĩa nghiệp vụ và công thức tính.
-  2. **Báo cáo kết quả kinh doanh vùng *(Dashboard 01)***: Bảng ma trận chứa đầy đủ **32** chỉ tiêu tài chính, nhân sự và tỷ số hiệu quả để tra cứu và đối soát số liệu của `HỘI SỞ`, **7** vùng kinh doanh (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`) và cột `Total`. Hệ thống định dạng có điều kiện tự động tô nổi bật dòng `1. Lợi nhuận trước thuế` (nền cam đậm, chữ trắng/vàng kim), các dòng tổng cấp 1 và nhóm cấp 2 (nền tối, chữ sáng tương phản cao, số âm màu hồng phấn sáng), và các dòng chi tiết con (nền sáng, số âm màu đỏ tươi, số 0 màu xám).
+  2. **Báo cáo kết quả kinh doanh vùng *(Dashboard 01)***: Bảng tổng hợp đầy đủ **32** chỉ tiêu tài chính, nhân sự và tỷ số hiệu quả để tra cứu và đối soát số liệu của `HỘI SỞ`, **7** vùng kinh doanh (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`) và cột `Total`. Hệ thống định dạng có điều kiện tự động tô nổi bật dòng `1. Lợi nhuận trước thuế` (nền cam đậm, chữ trắng/vàng kim), các dòng tổng cấp 1 và nhóm cấp 2 (nền tối, chữ sáng tương phản cao, số âm màu hồng phấn sáng), và các dòng chi tiết con (nền sáng, số âm màu đỏ tươi, số 0 màu xám).
 
-  3. **Báo cáo xếp hạng ASM *(Dashboard 02)***: Bảng tổng hợp điểm và thứ hạng chi tiết của toàn bộ đội ngũ ASM (**74 – 84** nhân sự theo tháng) để khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu. Cung cấp bộ lọc linh hoạt theo tháng, theo vùng để tra cứu `Tổng Điểm`, `Tổng Hạng` cùng giá trị thực tế và thứ hạng của từng chỉ tiêu thành phần (`Dư Nợ Mới`, `Hạng Dư Nợ Mới`, `PSDN`, `Hạng PSDN`, `Tỷ Lệ Duyệt`, `Hạng Tỷ Lệ Duyệt`, `Tỷ Lệ Nợ Xấu`...).
+  3. **Báo cáo xếp hạng ASM *(Dashboard 02)***: Bảng tổng hợp điểm và thứ hạng chi tiết của toàn bộ đội ngũ ASM (**74 – 84** nhân sự theo tháng) để khen thưởng cá nhân làm tốt và hỗ trợ nhân sự còn yếu. Cung cấp bộ lọc linh hoạt theo tháng, theo vùng để tra cứu `Tổng Điểm`, `Tổng Hạng` cùng giá trị thực tế và thứ hạng của từng chỉ tiêu thành phần (`Dư Nợ Mới`, `Hạng Dư Nợ Mới`, `PSDN`, `Hạng PSDN`, `Tỷ Lệ Duyệt`, `Hạng Tỷ Lệ Duyệt`, `Tỷ Lệ Nợ Xấu`...).
 
   4. **Hiệu quả kinh doanh theo vùng *(Dashboard 03)***: Dashboard này dùng biểu đồ thu – chi – dự phòng để so sánh hiệu quả kinh doanh của **7** vùng. Nội dung gồm 5 phần:
      - *Dải 5 thẻ KPI điều hành*: `THU NHẬP` (**1.353.898 triệu**, +1,8%), `LỢI NHUẬN` (**250.450 triệu**, +8,4%), `CHI PHÍ HOẠT ĐỘNG` (**-235.122 triệu**, +1,1%), `CHI PHÍ DỰ PHÒNG` (**-868.327 triệu**, +0,0%), `NĂNG SUẤT BÌNH QUÂN` (**4.100 triệu**, +6,0%).
-     - *Biểu đồ thác nước (Waterfall) – Bóc tách cơ cấu hình thành Lợi nhuận trước thuế*: Thể hiện 4 bậc nguồn thu cộng vào (`1. Thu lãi trong hạn` **1.676.835** triệu, `2. Phí bảo hiểm (Bancas)` **30.653** triệu, `3. Thu dịch vụ thẻ` **101.481** triệu, `4. Thu lãi quá hạn` **1.497** triệu) và 3 bậc chi phí giảm trừ (`5. Chi phí vốn & HĐ khác` **-456.568** triệu, `6. Chi phí hoạt động` **-235.122** triệu, `7. Chi phí dự phòng` **-868.327** triệu) tạo thành `8. Lợi nhuận trước thuế` (**250.450** triệu).
+     - *Biểu đồ thác nước (Waterfall) – Từng bước hình thành Lợi nhuận trước thuế*: Thể hiện 4 bậc nguồn thu cộng vào (`1. Thu lãi trong hạn` **1.676.835** triệu, `2. Phí bảo hiểm (Bancas)` **30.653** triệu, `3. Thu dịch vụ thẻ` **101.481** triệu, `4. Thu lãi quá hạn` **1.497** triệu) và 3 bậc chi phí giảm trừ (`5. Chi phí vốn & HĐ khác` **-456.568** triệu, `6. Chi phí hoạt động` **-235.122** triệu, `7. Chi phí dự phòng` **-868.327** triệu) tạo thành `8. Lợi nhuận trước thuế` (**250.450** triệu).
      - *Biểu đồ bong bóng – So sánh hiệu quả sinh lời & chi phí 7 vùng*: Trục Y là Lợi nhuận trước thuế, Trục X là Tỷ lệ Chi phí / Thu nhập (CIR), kích thước bong bóng thể hiện số lượng Sale Manager của vùng.
-     - *Biểu đồ kết hợp Cột & Đường – Lợi nhuận và hiệu suất vốn*: So sánh Lợi nhuận trước thuế (Cột) với Hệ số sinh lời trên vốn (Đường) của 7 vùng (dẫn đầu quy mô là Tây Nam Bộ **167.883** triệu với hiệu suất vốn **131,7%**; dẫn đầu hiệu suất vốn là Nam Trung Bộ **203,5%** với lợi nhuận **50.036** triệu; duy nhất Đông Nam Bộ âm **-48.763** triệu với hiệu suất vốn **-78,0%**).
+     - *Biểu đồ kết hợp Cột & Đường – Lợi nhuận và hiệu suất vốn*: So sánh Lợi nhuận trước thuế (Cột) với Hiệu suất sinh lời trên vốn (Đường) của 7 vùng (dẫn đầu quy mô là Tây Nam Bộ **167.883** triệu với hiệu suất vốn **131,7%**; dẫn đầu hiệu suất vốn là Nam Trung Bộ **203,5%** với lợi nhuận **50.036** triệu; duy nhất Đông Nam Bộ âm **-48.763** triệu với hiệu suất vốn **-78,0%**).
      - *Khung Đánh giá hiệu quả và điểm cần lưu ý*: Tóm tắt 3 nội dung: vùng có kết quả tốt, vùng đang thua lỗ và cơ hội bán chéo bảo hiểm Bancas (mới chiếm **1,69%** TOI) cùng thu dịch vụ thẻ (**5,6%** TOI) khi thu lãi trong hạn đang chiếm tới **92,6%** còn chi phí dự phòng ăn mòn **64,1%** tổng thu nhập hoạt động.
 
-  5. **Đánh giá năng lực ASM *(Dashboard 04)***: Dashboard này dùng biểu đồ mạng nhện (Radar) để so sánh toàn diện năng lực của từng Quản lý vùng (ASM) trên 4 mặt: Doanh số giải ngân mới (LTN), Khách hàng phát sinh dư nợ (PSDN), Tỷ lệ duyệt thẻ và An toàn nợ xấu (NPL). Toàn bộ trang gồm 4 khối trực quan:
-     - *Khối 1 – Top 3 ASM dẫn đầu (Quán quân, Á quân, Top 3)*: Tích hợp 3 nút tab ngay trên biểu đồ để người xem bấm chuyển qua lại giữa Top 1, Top 2 và Top 3. Mỗi tab hiển thị biểu đồ mạng nhện 4 trục đối chiếu với mức bình quân chung, đi kèm 4 thẻ chỉ số lớn (Doanh số LTN, KH PSDN, Tỷ lệ duyệt, Nợ xấu) và dòng nhận xét chuyên môn. Ví dụ tại Tháng 2, Quán quân Hoàng Văn Nam (vùng Đồng Bằng Sông Hồng) dẫn đầu với Doanh số LTN **2.901 triệu**, phát triển **176 khách hàng mới**, Tỷ lệ duyệt hồ sơ **47,2%** và kiểm soát Nợ xấu an toàn ở mức **12,8%** (vượt trội so với mức bình quân toàn hàng lần lượt là **986 triệu**, **72 khách hàng**, **41,8%** và **15,5%**).
-     - *Khối 2 – Top 3 ASM nhóm nguy cơ (Đội sổ, Áp chót, Hạng 3 cuối)*: Sử dụng thanh tab tương tự Khối 1 để chỉ ra ngay 3 nhân sự có kết quả thấp nhất hoặc nợ xấu cao nhất, giúp cấp quản lý phát hiện điểm nghẽn để đào tạo hoặc chấn chỉnh kịp thời.
+  5. **Đánh giá năng lực ASM *(Dashboard 04)***: Dashboard này dùng biểu đồ mạng nhện (Radar) để so sánh năng lực của từng Quản lý vùng (ASM) trên 4 mặt: Doanh số giải ngân mới (LTN), Khách hàng phát sinh dư nợ (PSDN), Tỷ lệ duyệt thẻ và An toàn nợ xấu (NPL). Toàn bộ trang gồm 4 khối trực quan:
+     - *Khối 1 – Top 3 ASM dẫn đầu (Quán quân, Á quân, Top 3)*: Tích hợp 3 nút tab ngay trên biểu đồ để người xem bấm chuyển qua lại giữa Top 1, Top 2 và Top 3. Mỗi tab hiển thị biểu đồ mạng nhện 4 trục đối chiếu với mức bình quân chung, đi kèm 4 thẻ chỉ số lớn (Doanh số LTN, KH PSDN, Tỷ lệ duyệt, Nợ xấu) và lời nhận xét ngắn gọn. Ví dụ tại Tháng 2, Quán quân Hoàng Văn Nam (vùng Đồng Bằng Sông Hồng) dẫn đầu với Doanh số LTN **2.901 triệu**, phát triển **176 khách hàng mới**, Tỷ lệ duyệt hồ sơ **47,2%** và kiểm soát Nợ xấu an toàn ở mức **12,8%** (vượt trội so với mức bình quân toàn quốc lần lượt là **986 triệu**, **72 khách hàng**, **41,8%** và **15,5%**).
+     - *Khối 2 – Top 3 ASM nhóm nguy cơ (Đội sổ, Áp chót, Hạng 3 cuối)*: Sử dụng thanh tab tương tự Khối 1 để chỉ ra ngay 3 nhân sự có kết quả thấp nhất hoặc nợ xấu cao nhất, giúp cấp quản lý nhìn rõ điểm yếu để kèm cặp hoặc đào tạo lại kịp thời.
      - *Khối 3 – So sánh mặt bằng 7 vùng*: Biểu đồ mạng nhện đặt kết quả của 7 khu vực cạnh nhau, giúp nhận diện rõ sự chênh lệch về năng suất và chất lượng tín dụng giữa các địa bàn.
      - *Khối 4 – Nhận xét và gợi ý quản trị*: Phân loại đội ngũ ASM thành 4 nhóm năng lực (nhóm dẫn dắt, nhóm tiềm năng, nhóm cần cải thiện và nhóm rủi ro cao), đi kèm các khuyến nghị hành động cụ thể cho Ban Điều Hành.
 
-  6. **Phân tích chuyên sâu & Căn cứ điều hành**: Phân tích đa chiều các phát hiện chiến lược và bảng hành động điều hành định lượng dành cho Ban Điều Hành (trình bày chi tiết tại Mục 6 – Phần C).
+  6. **Kết quả kinh doanh toàn quốc & Kế hoạch hành động**: Tổng hợp các phát hiện quan trọng nhất về lãi lỗ và đề xuất kế hoạch hành động cụ thể cho Ban Điều Hành (trình bày chi tiết tại Mục 6 – Phần C).
 
 ---
 
@@ -289,10 +263,10 @@ Dữ liệu được xử lý qua 3 giai đoạn, từ các file Excel đầu v�
 | Yêu cầu của Ban Điều Hành | Dashboard / Phần báo cáo | Kết quả đánh giá mức độ đáp ứng |
 |---|---|---|
 | **Tra cứu & đối soát lãi, lỗ thực tế của 7 vùng** | **01. BÁO CÁO KẾT QUẢ KINH DOANH** | **Đáp ứng**: Có đủ 32 chỉ tiêu tài chính của 7 vùng và Hội sở sau phân bổ, đối chiếu khớp 100% với sổ cái GL để tra cứu và đối soát trực tiếp. |
-| **Xếp hạng công bằng để khen thưởng & chấn chỉnh ASM** | **02. BÁO CÁO XẾP HẠNG ASM** | **Đáp ứng**: Tổng hợp bảng điểm theo 2 trụ cột của 74 - 84 nhân sự ASM, giúp nhận diện rõ cá nhân xuất sắc để khen thưởng và nhân sự yếu để chấn chỉnh. |
+| **Xếp hạng công bằng để khen thưởng và hỗ trợ ASM** | **02. BÁO CÁO XẾP HẠNG ASM** | **Đáp ứng**: Tổng hợp bảng điểm theo 2 trụ cột của 74 - 84 nhân sự ASM, giúp nhận diện rõ người làm tốt để khen thưởng và người còn yếu để hỗ trợ, đào tạo lại. |
 | **So sánh cơ cấu thu – chi – dự phòng và hiệu quả sinh lời** | **03. HIỆU QUẢ KINH DOANH THEO VÙNG** | **Đáp ứng**: Thể hiện 8 bước hình thành lợi nhuận, tương quan Lợi nhuận vs CIR và Hiệu suất sinh lời trên vốn giữa 7 vùng. |
 | **Nhận diện ASM tăng doanh số nhưng đi kèm rủi ro tín dụng cao** | **04. ĐÁNH GIÁ NĂNG LỰC ASM** | **Đáp ứng tốt**: Dùng biểu đồ mạng nhện (Radar) 4 trục để so sánh năng lực và nợ xấu giữa nhóm dẫn đầu và nhóm rủi ro, chuyển tab xem từng người ngay trên báo cáo. |
-| **Chuẩn hóa định nghĩa và đề xuất hành động điều hành** | **TỪ ĐIỂN DỮ LIỆU & PHÂN TÍCH CHUYÊN SÂU** | **Đáp ứng**: Chuẩn hóa 68 chỉ tiêu và cung cấp báo cáo phân tích chuyên sâu kèm bảng hành động định lượng cho Ban Điều Hành. |
+| **Chuẩn hóa định nghĩa và đề xuất hành động điều hành** | **TỪ ĐIỂN DỮ LIỆU & KẾT QUẢ KINH DOANH TOÀN QUỐC** | **Đáp ứng**: Chuẩn hóa 68 chỉ tiêu và cung cấp báo cáo kết quả kinh doanh toàn quốc kèm kế hoạch hành động cụ thể cho Ban Điều Hành. |
 
 ### Phần B – Một số điểm đáng chú ý trong tháng 5/2023:
 
@@ -307,7 +281,7 @@ Dữ liệu được xử lý qua 3 giai đoạn, từ các file Excel đầu v�
    - *Cần kiểm tra thêm:* Cần thực hiện phân tích vintage/cohort để kiểm chứng xem các khoản cho vay tăng nhanh trong những kỳ trước có đang chuyển sang nhóm nợ quá hạn hay không; rà soát các hợp đồng đang có nợ xấu tại Đông Nam Bộ trong 30 ngày để đánh giá tốc độ dịch chuyển nợ và điều chỉnh tiêu chí phê duyệt.
 
 3. **Đồng bằng Sông Hồng – Lợi nhuận tăng nhờ chi phí dự phòng ròng giảm, tiếp tục duy trì quy mô giải ngân lớn với nợ xấu thấp hơn mức bình quân:**
-   - *Số liệu:* Lợi nhuận trước thuế của vùng tăng thêm **+1.310,9 triệu đồng** so với tháng trước, trong khi thu nhập thuần từ thẻ thực tế giảm **−232,2 triệu đồng** và chi phí dự phòng ròng giảm **+1.455,8 triệu đồng**. Lũy kế đến tháng 5, vùng dẫn đầu giải ngân mới toàn hệ thống (**55.010 triệu đồng**, gấp 1,5 lần vùng thứ hai) nhưng vẫn giữ tỷ lệ nợ xấu ở mức **13,9%** (thấp hơn mức trung bình toàn hàng **17,3%**).
+   - *Số liệu:* Lợi nhuận trước thuế của vùng tăng thêm **+1.310,9 triệu đồng** so với tháng trước, trong khi thu nhập thuần từ thẻ thực tế giảm **−232,2 triệu đồng** và chi phí dự phòng ròng giảm **+1.455,8 triệu đồng**. Lũy kế đến tháng 5, vùng dẫn đầu giải ngân mới toàn hệ thống (**55.010 triệu đồng**, gấp 1,5 lần vùng thứ hai) nhưng vẫn giữ tỷ lệ nợ xấu ở mức **13,9%** (thấp hơn mức trung bình toàn quốc **17,3%**).
    - *Nhận xét:* Dù vùng đang là trụ cột quy mô an toàn nhất hệ thống, việc thu nhập thuần giảm nhẹ trong tháng 5 là dấu hiệu cần theo dõi thêm ở các kỳ tiếp theo.
    - *Cần kiểm tra thêm:* Khi sổ sách chưa tách riêng khoản trích lập dự phòng mới và khoản hoàn nhập, cần kiểm toán nội bộ số liệu dự phòng chi tiết để phân biệt giữa suy giảm rủi ro tự nhiên và điều chỉnh kế toán kỹ thuật trước khi kết luận về xu hướng dài hạn.
 
@@ -321,7 +295,7 @@ Dữ liệu được xử lý qua 3 giai đoạn, từ các file Excel đầu v�
 Các kết quả P&L của 7 vùng và bảng điểm ASM được tổng hợp thành **4 nhóm thông tin** để hỗ trợ điều hành:
 
 1. **4 chỉ số chính:**
-   - **Tỷ trọng lợi nhuận lớn nhất – `67,0%`:** Tây Nam Bộ dẫn đầu toàn hàng, đóng góp +167,9 tỷ đồng trên tổng lợi nhuận hệ thống.
+   - **Tỷ trọng lợi nhuận lớn nhất – `67,0%`:** Tây Nam Bộ dẫn đầu toàn quốc, đóng góp +167,9 tỷ đồng trên tổng lợi nhuận hệ thống.
    - **Tỷ lệ nợ xấu cao nhất – `22,0%`:** Tây Nam Bộ cao hơn mức bình quân toàn ngân hàng.
    - **Lợi nhuận trước thuế âm – `-48,8 tỷ`:** Đông Nam Bộ là vùng duy nhất chịu lỗ lũy kế 5 tháng.
    - **Tỷ lệ nợ xấu thấp nhất – `11,2%`:** Nam Trung Bộ duy trì tỷ lệ nợ xấu thấp nhất và đóng góp 20% lợi nhuận (+50,0 tỷ đồng).
@@ -329,24 +303,24 @@ Các kết quả P&L của 7 vùng và bảng điểm ASM được tổng hợp 
 2. **Phân tích lợi nhuận – Đóng góp lợi nhuận trước thuế theo 7 vùng (Biểu đồ Waterfall):**
    - *Đóng góp từ các vùng có lãi:* Đồng bằng Sông Hồng (**+54,3 tỷ đồng**), Nam Trung Bộ (**+50,0 tỷ đồng**), Tây Nam Bộ (**+167,9 tỷ đồng**) và 3 Vùng khác (**+27,0 tỷ đồng**) tạo nên tổng lợi nhuận từ các vùng này đạt **+299,2 tỷ đồng**.
    - *Ảnh hưởng của Đông Nam Bộ:* Khoản lỗ **−48,8 tỷ đồng** tại Đông Nam Bộ làm giảm **16%** phần lợi nhuận tích lũy từ các vùng có lãi.
-   - *Kết quả toàn hệ thống:* Lợi nhuận trước thuế toàn hàng chốt sổ đạt **+250,5 tỷ đồng**.
+   - *Kết quả toàn hệ thống:* Lợi nhuận trước thuế toàn quốc chốt sổ đạt **+250,5 tỷ đồng**.
 
 3. **Ảnh hưởng của kết quả tài chính Đông Nam Bộ đến xếp hạng ASM:**
    - *Điểm tài chính bị phạt tối đa (`26 điểm`):* Đông Nam Bộ lỗ −48,8 tỷ đồng và xếp cuối (7/7) ở các chỉ tiêu tài chính. Vì vậy, tất cả ASM trong vùng đều nhận mức phạt tối đa **26 điểm**, kể cả những người có kết quả bán hàng tốt.
    - *Ảnh hưởng đến thứ hạng ASM:*
      * Số liệu thực tế tại Đông Nam Bộ minh họa: Nguyễn T. Loan (bán hàng **Tốt – Top sale**, điểm **16đ**) chỉ đứng **Hạng 18**; Trần V. Hùng (bán hàng **Khá**, **14đ**) đứng **Hạng 21**; Lê T. Mai (bán hàng **Trung bình**, **11đ**) đứng **Hạng 24**.
-     * Trên bảng xếp hạng toàn hàng: Lê Văn Bình hạng bán hàng #24 tụt xuống #31 (tụt 7 bậc); Trần Văn Hải hạng #28 tụt xuống #33 (tụt 5 bậc); Trần Văn Anh hạng #36 tụt xuống #41 (tụt 5 bậc).
+     * Trên bảng xếp hạng toàn quốc: Lê Văn Bình hạng bán hàng #24 tụt xuống #31 (tụt 7 bậc); Trần Văn Hải hạng #28 tụt xuống #33 (tụt 5 bậc); Trần Văn Anh hạng #36 tụt xuống #41 (tụt 5 bậc).
    - *Đề xuất:* **16/19 ASM (84%)** tại Đông Nam Bộ nằm trong nhóm cuối bảng. Nên tách điểm bán hàng cá nhân khỏi kết quả lợi nhuận của toàn vùng để đánh giá đúng năng lực từng người. Đồng thời, cần giao trách nhiệm cải thiện lợi nhuận và thu hồi nợ xấu cho cấp quản lý vùng, hướng tới giảm khoản lỗ lũy kế **48,8 tỷ đồng**.
 
-4. **Bảng hành động đề xuất theo địa bàn và tác động định lượng:**
+4. **Kế hoạch hành động đề xuất theo địa bàn và hiệu quả tài chính dự kiến:**
 
-| Mức ưu tiên | Địa bàn | Vấn đề cốt lõi | Hành động trọng tâm | Tác động định lượng |
+| Mức ưu tiên | Địa bàn | Thực trạng chính | Việc cần làm ngay | Quy mô số liệu liên quan & Hiệu quả dự kiến |
 |:---:|---|---|---|---|
-| **Khẩn cấp** | **Tây Nam Bộ** | Nợ xấu cao nhất **22,0%** – Lợi nhuận tăng chủ yếu nhờ giảm dự phòng | Rà soát lại danh mục nợ; bóc tách trích lập và hoàn nhập dự phòng | **290.377 triệu đồng** *(Minh bạch dự phòng)* |
-| **Khẩn cấp** | **Đông Nam Bộ** | Lỗ **−48,8 tỷ** – **84%** ASM nằm trong nhóm cuối bảng | Thu hồi nợ xấu & **Tách riêng Thẻ điểm cá nhân** khỏi chỉ tiêu lợi nhuận vùng | **+55 tỷ đồng** *(Xóa lỗ khi nợ xấu về **14%**)* |
+| **Khẩn cấp** | **Tây Nam Bộ** | Nợ xấu cao nhất **22,0%** – Lợi nhuận tăng chủ yếu nhờ giảm dự phòng | Rà soát lại danh mục nợ; tách rõ tiền trích lập mới và hoàn nhập dự phòng | Rà soát toàn bộ **290.377 triệu đồng** dư nợ rủi ro và dự phòng *(kiểm tra việc thu hồi nợ thực tế)* |
+| **Khẩn cấp** | **Đông Nam Bộ** | Lỗ **−48,8 tỷ** – **84%** ASM nằm trong nhóm cuối bảng | Thu hồi nợ xấu & **Tách riêng Thẻ điểm cá nhân** khỏi chỉ tiêu lợi nhuận vùng | Kỳ vọng mang lại **+55 tỷ đồng** lợi nhuận *(xóa lỗ khi đưa nợ xấu về mức an toàn **14%**)* |
 | **Ưu tiên** | **Bắc Trung Bộ** | Chi phí vận hành vượt trần **24%** doanh thu | Rà soát chi phí chi nhánh; khóa định mức chi theo doanh số thực tế | **~1,5 tỷ đồng/tháng** *(Đưa chi phí về mức an toàn **21%**)* |
-| **Dài hạn** | **Nam Trung Bộ** | Hiệu suất vốn cao – Nợ xấu thấp (**11,2%**) | Chuẩn hóa quy trình thẩm định & quản trị chi phí để nhân rộng | **Giữ nợ xấu dưới 12%** *(Hiệu suất vốn trên **200%**)* |
-| **Duy trì** | **Đồng bằng Sông Hồng** | Dẫn đầu giải ngân mới (chiếm **30,6%** toàn hàng) | Giữ nhịp tăng trưởng cho vay; kèm cặp nâng đều năng suất đội ngũ quản lý | **Giải ngân trên 55 tỷ đồng/tháng** *(Giữ **30,6%** thị phần)* |
+| **Dài hạn** | **Nam Trung Bộ** | Hiệu suất sinh lời trên vốn cao – Nợ xấu thấp (**11,2%**) | Chuẩn hóa quy trình thẩm định & quản trị chi phí để nhân rộng | **Giữ nợ xấu dưới 12%** *(Hiệu suất sinh lời trên vốn trên **200%**)* |
+| **Duy trì** | **Đồng bằng Sông Hồng** | Dẫn đầu giải ngân mới (chiếm **30,6%** toàn quốc) | Giữ nhịp tăng trưởng cho vay; kèm cặp nâng đều năng suất đội ngũ quản lý | **Giải ngân trên 55 tỷ đồng/tháng** *(Giữ **30,6%** thị phần)* |
 
 ### Năm đề xuất với Ban Điều Hành:
 
@@ -362,23 +336,19 @@ Các kết quả P&L của 7 vùng và bảng điểm ASM được tổng hợp 
 
 ## 7. 📚 Kinh nghiệm rút ra
 
-1. **Hiểu rõ bản chất nghiệp vụ trước khi viết code:**
-   Khi làm dữ liệu ngân hàng, cần hiểu ý nghĩa nghiệp vụ của các con số trước khi viết SQL. Chẳng hạn, phải biết vì sao chi phí vốn mang dấu âm và vì sao chi phí Hội sở dùng mã tỉnh `'00'`, vùng `'A'`. Chỉ nhìn bài toán dưới góc độ công nghệ sẽ khó xây dựng được cách phân bổ đúng.
+1. **Nghiệp vụ luôn đi trước câu lệnh SQL:**
+   Nếu không hiểu bản chất kế toán ngân hàng (chi phí vốn mang dấu âm, chi phí Hội sở mang mã tỉnh `'00'`), viết SQL giỏi đến đâu cũng sẽ phân bổ sai lệch toàn bộ kết quả lãi lỗ của 7 vùng.
 
-2. **Làm sạch dữ liệu danh mục là bước rất quan trọng:**
-   Việc phát hiện hai cách ghi tên tỉnh `"Bà Rịa - Vũng Tàu"` và `"Vũng Tàu"` giúp chuẩn hóa dữ liệu, giữ lại hơn **36.000 hợp đồng thẻ** và tránh làm sai kết quả tính nợ xấu của Đông Nam Bộ.
+2. **Lệch một tên tỉnh, sai lệch cả bài toán lớn:**
+   Chỉ vì sao kê ghi `"Bà Rịa - Vũng Tàu"` còn danh mục ghi `"Vũng Tàu"`, nếu bỏ qua bước làm sạch chuỗi sẽ làm rớt mất hơn **36.000 hợp đồng thẻ**, bóp méo hoàn toàn tỷ lệ nợ xấu của vùng Đông Nam Bộ.
 
-3. **Kiểm soát tính toàn vẹn và giao dịch trong quy trình ETL:**
-   Sáu bảng trung gian dùng chung cấu trúc dữ liệu dạng dọc. Các Stored Procedure cũng kiểm soát transaction và ghi lịch sử vào `log_proc_run`, giúp xác định lỗi ở bước nào và rollback khi cần.
+3. **Phải hiểu rõ giới hạn dữ liệu để tránh đánh giá oan nhân viên:**
+   Sao kê thẻ chỉ theo dõi nợ xấu theo chi nhánh chứ không gắn mã từng ASM. Dùng nợ xấu chung của cả vùng để phạt điểm cá nhân sẽ gây bất công và làm nản lòng những người bán hàng giỏi nhất ở các địa bàn khó khăn.
 
-4. **Thiết kế hệ thống báo cáo vừa phục vụ tra cứu đối soát vừa phục vụ phân tích điều hành:**
-   Các bảng đối soát chi tiết giúp người dùng kiểm tra số liệu, còn dashboard và phần phân tích giúp nhìn ra xu hướng, vấn đề cần xử lý. Kết hợp hai cách trình bày này giúp báo cáo phục vụ cả bộ phận nghiệp vụ lẫn Ban Điều Hành.
-
-5. **Hiểu rõ giới hạn của dữ liệu để tránh kết luận vội vàng:**
-   Khi dữ liệu nợ xấu trên sao kê thẻ chỉ gắn mã chi nhánh ở cấp vùng, chưa thể xác định đến từng hợp đồng của từng ASM, báo cáo cần nêu rõ giới hạn này (và phân tích minh bạch tác động của điểm phạt vùng trong phần đề xuất điều hành) để lãnh đạo ra quyết định nhân sự công bằng, sát thực tế.
+4. **Đánh giá lợi nhuận bắt buộc phải tách riêng chi phí dự phòng:**
+   Lợi nhuận tăng chưa chắc đã do kinh doanh tốt. Nếu không tách riêng phần hoàn nhập dự phòng rủi ro, ngân hàng rất dễ khen thưởng nhầm cho vùng có nợ xấu cao nhưng đang tạm thời giảm trích lập dự phòng.
 
 ---
-
 ## 8. 🛠️ Công cụ và công nghệ sử dụng
 
 Các công cụ được sử dụng theo 3 giai đoạn của quy trình xử lý dữ liệu:
@@ -387,8 +357,8 @@ Các công cụ được sử dụng theo 3 giai đoạn của quy trình xử l
 |---|---|---|---|
 | **Microsoft Excel** | 3 File Số Liệu Đầu Vào (`.xlsx`) | Cung cấp 3 nguồn dữ liệu thô đầu vào: `1. Dữ liệu hạch toán mỗi tháng (GL)`, `2. Dữ liệu sao kê thẻ mỗi tháng` và `3. Dữ liệu kết quả sale của ASM mỗi tháng` | Định dạng tệp dữ liệu gốc xuất ra từ hệ thống tác nghiệp của các phòng ban nghiệp vụ ngân hàng |
 | **DBeaver 24** | Data Import, ER Diagram | Thực hiện **`Import`** trực tiếp dữ liệu từ 3 file Excel đầu vào (117,2 MB) vào 3 bảng `staging` trong PostgreSQL, quản lý 9 khoá ngoại ảo và chạy kịch bản SQL | Công cụ quản trị cơ sở dữ liệu trực quan, hỗ trợ nạp tệp dữ liệu lớn nhanh chóng và kiểm tra sơ đồ quan hệ |
-| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), thực thi tự động logic phân bổ chi phí Hội sở (Rule 1 & Rule 2) và chấm điểm xếp hạng ASM | Xử lý tập dữ liệu gần 3 triệu dòng với độ chính xác số học tuyệt đối và kiểm soát transaction chặt chẽ |
-| **Power BI Desktop** | DirectQuery, 82 Measure DAX, HTML Content | Xây dựng hệ thống **báo cáo quản trị trực quan** (xoay quanh **4 Dashboard đầu ra trọng tâm**, phân hệ Từ điển **68** chỉ tiêu và Báo cáo phân tích chuyên sâu `INSIGHT`) | Giúp Ban Điều Hành và các phòng ban vừa tra cứu, đối soát số liệu chi tiết vừa phân tích tương tác bằng biểu đồ trực quan |
+| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), thực thi tự động logic phân bổ chi phí Hội sở (Rule 1 & Rule 2) và chấm điểm xếp hạng ASM | Xử lý tập dữ liệu gần 3 triệu dòng với độ chính xác số liệu tuyệt đối và kiểm soát giao dịch chặt chẽ |
+| **Power BI Desktop** | DirectQuery, 82 Measure DAX, HTML Content | Xây dựng hệ thống **báo cáo quản trị trực quan** (xoay quanh **4 Dashboard đầu ra trọng tâm**, phân hệ Từ điển **68** chỉ tiêu và Báo cáo kết quả kinh doanh toàn quốc) | Giúp Ban Điều Hành và các phòng ban vừa tra cứu, đối soát số liệu chi tiết vừa phân tích tương tác bằng biểu đồ trực quan |
 
 ---
 

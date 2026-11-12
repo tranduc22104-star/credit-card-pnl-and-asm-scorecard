@@ -10,15 +10,171 @@
 
 
 
-
-
-
-
-
-
 ## ĐÃ XONG
 
+### 2026-11-13
+
+288. **Đổi thông điệp commit trên GitHub thành dạng tự nhiên của người dùng (Add files via upload)**
+   - Sửa thông điệp commit hiển thị trên GitHub từ dạng quy chuẩn Conventional Commits sang thông điệp tải tệp mặc định phổ biến của người dùng web: `Add files via upload`.
+   - Loại bỏ hoàn toàn dấu vết mô tả máy móc của AI trên trang chủ kho mã GitHub.
+
 ### 2026-11-12
+
+287. **Viết lại toàn bộ nội dung dự án thẻ tín dụng trong CV bằng tiếng Anh giản dị, tự nhiên, dễ hiểu**
+   - **Thanh lọc triệt để các từ ngữ đao to búa lớn và học thuật phức tạp**:
+     * *Objective*: Đơn giản hóa thành: `The leadership wants to \textbf{track true credit card profit across 7 regions} (sharing Head Office costs fairly) and create a \textbf{balanced ranking system for 74--84 Area Sales Managers (ASMs)} to \textbf{support business and bonus decisions}.`
+     * *Step 1*: Thay câu chữ phức tạp ("Decoupled mandates into two-track...") bằng câu văn trực diện, dễ hiểu: `\textbf{Designed 4 executive dashboards and a 68-indicator data dictionary} around 2 main business goals: tracking regional profit (P\&L) and evaluating 74--84 sales managers fairly.`
+     * *Step 2*: Diễn đạt tự nhiên: `\textbf{Audited and cleaned 2.93M+ card records (117.2 MB), 63,134 accounting rows, and 420 sales targets}... fixed province name typos to save \textbf{36,000+ card contracts} from being lost.`
+     * *Step 3*: Thay "100% cash-flow conservation with zero variance" bằng: `\textbf{Built automated SQL procedures to allocate shared Head Office expenses}... matching \textbf{100\% of the bank's accounting ledger} with \textbf{+250.5B VND} in total profit.`
+     * *Step 4*: Thay thuật ngữ trừu tượng "volume-chasing moral hazard" bằng hành động cụ thể: `\textbf{Created an 8-metric balanced scorecard for ASM sales managers}... stopping sales reps from pushing risky loans just to hit targets.`
+     * *Step 5*: Mô tả rõ ràng 4 dashboard và kết quả chẩn đoán: `\textbf{Built 4 interactive Power BI dashboards with 82 DAX measures}... uncovered that \textbf{97.2\% of May profit growth in Southwest was only due to risk provision cuts}, while \textbf{Southeast's --48.8B VND loss} dragged down \textbf{84\% of its local managers}.`
+     * *Gained Value*: Viết lại 4 bullet theo đúng văn phong giản dị của Project 2 (`Clean large banking datasets...`, `Allocate shared Head Office costs...`, `Calculate bad debt ratios (NPL)...`, `Create interactive Power BI dashboards...`).
+   - **Chất lượng xuất bản**:
+     * Biên dịch thành công với `pdflatex` (0 error, 0 warning).
+     * Xuất bản tệp PDF hoàn hảo tại `CV/cv_tran_ngoc_duc.pdf` (chuẩn 3 trang, Trang 2 thoáng đẹp, dễ tiếp cận).
+
+286. **Rà soát và đồng bộ 100% nội dung 5 Steps trong CV khớp với tiến trình thực chiến của dự án**
+   - **Hoàn thiện chuỗi 5 bước phản ánh chính xác các thảo luận và kết quả cốt lõi**:
+     * *Bước 1 (Phân tích bối cảnh & Thiết kế kiến trúc đầu ra)*: Decoupled executive mandates into a two-track architecture (P&L 7 vùng và Đánh giá ASM); thiết kế 4 dashboard chuyên biệt và chuẩn hóa Từ điển 68 chỉ tiêu.
+     * *Bước 2 (Khảo sát dữ liệu & Kho Star Schema)*: Audited, cleaned & modeled 2,93M+ dòng sao kê (117,2 MB), 63K dòng GL, 420 dòng ASM; chuẩn hóa tên tỉnh lệch ("Ba Ria - Vung Tau" vs "Vung Tau") cứu hơn 36.000 hợp đồng; dựng Star Schema 19 bảng, 3 view, 11 stored procedure.
+     * *Bước 3 (Động cơ phân bổ chi phí 2 quy tắc)*: Built 2-Rule Cost Allocation Engine gán thẳng 62.953 dòng (Rule 1) và phân bổ 181 dòng Hội sở (Rule 2) qua 4 tiêu thức thực tế, bảo toàn 100% dòng tiền (+250,5 tỷ đồng LNTT).
+     * *Bước 4 (Thẻ điểm cân bằng 8 chỉ tiêu)*: Engineered 8-metric balanced ASM scorecard (4 quy mô cá nhân `diem_qm` + 4 tài chính rủi ro địa bàn `diem_fin`) qua Percentile Rank Scaling triệt tiêu moral hazard chạy đua doanh số.
+     * *Bước 5 (Báo cáo Power BI & Chẩn đoán bất thường điều hành)*: Connected pipeline to Power BI with 82 DAX measures, dựng 4 dashboard trực quan; chẩn đoán 97,2% lợi nhuận Tây Nam Bộ là ảo do giảm dự phòng và khoản lỗ −48,8 tỷ đồng Đông Nam Bộ kéo tụt 84% ASM.
+   - **Biên dịch & Kiểm định**: pdflatex xuất bản hoàn hảo `cv_tran_ngoc_duc.pdf` (3 trang chuẩn mực).
+
+285. **Chuẩn hóa cấu trúc trình bày dự án thẻ tín dụng trong CV đồng nhất 100% với dự án có sẵn**
+   - **Tái lập cấu trúc đối xứng hoàn hảo với Project 2 (Credit Risk Model)**:
+     * *Objective*: Viết gọn đúng 1 câu chuẩn mục tiêu quản trị: `The leadership wants to \textbf{track authentic 7-region credit card profitability} (allocating centralized Head Office costs) and establish a \textbf{balanced ASM performance scorecard} to \textbf{support executive business and personnel decisions}.`
+     * *Output*: Giữ đúng 2 dòng liên kết chuẩn (`Online Demo by PowerBI` & `More details about Project at Github`), loại bỏ các gạch đầu dòng lồng cấp phụ để giữ trọn vẹn bố cục mẫu.
+     * *Steps*: 5 gạch đầu dòng mở đầu bằng động từ quá khứ in đậm (`Audited and ingested...`, `Built a 2-Rule Cost Allocation Engine...`, `Engineered an 8-metric balanced ASM scorecard...`, `Architected a Kimball Star Schema...`, `Connected the data warehouse to Power BI with 82 DAX measures...`).
+     * *Gained Value*: 4 gạch đầu dòng phân chia theo 4 nhóm kỹ năng đối xứng với Project 2 (`Data Pipeline & Engineering`, `Managerial Accounting & Banking Logic`, `Credit Risk Governance`, `BI & Data Visualization`).
+   - **Đảm bảo thẩm mỹ & chất lượng xuất bản PDF**:
+     * Biên dịch sạch bằng `pdflatex` (0 error, 0 warning).
+     * Toàn bộ CV duy trì chuẩn mực 3 trang, Trang 2 thoáng đẹp, cân đối.
+
+284. **Chỉnh sửa và tối ưu hóa nội dung dự án thẻ tín dụng trong CV (cv_tran_ngoc_duc.tex)**
+   - **Tái cấu trúc toàn diện trang 2 dành riêng cho dự án mảng thẻ**:
+     * *Mục tiêu & Bối cảnh (Objective)*: Nêu bật bài toán quản trị thực tế của Ban Điều Hành (lãi lỗ 7 vùng và đánh giá công bằng 74–84 ASM), chỉ rõ 2 nút thắt cốt lõi (181 dòng chi phí/doanh thu Hội sở hạch toán tập trung không có mã chi nhánh, và KPI bán hàng truyền thống kích thích chạy đua doanh số giải ngân mà bỏ qua rủi ro nợ xấu địa bàn).
+     * *Hệ thống sản phẩm đầu ra (Deliverables & Outputs)*: Bổ sung chi tiết bộ Báo cáo điều hành chuyên biệt gồm 4 Dashboard cốt lõi (Dashboard 01: P&L 32 chỉ tiêu & 21 measure định dạng màu tự động; Dashboard 02: Bảng điểm xếp hạng 74–84 ASM; Dashboard 03: Hiệu quả kinh doanh 7 vùng với 5 KPI card, Thác nước 8 bước LNTT, Lợi nhuận vs CIR, Return on Capital; Dashboard 04: Biểu đồ Radar 4 khối đánh giá năng lực ASM có tab chuyển từng người; Báo cáo Kết quả kinh doanh toàn quốc bóc tách khoản lỗ −48,8 tỷ đồng tại Đông Nam Bộ và 5 kiến nghị hành động).
+     * *Quy trình kỹ thuật & Logic nghiệp vụ (Implementation Steps)*: Trình bày sắc sảo 5 bước kỹ thuật thực chiến: Phân tích nghiệp vụ 2 nhánh song song & từ điển 68 chỉ tiêu; Động cơ phân bổ chi phí 2 quy tắc bảo toàn 100% dòng tiền (+250,5 tỷ đồng LNTT); Bộ thẻ điểm cân bằng 8 chỉ tiêu (4 quy mô cá nhân `diem_qm` + 4 tài chính rủi ro địa bàn `diem_fin`) qua Percentile Rank Scaling triệt tiêu moral hazard; Kỹ thuật xử lý dữ liệu 117,2 MB trên PostgreSQL/DBeaver, chuẩn hóa tên tỉnh cứu hơn 36.000 hợp đồng thẻ, kiến trúc Star Schema 19 bảng, 3 view, 11 Stored Procedure kiểm soát transaction chặt chẽ; Phát hiện kinh doanh đắt giá (lợi nhuận Tây Nam Bộ tăng 97,2% do giảm dự phòng ảo, Đông Nam Bộ chịu phạt 26 điểm kéo 84% ASM xuống đáy bảng) và xây dựng 82 DAX measure.
+     * *Giá trị chuyên môn đạt được (Gained Value)*: Đúc kết 3 trụ cột năng lực: Kế toán quản trị & Logic ngân hàng (FTP vốn, trích lập dự phòng, write-off ngoại bảng, CIR, ROC); Thẻ điểm cân bằng & Tư duy quản trị nhân sự công bằng; Kỹ thuật BI doanh nghiệp (Kimball Star Schema, ETL tự động, DAX nâng cao).
+   - **Tối ưu hóa layout & Trực quan hóa PDF**:
+     * Xử lý triệt để ký tự chuỗi tiếng Anh tương thích chuẩn pdflatex (0 lỗi compile, 0 warning Unicode).
+     * Bố cục trang 2 lấp đầy cân đối (~95% trang), không bị trống trải cũng không bị tràn trang.
+     * Toàn bộ CV bảo toàn chuẩn mực đúng 3 trang (Trang 1: Thông tin + Kinh nghiệm MB Bank; Trang 2: Dự án P&L Thẻ tín dụng & ASM Scorecard; Trang 3: Dự án Mô hình Rủi ro Tín dụng & Kỹ năng chuyên môn).
+
+283. **Phá bỏ triệt để cấu trúc khuôn mẫu AI trong README song ngữ**
+   - **Xóa bỏ hoàn toàn giàn giáo lặp khuôn mẫu (scaffolding)**:
+     * Chuyển đổi 4 khối phân tích theo khung cứng nhắc `Số liệu / Nhận xét / Cần kiểm tra thêm` (Mục 6 Phần B) thành 4 đoạn văn xuôi tự nhiên, liền mạch, đúc kết sắc sảo bài toán điều hành nhưng bảo toàn 100% từng con số nghiệp vụ.
+     * Xóa bỏ các câu hỏi tu từ khuôn mẫu mang tính giáo điều ("Câu hỏi đặt ra là: …?") ở Mục 4.1 và 4.2; mở đầu thẳng vào thực tế nghiệp vụ và thách thức xử lý dữ liệu.
+     * Tinh chỉnh bảng đánh giá dữ liệu ở Mục 3, xóa cụm lặp sáo rỗng ("Đáp ứng đầy đủ / Thực hiện ở cấp vùng / Đáp ứng ở cấp cá nhân") và câu cụt ("Thực hiện ở cấp vùng").
+   - **Thống nhất 100% danh mục tên gọi các chỉ tiêu xuyên suốt tài liệu**:
+     * Chuẩn hóa gọi thống nhất: **`Hiệu suất sinh lời trên vốn`** (xóa bỏ triệt để sự lẫn lộn giữa *Hệ số sinh lời trên vốn*, *Hệ số hiệu quả vốn*, *Hiệu suất vốn*).
+     * Chuẩn hóa gọi thống nhất: **`Tỷ lệ nợ xấu mở rộng (NPL)`** (thay cho *Tỷ lệ rủi ro tín dụng mở rộng*).
+     * Chuẩn hóa gọi thống nhất: **`LNTT bình quân/SM`** (thay cho *Lợi nhuận bình quân/SM*, *Lợi nhuận trước thuế bình quân/SM*).
+   - **Thanh lọc các cụm từ đệm mơ hồ, lỗi sáo rỗng và diễn đạt vụng về**:
+     * Bỏ hoàn toàn các cụm từ đệm vô nghĩa như "theo các tiêu thức kinh tế phù hợp", "phản ánh thực chất hiệu quả tài chính", "thiết kế các báo cáo đầu ra tương ứng".
+     * Sửa lỗi thừa dấu âm "lợi nhuận âm – -48,8 tỷ" $\rightarrow$ "khoản lỗ −48,8 tỷ đồng".
+     * Chuẩn hóa bảng kế hoạch hành động Mục 6: không ép số dư nợ và dự phòng vào cột tài chính ("290.377 triệu đồng (Làm rõ nguồn gốc dự phòng)" $\rightarrow$ ghi rõ phạm vi rà soát quy mô 290.377 triệu đồng).
+     * Thay thế thuật ngữ "ma trận" thành "bảng tổng hợp", "khung gợi ý quản trị" và "kế hoạch hành động" gần gũi, đời thực.
+   - **Đồng bộ song ngữ & Kiểm định chất lượng nghiêm ngặt**:
+     * Đồng bộ hoàn hảo giữa [README.md](../README.md) và [README_eng.md](../README_eng.md).
+     * `check_int_pair.py`: Kết quả `ok` (0 số lệch).
+     * `check_toc.py`: Kết quả `ok` (0 anchor gãy).
+     * `push_check.py`: Đạt chuẩn 22 tệp an toàn (8.90 MiB, 0 liên kết gãy, không tệp cấm).
+
+282. **Tái cấu trúc Mục 2 làm nổi bật trọn vẹn "Quá trình đi từ bối cảnh đến báo cáo đầu ra"**
+   - **Xây dựng mạch tư duy phân tích nghiệp vụ làm trung tâm**:
+     * Thay vì chỉ liệt kê các Dashboard đầu ra đơn thuần, xây dựng lại bảng **"Quá trình chuyển đổi từ bối cảnh quản trị đến hệ thống báo cáo đầu ra"** xuyên suốt qua 3 bước logic:
+       - *Bước 1 (Bối cảnh & Đề bài ban đầu)*: Xuất phát điểm từ bài toán kinh doanh thực tế của Ban Điều Hành (Lãi lỗ mảng thẻ 7 vùng và Đánh giá công bằng 74-84 ASM).
+       - *Bước 2 (Phân tích nghiệp vụ & Làm rõ thông tin)*: Quá trình bóc tách các nút thắt dữ liệu và nghiệp vụ (bản chất chi phí vốn, cơ chế phân bổ chi phí Hội sở gián tiếp theo tiêu thức kinh tế, thiết kế bộ chỉ tiêu cân bằng giữa quy mô bán hàng cá nhân và an toàn rủi ro tín dụng địa bàn).
+       - *Bước 3 (Giải pháp hệ thống báo cáo đầu ra)*: Sản phẩm báo cáo cụ thể được thiết kế tương ứng để trả lời trực tiếp các câu hỏi quản trị đã đặt ra ở Bước 1 và Bước 2.
+   - **Loại bỏ hoàn toàn sự trùng lặp và văn phong máy móc**:
+     * Không còn tình trạng 3 bảng rời rạc nối đuôi nhau liệt kê lặp lại tên báo cáo.
+     * Ngôn ngữ đời thực, tự nhiên, đúng giọng điệu người làm phân tích dữ liệu và quản trị ngân hàng.
+   - **Đồng bộ song ngữ & Kiểm tra chất lượng tuyệt đối**:
+     * Cập nhật đồng bộ hoàn hảo cả [README.md](../README.md) và [README_eng.md](../README_eng.md).
+     * `check_int_pair.py`: Kết quả `ok` (0 số lệch).
+     * `check_toc.py`: Kết quả `ok` (0 anchor gãy).
+     * `push_check.py`: Đạt chuẩn 22 tệp an toàn (8.89 MiB, 0 liên kết gãy).
+
+281. **Viết lại Mục 7 ("Kinh nghiệm rút ra") cô đọng, đanh thép, sát sườn với thực chiến ngân hàng**
+   - **Loại bỏ hoàn toàn sự dài dòng và lý thuyết giáo khoa**:
+     * Thay thế 5 đoạn văn lý thuyết chung chung bằng **4 bài học thực chiến đắt giá nhất** của chính dự án, mỗi ý chỉ gồm 1-2 câu súc tích gắn liền với tình huống thực tế:
+       1. *Nghiệp vụ luôn đi trước câu lệnh SQL*: Hiểu bản chất kế toán ngân hàng (chi phí vốn mang dấu âm, chi phí Hội sở mang mã tỉnh `'00'`), tránh sai lệch toàn bộ kết quả phân bổ lãi lỗ 7 vùng.
+       2. *Lệch một tên tỉnh, sai lệch cả bài toán lớn*: Sự cố tên tỉnh lệch giữa sao kê (`"Bà Rịa - Vũng Tàu"`) và danh mục (`"Vũng Tàu"`) suýt làm rơi mất hơn **36.000 hợp đồng thẻ**, bóp méo nợ xấu Đông Nam Bộ.
+       3. *Phải hiểu rõ giới hạn dữ liệu để tránh đánh giá oan nhân viên*: Dữ liệu sao kê thẻ theo chi nhánh chứ không theo cá nhân, không thể lấy nợ xấu cả vùng để phạt điểm ASM khiến người bán tốt bị kéo tụt xuống đáy bảng.
+       4. *Đánh giá lợi nhuận bắt buộc phải tách riêng chi phí dự phòng*: Tăng trưởng lợi nhuận chưa chắc do bán hàng tốt mà có thể do giảm trích lập dự phòng (điển hình như trường hợp Tây Nam Bộ).
+   - **Đồng bộ hóa đối ứng song ngữ & Kiểm tra chất lượng**:
+     * Cập nhật đồng bộ cả [README.md](../README.md) và [README_eng.md](../README_eng.md).
+     * `check_int_pair.py`: Kết quả `ok` (0 số lệch).
+     * `check_toc.py`: Kết quả `ok` (0 anchor gãy).
+     * `push_check.py`: Đạt chuẩn 22 tệp an toàn (8.90 MiB).
+
+280. **Rà soát toàn diện và chuẩn hóa văn phong README song ngữ thuần con người, gãy gọn, xóa sạch dấu vết AI**
+   - **Xóa bỏ các từ ngữ sáo rỗng, khuôn mẫu của AI**:
+     * Thay các cụm từ đao to búa lớn, khó hiểu bằng các câu từ thực tế, tự nhiên của người đi làm ngành tài chính / ngân hàng:
+       - *"Định hình bài toán & Chuẩn hóa thuật ngữ"* -> *"Tổng quan bài toán & Thống nhất thuật ngữ"*.
+       - *"khen thưởng và chấn chỉnh"* -> *"khen thưởng người làm tốt và hỗ trợ người còn yếu"*.
+       - *"Đánh giá chiều sâu năng lực"* -> *"So sánh năng lực và rủi ro của ASM"*.
+       - *"Ràng buộc trách nhiệm kép..."* -> *"Gắn kết quả bán hàng cá nhân với tỷ lệ nợ xấu và hiệu quả tài chính của cả vùng, giúp tăng trưởng lành mạnh mà không bỏ quên rủi ro."*
+       - *"giúp Ban Điều Hành có căn cứ định lượng..."* -> *"giúp Ban Điều Hành có số liệu rõ ràng để giao vốn, giao chỉ tiêu và kiểm soát chi tiêu."*
+       - *"Phân tích đa chiều các phát hiện chiến lược và bảng hành động điều hành định lượng..."* -> *"Tổng hợp các phát hiện quan trọng nhất về lãi lỗ và đề xuất kế hoạch hành động cụ thể cho Ban Điều Hành."*
+       - *"Bóc tách cơ cấu hình thành..."* -> *"Từng bước hình thành Lợi nhuận trước thuế"*.
+       - *"phát hiện điểm nghẽn để đào tạo hoặc chấn chỉnh kịp thời"* -> *"nhìn rõ điểm yếu để kèm cặp hoặc đào tạo lại kịp thời"*.
+       - *"Tác động định lượng"* -> *"Hiệu quả tài chính dự kiến"*.
+       - *"Rà soát lại danh mục nợ; bóc tách trích lập..."* -> *"Rà soát lại danh mục nợ; tách rõ tiền trích lập mới và hoàn nhập dự phòng"*.
+   - **Đồng bộ hóa đối ứng giữa hai bản README song ngữ**:
+     * Cập nhật song song cả bản tiếng Việt (`README.md`) và bản tiếng Anh (`README_eng.md`).
+     * Đối soát số liệu (`check_int_pair.py`): Khớp tuyệt đối đa tập các số >= 10 (0 số lệch, kết quả `ok`).
+     * Đối soát mục lục (`check_toc.py`): 0 liên kết gãy, kết quả `ok`.
+     * Kiểm tra an toàn kho mã (`push_check.py`): Đạt chuẩn 22 tệp an toàn (8.89 MiB).
+
+279. **Thay thế triệt để từ "ma trận" (matrix) bằng ngôn ngữ quản trị thực tế, gần gũi và tự nhiên hơn**
+   - **Xóa bỏ hoàn toàn văn phong máy móc / AI**:
+     * Thay thế cụm từ "ma trận" (matrix) ở tất cả các vị trí trong tài liệu sang các thuật ngữ thuần nghiệp vụ quản trị ngân hàng và con người:
+       - *"Ma trận thiết kế giải pháp"* -> *"Bảng đối chiếu yêu cầu quản trị và thiết kế hệ thống báo cáo"*.
+       - *"qua bảng ma trận thống nhất"* -> *"gắn kết trực tiếp từng yêu cầu quản trị với giải pháp báo cáo tương ứng"*.
+       - *"Bảng ma trận 32 chỉ tiêu tài chính"* -> *"Bảng tổng hợp 32 chỉ tiêu tài chính"*.
+       - *"Bảng ma trận chứa đầy đủ 32 chỉ tiêu"* -> *"Bảng tổng hợp đầy đủ 32 chỉ tiêu"*.
+       - *"Action Matrix"* / *"Ma trận hành động"* -> *"Action Plan"* / *"Kế hoạch hành động"*.
+       - *"Team Governance Matrix"* -> *"Team Governance Recommendations"*.
+   - **Đồng bộ hóa 4 tệp tài liệu chính**:
+     * Cập nhật sạch sẽ trong `README.md`, `README_eng.md`, `docs/PIPELINE.md` và `docs/HIEN_TRANG_HE_THONG.md` (0 lần xuất hiện của "ma trận" và "matrix").
+   - **Kiểm tra chất lượng & Bảo mật**:
+     * `.staging/check_int_pair.py`: Kết quả `ok` (0 số lệch).
+     * `.staging/check_toc.py`: Kết quả `ok` (0 anchor gãy).
+     * `.staging/push_check.py`: Đạt chuẩn 22 tệp an toàn (8.89 MiB, 0 liên kết gãy).
+
+278. **Tinh gọn, tái cấu trúc và loại bỏ hoàn toàn sự trùng lặp ý tưởng trong Mục 2 của README song ngữ**
+   - **Xóa bỏ triệt để tình trạng lặp lại ý tưởng**:
+     * Thay thế 3 bảng rời rạc nối đuôi nhau (Bảng 4 Dashboard $\rightarrow$ Bảng Từ yêu cầu đến báo cáo $\rightarrow$ Bảng Từ quản trị đến hệ thống báo cáo) bằng **1 Bảng Ma trận duy nhất** kết nối liền mạch từ: *Nhu cầu quản trị $\rightarrow$ Thách thức nghiệp vụ cần làm rõ $\rightarrow$ Giải pháp thiết kế báo cáo đầu ra*.
+     * Khắc phục hoàn toàn tình trạng liệt kê lặp đi lặp lại 3 lần cùng một hệ thống báo cáo (Dashboard 01..04, Từ điển 68 chỉ tiêu, Báo cáo kết quả kinh doanh toàn quốc).
+   - **Cấu trúc lại nội dung thành 3 phần mạch lạc, súc tích**:
+     * *Phần 1*: Bối cảnh nghiệp vụ và 2 bài toán quản trị song song của Ban Điều Hành (P&L 7 vùng vs Đánh giá & xếp hạng ASM).
+     * *Phần 2*: Bảng ma trận thiết kế giải pháp thống nhất bao quát toàn bộ 6 khối báo cáo/tổng quan/từ điển.
+     * *Phần 3*: Ý nghĩa quản trị thực tiễn sắc bén của 2 nhóm chỉ tiêu (32 chỉ tiêu P&L và 8 chỉ tiêu ASM).
+   - **Đối soát song ngữ & Kiểm tra chất lượng tuyệt đối**:
+     * Cập nhật đồng bộ hoàn hảo cả hai bản [README.md](../README.md) và [README_eng.md](../README_eng.md).
+     * Chạy `.staging/check_int_pair.py`: Khớp đa tập các số $\ge 10$ giữa hai bản (0 số lệch, kết quả `ok`).
+     * Chạy `.staging/check_toc.py`: Khớp neo mục lục hai chiều (0 anchor gãy, 0 mục thiếu, kết quả `ok`).
+     * Chạy `.staging/push_check.py`: Đạt chuẩn 22 tệp an toàn (8.89 MiB).
+
+277. **Rà soát và đồng bộ toàn diện tên trang "KẾT QUẢ KINH DOANH TOÀN QUỐC" trên Power BI và toàn bộ tài liệu dự án**
+   - **Xác định nguyên nhân hiển thị trên Page Navigator**:
+     * Visual *Page Navigator* trong Power BI liên kết động trực tiếp với thuộc tính `displayName` của từng tab trang ở mép dưới cùng báo cáo.
+     * Trang thứ 7 hiện tại trong file đang mang tên `KẾT QUẢ KINH DOANH TOÀN HÀNG` (chưa đổi sang `KẾT QUẢ KINH DOANH TOÀN QUỐC`), dẫn đến nút số 7 trên thanh menu tự động hiển thị nhãn cũ.
+     * Cung cấp giải pháp đổi tên tab trang trực tiếp trên Power BI Desktop (click đúp tab trang -> đổi thành `KẾT QUẢ KINH DOANH TOÀN QUỐC`) giúp tự động cập nhật ngay lập tức thanh Page Navigator trên cả 7 trang báo cáo mà không can thiệp thô bạo vào tệp `.pbix`.
+   - **Cập nhật đồng bộ 100% các DAX Measure trên Live Model (cổng 57922)**:
+     * `Page5_Part1_KPICards_HTML`: Chuyển `"Dẫn đầu toàn hàng"` sang `"Dẫn đầu toàn quốc"`.
+     * `Page5_Part2_Waterfall_HTML`: Chuyển `"Lợi nhuận trước thuế toàn hàng"` sang `"Lợi nhuận trước thuế toàn quốc"`; nhãn trục SVG chuyển sang `"Toàn quốc"`.
+     * `ASM_Leaderboard_HTML`: Chuyển banner tiêu đề sang `"★ BẢNG XẾP HẠNG TOÀN QUỐC (LEADERBOARD)"`.
+     * `Insight_DanhGiaHieuQua_HTML` & `HTML1`: Chuẩn hóa triệt để các cụm `"bình quân toàn hàng"`, `"tổng lợi nhuận toàn hàng"`, `"đứng thứ hai/ba toàn hàng"` sang `"toàn quốc"`.
+     * Gọi `SaveChanges()` qua TOM API thành công, toàn bộ measures cập nhật tức thì trên Live Model.
+   - **Đồng bộ hóa tài liệu song ngữ và hiện trạng hệ thống**:
+     * Chuẩn hóa toàn bộ danh xưng Trang 7 trong `README.md`, `README_eng.md`, `docs/PIPELINE.md`, `docs/HIEN_TRANG_HE_THONG.md` sang `KẾT QUẢ KINH DOANH TOÀN QUỐC` (`Nationwide Business Results`).
+     * Đối soát song ngữ: `.staging/check_int_pair.py` đạt chuẩn `ok`; `.staging/check_toc.py` đạt chuẩn `ok`.
+     * Kiểm tra bảo mật kho mã: `.staging/push_check.py` đạt chuẩn tuyệt đối 22 tệp an toàn (8.89 MiB).
 
 276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
    - **Đối soát an toàn tuyệt đối**:

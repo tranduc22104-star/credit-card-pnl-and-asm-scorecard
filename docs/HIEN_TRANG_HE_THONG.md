@@ -21,9 +21,9 @@
          - Trang 3 (`BÁO CÁO KẾT QUẢ KINH DOANH VÙNG`): *Chứa* 32 chỉ tiêu tài chính P&L (từ `v_baocao_pnl_excel_pivoted`) *để* tra cứu và đối soát số liệu thu – chi – lãi lỗ của 7 vùng và Hội sở (tự động phân cấp dòng nền tối chữ sáng `#FFFFFF`/`#FECACA` và dòng chi tiết nền sáng chữ đậm `#0F172A`/`#DC2626`).
          - Trang 4 (`BÁO CÁO XẾP HẠNG ASM`): *Chứa* bảng điểm xếp hạng tổng hợp 84 ASM *để* khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu.
          - Trang 5 (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`): *Chứa* các biểu đồ trực quan hóa cơ cấu thu – chi – dự phòng *để* so sánh hiệu quả sinh lời giữa 7 vùng.
-         - Trang 6 (`ĐÁNH GIÁ NĂNG LỰC ASM`): *Chứa* 4 khối biểu đồ & nhận xét chuyên sâu: Khối 1 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Dẫn đầu khu vực (kèm 3 tab chuyển đổi người); Khối 2 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Cuối bảng khu vực (kèm 3 tab cảnh báo điểm nghẽn rủi ro); Khối 3 - Biểu đồ Radar năng lực toàn bộ 7 Vùng toàn quốc (sử dụng REMOVEFILTERS cố định 7 vùng, không bị lọc bởi Slicer Vùng, highlight rực rỡ vùng đang chọn); Khối 4 - Text Box Nhận xét phân tích chuyên sâu hiệu quả kinh doanh và đề xuất hành động.
-       * **1 Trang Phân Tích Chuyên Sâu**:
-         - Trang 7 (`INSIGHT` / `PHÂN TÍCH CHUYÊN SÂU VÀ ĐƯA RA KẾT LUẬN`): Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét (19px – 48px), gồm 4 thẻ KPI điều hành, Biểu đồ Thác nước LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ (+26 điểm khiến 84% tức 16/19 quản lý rơi xuống nhóm đáy bảng) và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng.
+         - Trang 6 (`ĐÁNH GIÁ NĂNG LỰC ASM`): *Chứa* 4 khối biểu đồ & nhận xét chuyên sâu: Khối 1 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Dẫn đầu khu vực (kèm 3 tab chuyển đổi người); Khối 2 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Cuối bảng khu vực (kèm 3 tab cảnh báo điểm nghẽn rủi ro); Khối 3 - Biểu đồ Radar năng lực toàn bộ 7 Vùng toàn quốc (sử dụng REMOVEFILTERS cố định 7 vùng, không bị lọc bởi Slicer Vùng, highlight rực rỡ vùng đang chọn); Khối 4 - Text Box Nhận xét đánh giá hiệu quả kinh doanh và đề xuất hành động.
+       * **1 Trang Kết Quả Kinh Doanh Toàn Quốc**:
+         - Trang 7 (`KẾT QUẢ KINH DOANH TOÀN QUỐC`): Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét (19px – 48px), gồm 4 thẻ KPI điều hành, Biểu đồ Thác nước LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ (+26 điểm khiến 84% tức 16/19 quản lý rơi xuống nhóm đáy bảng) và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng.
 
 ---
 
@@ -53,7 +53,7 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 | `log_` | `log_proc_run` | 208 | 7 | Nhật ký chạy thủ tục tự động, **0 dòng `FAIL`** |
 | `rpt_` | `v_baocao_tonghop` | 35 | 32 | View P&L 7 vùng × 5 tháng (đơn vị triệu đồng, có cột `sort` 1..7) |
 | `rpt_` | `v_xephang_asm` | 388 | 28 | View xếp hạng ASM 5 tháng (đơn vị triệu đồng, có cột `sort` theo `rank_final`) |
-| `rpt_` | `v_baocao_pnl_excel_pivoted` | 160 | 13 | View bảng tổng hợp lãi lỗ xoay ngang 32 dòng × 5 tháng chuẩn giao diện bảng ma trận Trang 3 trên Power BI |
+| `rpt_` | `v_baocao_pnl_excel_pivoted` | 160 | 13 | View bảng tổng hợp lãi lỗ xoay ngang 32 dòng × 5 tháng chuẩn giao diện bảng tổng hợp Trang 3 trên Power BI |
 
 ---
 

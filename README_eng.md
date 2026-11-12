@@ -71,47 +71,21 @@ From these issues, the project focused on answering 5 core governance questions:
 
 ## 2. 🎯 Requirement Analysis And Report Output Design
 
-### Clarifying Business Requirements and Defining Outputs
-From the initial mandate, the project clarified the specific information Executive Leadership required regarding regional business results and ASM performance. First, the target reports were defined, followed by assessing data availability to design suitable calculations and ETL flows. The system must support both detailed lookup/reconciliation and visual chart analysis.
+### The Transformation Process From Business Context To Output Reports
 
-### Four Core Output Dashboards
-
-The project constructed **4 Core Dashboards**, each addressing a specific governance need:
-
-| Code | Dashboard Name | Contained Content & Purpose of Use |
-|:---:|---|---|
-| **01** | **BÁO CÁO KẾT QUẢ KINH DOANH** *(Business Results Report)* | **Summarizes 32 financial metrics** on business results across **7 regions** (alongside Head Office and bank-wide Total columns) for detailed lookup and reconciliation. |
-| **02** | **BÁO CÁO XẾP HẠNG ASM** *(ASM Ranking Report)* | **Summarizes scores and rankings** of **74 to 84 ASM personnel** to support rewarding top performers and coaching underperforming managers. |
-| **03** | **HIỆU QUẢ KINH DOANH THEO VÙNG** *(Regional Business Performance)* | **Compares business efficiency and contribution** across **7 regions** (revenue – cost – provision, CIR, capital efficiency) to identify highly profitable regions. |
-| **04** | **ĐÁNH GIÁ HIỆU SUẤT ASM** *(ASM Performance Evaluation)* | **Compares sales volume against non-performing loans (NPL)** of each ASM to identify cases chasing volume while escalating credit risk. |
-
-### From Initial Requests to Reporting Modules:
-
-Beyond the 4 dashboards, the project includes an overview, a data dictionary, and deep-dive analytical sections to help stakeholders understand context, review calculation formulas, and track operational issues:
-
-| Initial Request | Content To Clarify | Business Analysis Finding | Proposed Reporting Module |
-|---|---|---|---|
-| **Frame the problem & standardize terminology** | Readers need to quickly grasp business context, source data, processing pipeline, and metric formulas | Requires a project overview section and a data dictionary explaining definitions and calculation formulas | • **Executive Overview**: Summarizes Business Context, 4 Output Dashboards, 3 Source Datasets, and Technical Pipeline<br>• **Data Dictionary**: Standardizes **68 indicators** across 5 domain groups with formulas |
-| **Look up & reconcile regional business results** | Does regional P&L include Head Office costs? How to look up and reconcile itemized revenues and expenses? | Must fully allocate indirect costs (funding, OPEX, provisions) across 7 regions and present a hierarchical matrix | • **Regional Business Results Report (Dashboard 01)**: Matrix table of **32 financial indicators** across `HỘI SỞ`, 7 regions, and `Total`, powered by **21 automated background & font color formatting measures** |
-| **Look up scorecards & rank ASM personnel** | Which indicators evaluate ASMs to encourage sales growth while controlling territorial credit risk? | Combine 4 Commercial Scale indicators (`diem_qm`) and 4 Territorial Financial Efficiency indicators (`diem_fin`) | • **ASM Ranking Report (Dashboard 02)**: Detailed scorecard for **74 – 84 ASMs** (Total Score, Total Rank, actual values, and component ranks) for rewarding and coaching |
-| **Visually analyze profitability across 7 regions** | How is profit formed? Which regions generate high returns, and which incur high costs or operating losses? | Decompose revenue – cost – provision steps, comparing profit against CIR and return on capital across 7 regions | • **Regional Business Performance (Dashboard 03)**: Features **5 KPI cards**, an **8-step** PBT Waterfall chart, a **Profit vs CIR** bubble chart, a **Profit & Capital Efficiency** combo chart, and an **Evaluation summary** |
-| **Monitor ASM performance and risks** | Which regions and ASMs grow sales sustainably while controlling bad debt? | Highlight the overall Champion while plotting new loan disbursement volume against NPL ratios across regions | • **ASM Performance Evaluation (Dashboard 04)**: **Rank #1 Champion** profile card, nationwide **Leaderboard**, **New Loans (Column) & NPL Ratio (Line)** combo chart across 7 regions, and **Team Governance Commentary** |
-| **Synthesize results and executive proposals** | What causes regional losses or ASM demotions? What actions should be taken and what are the expected financial impacts? | Connect macro 7-region profit flows with micro ASM scoring mechanics to propose prioritized quantitative actions | • **Deep-Dive Diagnostic & Executive Proposals**: Synthesizes **4 critical KPI cards**, regional PBT contribution waterfall, analysis of the **−48.8 billion** loss and **+26-point** penalty in the Southeast (pushing **84% of ASMs** to the bottom group), and **Action Matrix** |
-
-### Logical Transformation From Management Requirements to Reporting System:
+Starting from Executive Leadership's initial mandate, the project did not jump straight into report building. Instead, it conducted domain analysis to decouple the problem into 2 parallel governance tracks, identifying core information requirements and building an executive reporting system:
 
 | Transformation Stage | Track 1: Regional Business Performance (P&L) | Track 2: Area Sales Management Evaluation (ASM) |
 |---|---|---|
-| **1. Initial Broad Executive Mandate** | Monitor credit card business performance across 7 regions | Evaluate operational effectiveness of the Area Sales Management (ASM) team |
-| **2. Information Groups Required In Reports** *(Domain analysis & requirement refinement)* | • Card operating income, net treasury funding cost, operating expense, provision expense<br>• Head Office cost allocation by economic drivers<br>• CIR ratio, profit margin (Margin), return on capital, and average productivity/SM | • **Individual sales scale metrics**: New loan disbursement, active cards with balance (PSDN), application approval rate<br>• **Territorial financial & risk responsibility metrics**: Extended NPL ratio, regional CIR, Margin, Capital Efficiency, average PBT/SM |
-| **3. Output Management Reporting System** | • **Standardization & Dictionary**: Overview of context, outputs, inputs & pipeline and standardized 68 business indicators<br>• **Regional Business Results Report**: Lookup & reconciliation matrix of 32 P&L metrics<br>• **Regional Business Performance**: Visualizes revenue – cost – provision across 7 regions | • **ASM Ranking Report**: Comprehensive score & rank table for 84 ASMs<br>• **ASM Performance Evaluation**: Visualizes sales volume vs NPL correlation, Top 1 Champion & Leaderboard<br>• **Deep-Dive Diagnostic**: Deep-dive analysis of profit flows, regional penalty mechanics, and executive action matrix |
+| **Step 1: Business Context & Initial Mandate** | Executive Leadership needed to track actual business performance and genuine profitability of credit cards across 7 regions | Needed an equitable performance evaluation and ranking system for 74 to 84 Area Sales Managers (ASMs) |
+| **Step 2: Domain Analysis & Information Clarification** | • Need to separate card operating income, net treasury funding cost, operating expense, and credit provision expense.<br>• Must allocate indirect expenses centralized at Head Office across 7 regions using actual operational drivers (average loan balance, active card count, and headcount).<br>• Establish key financial ratios: CIR, profit margin (Margin), return on capital, and average productivity/SM. | • **Individual sales scale metrics**: New loan disbursement (LTN), active cards with balance (PSDN), application approval rate.<br>• **Territorial financial & risk responsibility metrics**: Extended NPL ratio, regional CIR, Margin, Return on Capital, average PBT/SM (preventing unchecked sales volume growth that sacrifices credit quality). |
+| **Step 3: Output Reporting System Deliverables** | • **Executive Overview & Data Dictionary**: Unifies context and standardizes **68 indicators** across 5 domain groups with formulas.<br>• **Regional Business Results Report (Dashboard 01)**: Summary table of **32 financial indicators** across `HỘI SỞ`, 7 regions, and `Total`, powered by **21 automated background & font color formatting measures**.<br>• **Regional Business Performance (Dashboard 03)**: Features **5 KPI cards**, an **8-step** PBT Waterfall chart, a **Profit vs CIR** bubble chart, and a **Profit & Return on Capital** combo chart. | • **ASM Ranking Report (Dashboard 02)**: Detailed scorecard for **74 – 84 ASMs** combining 4 Commercial Scale indicators (`diem_qm`) and 4 Territorial Financial Efficiency indicators (`diem_fin`) to reward top performers and support struggling staff.<br>• **ASM Performance Evaluation (Dashboard 04)**: 4-axis Radar charts covering Top 3 Champions, Top 3 High-Risk managers (tab toggle per person), **7 regions** benchmarks, and 4-quadrant team governance commentary.<br>• **Nationwide Business Results & Action Plan**: Synthesizes **4 critical KPI cards**, regional PBT contribution waterfall, analysis of the **−48.8 billion** loss and **+26-point** penalty in the Southeast (pushing **84% of ASMs** to the bottom group), and action plan recommendations. |
 
-### What Are The Two Metric Groups Used For?
-- **Regional Business Performance Metrics (32 P&L metrics, Regional NPL, CIR, Margin, Capital Efficiency):** Reveal genuine regional financial performance after absorbing Head Office cost allocations, providing Executive Leadership with concrete foundations for capital budgeting, target setting, and expense cap control.
-- **Area Sales Management Evaluation Metrics (8 ASM ranking metrics across Scale & Financial pillars):** Combine individual customer acquisition performance with territorial credit quality and financial health, discouraging unchecked volume expansion that sacrifices portfolio quality.
+### Practical Governance Value of the Two Metric Groups
+- **Regional Business Performance Metrics (32 P&L metrics, Regional NPL, CIR, Margin, Return on Capital)**: Provide Executive Leadership with clear visibility into each region's true profitability after accounting for all Head Office overhead, serving as a solid basis to allocate funding, set targets, and manage operating expenses.
+- **Area Sales Management Evaluation Metrics (8 ASM ranking metrics across Scale & Financial pillars)**: Link personal sales results with regional bad debt discipline and profitability, driving healthy growth without neglecting risk.
 
 ---
-
 ## 3. 🔍 Data Discovery And Assessment
 
 ### Required Input Data To Collect
@@ -127,12 +101,12 @@ The bank lacked a single consolidated data table to build all 4 dashboards. Cons
 
 ### How Well Does Data Fulfill Requirements?
 
-| Target Dashboard | Required Information | Fulfilling Source Dataset | Feasibility And Granularity Assessment |
+| Target Dashboard | Required Information | Fulfilling Source Dataset | Data Characteristics & Aggregation Method |
 |---|---|---|---|
-| **01. Business Results Report** & **03. Regional Business Performance Evaluation** | Itemized revenue/expense, province codes, GL accounts, Head Office allocation drivers | `1. Dữ liệu hạch toán mỗi tháng (GL)` & `2. Dữ liệu sao kê thẻ mỗi tháng` | **Fully Feasible**: 62,953 GL rows contain province codes for direct assignment; 181 Head Office rows (code `'00'`) are accurately allocated across 7 regions using balance and active card drivers derived from 2,932,922 statement rows |
-| **Regional NPL Measurement & Credit Risk Control** | Credit balances across 5 debt buckets, cumulative write-offs by branch and region | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | **Feasible at regional level**: Branch-tagged contract records aggregate accurately into debt buckets 1..5 and write-offs across 7 regions over 5 months |
-| **02. ASM Ranking Report** & **04. ASM Competency Radar** (Scale Pillar) | New loan disbursement, active PSDN cards, application approval rate per ASM | `3. Dữ liệu kết quả sale của ASM mỗi tháng` (`kpi_asm_data`) | **Feasible at individual level**: Complete monthly records for 74 to 84 regional managers enable direct individual ranking |
-| **NPL & Financial Efficiency in ASM Scorecard** (Financial & Risk Pillar) | Extended NPL ratio, CIR, Margin, Capital Efficiency, average PBT per ASM | Combined regional outputs from `fact_txn_month` and `fact_kpi_month` | **Applied at regional level to ASMs in the same territory**: Because card contracts do not carry ASM employee IDs, delinquency and financial metrics are calculated regionally and assigned uniformly to ASMs within that region to enforce territorial stewardship |
+| **01. Business Results Report** & **03. Regional Business Performance Evaluation** | Itemized revenue/expense, province codes, GL accounts, Head Office allocation drivers | `1. Dữ liệu hạch toán mỗi tháng (GL)` & `2. Dữ liệu sao kê thẻ mỗi tháng` | Directly assigns 62,953 GL rows containing province codes to 7 regions; allocates 181 shared Head Office rows (code `'00'`) based on loan balance and active card proportions derived from 2,932,922 statement rows |
+| **Regional NPL Measurement & Credit Risk Control** | Credit balances across 5 debt buckets, cumulative write-offs by branch and region | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | Branch-tagged contract records aggregate accurately into debt buckets 1..5 and write-offs across 7 regions over 5 months |
+| **02. ASM Ranking Report** & **04. ASM Competency Radar** (Scale Pillar) | New loan disbursement, active PSDN cards, application approval rate per ASM | `3. Dữ liệu kết quả sale của ASM mỗi tháng` (`kpi_asm_data`) | Complete monthly records for 74 to 84 regional managers enable scoring and direct ranking for each individual |
+| **NPL & Financial Efficiency in ASM Scorecard** (Financial & Risk Pillar) | Extended Non-Performing Loan Ratio (NPL), CIR, Margin, Return on Capital, Average EBT/SM | Combined regional outputs from `fact_txn_month` and `fact_kpi_month` | Card contracts do not store ASM employee IDs; therefore, delinquency and financial metrics are calculated regionally and applied uniformly to ASMs within that region to enforce territorial stewardship |
 
 ### Three Key Issues in Input Data:
 1. **Card statement data volume is large, unsuitable for standard spreadsheets:** Comprising **2,932,922 rows** and weighing **117.2 MB**, the file cannot be reliably processed in conventional spreadsheets and requires ingestion into PostgreSQL.
@@ -147,7 +121,7 @@ The bank lacked a single consolidated data table to build all 4 dashboards. Cons
 
 ### 4.1. Structuring Revenue and Expense Allocation (Compiling 7-Region P&L)
 
-The key question was: *How can regional business results be determined when substantial revenues and expenses are booked centrally at Head Office?*
+The primary challenge in compiling regional P&L reports lies in handling substantial revenues and expenses booked centrally at Head Office rather than at branch locations.
 
 The allocation framework was developed through a 9-step process:
 1. Analyze all 63,134 entries in **Monthly General Ledger (GL)** data.
@@ -187,23 +161,23 @@ $$V_{	ext{Month } M} = V_{	ext{YTD } M} - V_{	ext{YTD } (M-1)}$$
 
 ### 4.2. Structuring Area Sales Manager (ASM) Performance Scorecard
 
-The core question was: *Is looking merely at disbursement volume or new card counts sufficient to evaluate ASM performance? Does it capture profitability and credit quality?*
+Evaluating ASMs solely on new loan disbursement or newly opened card counts creates an incentive to chase volume while compromising underwriting discipline. The evaluation system must simultaneously reflect sales productivity, profitability, and local credit risk quality.
 
 **Combining Sales Performance with Territorial Financial and Risk Stewardship:**
 The project merged **Monthly ASM Sales Results** with regional P&L and delinquency metrics to build an evaluation framework of **8 indicators** structured into **2 pillars**, each comprising 4 metrics. Every metric is ranked independently from 1 to $N$:
-- **Pillar 1: Commercial Scale & Quality-Controlled Growth (`diem_qm` – Scale / Business Development Score):** Comprises **3 individual sales metrics** (`Average new loan disbursement`, `Average active cards with balance – PSDN`, `Application approval rate`) sourced from *Monthly ASM Sales Results*, paired with **1 territorial credit quality control metric** (`Extended credit risk ratio – Regional NPL`) sourced from *Monthly Card Statements*. **A high approval rate is not necessarily good.** It may reflect quality applicants or compromised underwriting. Evaluating approval rates alongside NPL balances growth with prudent screening.
-- **Pillar 2: Territorial Financial Health (`diem_fin` – Financial Score):** Comprises **4 regional metrics** derived from post-allocation P&L (`Cost-to-Income Ratio – CIR`, `Profit Margin`, `Return on Capital`, `Average PBT per SM`). Because card statements record branch codes rather than ASM IDs, regional financial metrics are shared across ASMs within the territory, tying individual recognition to regional profitability.
+- **Pillar 1: Commercial Scale & Quality-Controlled Growth (`diem_qm` – Scale / Business Development Score):** Comprises **3 individual sales metrics** (`Average new loan disbursement`, `Average active cards with balance – PSDN`, `Application approval rate`) sourced from *Monthly ASM Sales Results*, paired with **1 territorial credit quality control metric** (`Extended Non-Performing Loan Ratio (NPL) – Regional NPL`) sourced from *Monthly Card Statements*. **A high approval rate is not necessarily good.** It may reflect quality applicants or compromised underwriting. Evaluating approval rates alongside NPL balances growth with prudent screening.
+- **Pillar 2: Territorial Financial Health (`diem_fin` – Financial Score):** Comprises **4 regional metrics** derived from post-allocation P&L (`Cost-to-Income Ratio – CIR`, `Profit Margin`, `Return on Capital`, `Average EBT/SM`). Because card statements record branch codes rather than ASM IDs, regional financial metrics are shared across ASMs within the territory, tying individual recognition to regional profitability.
 
-**Calculating Extended Credit Risk Ratio (Including Off-Balance Written-Off Debt):**
+**Calculating Extended Non-Performing Loan Ratio (NPL) (Including Off-Balance Written-Off Debt):**
 In PostgreSQL Stored Procedures (`report_id = 204`), the extended NPL ratio is calculated as:
 
-$$	ext{Extended Credit Risk Ratio} = rac{	ext{Bucket 3–5 Balances} + 	ext{Cumulative Write-offs}}{	ext{Total Balance} + 	ext{Cumulative Write-offs}} 	imes 100$$
+$$	ext{Extended Non-Performing Loan Ratio (NPL)} = rac{	ext{Bucket 3–5 Balances} + 	ext{Cumulative Write-offs}}{	ext{Total Balance} + 	ext{Cumulative Write-offs}} 	imes 100$$
 
 Unlike standard on-balance NPL ratios, this **project-defined metric** adds back cumulative written-off debt removed from the balance sheet. This prevents artificial reductions in delinquency ratios following off-balance write-off entries. *Consideration:* The metric accumulates past losses; regions with mature portfolios may carry higher historical write-offs than newly expanded territories.
 
 | Pillar 1: Commercial Scale & Growth Quality (`diem_qm`) | Pillar 2: Territorial Financial Efficiency (`diem_fin`) |
 |---|---|
-| • **Average new loan disbursement (`ltn_avg`)** *(Higher is better)*<br>• **Average active cards with balance (`psdn_avg`)** *(Higher is better)*<br>• **Average application approval rate (`approval_rate_avg`)** *(Evaluated with risk)*<br>• **Extended credit risk ratio (`npl_truoc_wo_luy_ke`)** *(Lower is better — includes off-balance write-offs)* | • **Cost-to-Income Ratio – `CIR`** *(Lower is better)*<br>• **Profit Margin – `Margin`** *(Higher is better)*<br>• **Capital Efficiency Ratio (`hs_von`)** *(Higher is better)*<br>• **Average Profit / Manager (`hs_nhan_su`)** *(Higher is better — ties stewardship to territory)* |
+| • **Average new loan disbursement (`ltn_avg`)** *(Higher is better)*<br>• **Average active cards with balance (`psdn_avg`)** *(Higher is better)*<br>• **Average application approval rate (`approval_rate_avg`)** *(Evaluated with risk)*<br>• **Extended Non-Performing Loan Ratio (NPL) (`npl_truoc_wo_luy_ke`)** *(Lower is better — includes off-balance write-offs)* | • **Cost-to-Income Ratio – `CIR`** *(Lower is better)*<br>• **Profit Margin – `Margin`** *(Higher is better)*<br>• **Return on Capital (`hs_von`)** *(Higher is better)*<br>• **Average EBT/SM (`hs_nhan_su`)** *(Higher is better — ties stewardship to territory)* |
 
 **Detailed Overview of 8 ASM Performance Metrics:**
 
@@ -215,12 +189,12 @@ Unlike standard on-balance NPL ratios, this **project-defined metric** adds back
 | **Extended NPL Ratio** | Credit risk control | Reflects underlying credit portfolio quality | `2. Monthly Card Statements` | Lower is better | Regional level | Statements lack ASM IDs; computed territory-wide |
 | **Regional CIR Ratio** | Cost efficiency control | Ratio of operating costs to operating income | `1. Monthly General Ledger (GL)` | Lower is better | Regional level | Dependent on Head Office allocation drivers |
 | **Profit Margin (Margin)** | Income profitability | Net profit yield on total card revenue | `1. Monthly General Ledger (GL)` | Higher is better | Regional level | Sensitive to internal funds transfer pricing changes |
-| **Capital Efficiency Ratio** | Return generated on capital | Profit produced relative to net funding costs | `1. GL` & `2. Card Statements` | Higher is better | Regional level | Reflects overall territory capital productivity |
-| **Average PBT per SM** | Financial productivity per manager | Pre-tax profit per authorized Sales Manager | `1. GL` & Staffing Headcount | Higher is better | Regional level | Averaged over authorized SM headcount in region |
+| **Return on Capital** | Return generated on capital | Profit produced relative to net funding costs | `1. GL` & `2. Card Statements` | Higher is better | Regional level | Reflects overall territory capital productivity |
+| **Average EBT/SM** | Financial productivity per manager | Pre-tax profit per authorized Sales Manager | `1. GL` & Staffing Headcount | Higher is better | Regional level | Averaged over authorized SM headcount in region |
 
 *Score Aggregation Across Heterogeneous Metrics:*
 Because the 8 metrics employ diverse units (million VND, card counts, percentages), individual percentile ranking is applied:
-- Each metric is ranked from 1 to $N$ bank-wide (Rank 1 represents top performance).
+- Each metric is ranked from 1 to $N$ nationwide (Rank 1 represents top performance).
 - For "lower is better" metrics (NPL, CIR), sort order is reversed so lowest values achieve Rank 1.
 - Total score equals the sum of ranks across both pillars:
 $$	ext{Total Score} = 	ext{Scale Score } (diem\_qm) + 	ext{Financial Score } (diem\_fin)$$
@@ -266,22 +240,22 @@ Data moves through 3 processing stages from input Excel files to Power BI dashbo
   Power BI connects directly to the warehouse via DirectQuery. The solution utilizes **82 DAX measures**, including KPI calculations, **21** conditional formatting background `PnlTable_BgColor_*` and font color `PnlTable_FontColor_*` measures for the P&L table, alongside large-font HTML Content visuals and a **68**-metric Data Dictionary styled in **Executive Orange / Orange Tree**. Core modules include:
 
   1. **Standardization & Data Dictionary**: Standardizes **68** indicators and variables across 5 domain groups (`0. Identification & Hierarchy`, `1. Profit & Loss (P&L)`, `2. Financial & Headcount Ratios`, `3. Head Office Allocation Drivers`, `4. ASM Evaluation & Ranking`), documenting definitions, units, business meanings, and formulas.
-  2. **Regional Business Results Report *(Dashboard 01)***: Matrix table with **32** financial, staffing, and efficiency indicators across `HỘI SỞ`, **7** business regions (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`), and `Total`. Conditional formatting highlights `1. Profit before tax` (deep orange background, white/gold text), group headers (dark backgrounds, high-contrast light text, rose-pink negative values), and detail rows (light backgrounds, crimson negatives, gray zeros).
+  2. **Regional Business Results Report *(Dashboard 01)***: Summary table with **32** financial, staffing, and efficiency indicators across `HỘI SỞ`, **7** business regions (`Nam Trung Bộ`, `Tây Bắc Bộ`, `Tây Nam Bộ`, `Đồng Bằng Sông Hồng`, `Đông Nam Bộ`, `Đông Bắc Bộ`, `Bắc Trung Bộ`), and `Total`. Conditional formatting highlights `1. Profit before tax` (deep orange background, white/gold text), group headers (dark backgrounds, high-contrast light text, rose-pink negative values), and detail rows (light backgrounds, crimson negatives, gray zeros).
 
   3. **ASM Ranking Report *(Dashboard 02)***: Detailed scorecard and ranking table for the ASM cohort (**74 – 84** personnel monthly) to reward top performers and coach underperforming managers. Includes filtering by month and region to examine `Total Score`, `Total Rank` alongside component values and ranks (`New Loans`, `New Loans Rank`, `PSDN`, `PSDN Rank`, `Approval Rate`, `Approval Rate Rank`, `NPL Ratio`...).
 
   4. **Regional Business Performance *(Dashboard 03)***: Deploys charts of revenue – cost – provision structures to compare profitability across **7** regions through 5 visual blocks:
      - *5 Executive KPI Cards*: `THU NHẬP` (**1,353,898 million VND**, +1.8%), `LỢI NHUẬN` (**250,450 million VND**, +8.4%), `CHI PHÍ HOẠT ĐỘNG` (**-235,122 million VND**, +1.1%), `CHI PHÍ DỰ PHÒNG` (**-868,327 million VND**, +0.0%), `NĂNG SUẤT BÌNH QUÂN` (**4,100 million VND**, +6.0%).
-     - *Waterfall Chart – Decomposing Pre-Tax Profit Formation*: Displays 4 positive revenue steps (`1. In-term interest income` **1,676,835** million, `2. Bancassurance fees` **30,653** million, `3. Card service income` **101,481** million, `4. Overdue interest income` **1,497** million) and 3 negative cost deductions (`5. Funding & other net costs` **-456,568** million, `6. Operating expenses` **-235,122** million, `7. Provision expenses` **-868,327** million) yielding `8. Profit before tax` (**250,450** million).
+     - *Waterfall Chart – Step-by-Step Breakdown of Pre-Tax Profit*: Displays 4 positive revenue steps (`1. In-term interest income` **1,676,835** million, `2. Bancassurance fees` **30,653** million, `3. Card service income` **101,481** million, `4. Overdue interest income` **1,497** million) and 3 negative cost deductions (`5. Funding & other net costs` **-456,568** million, `6. Operating expenses` **-235,122** million, `7. Provision expenses` **-868,327** million) yielding `8. Profit before tax` (**250,450** million).
      - *Bubble Chart – Regional Profitability & Cost Efficiency Benchmark*: Y-axis shows Profit Before Tax, X-axis shows Cost-to-Income Ratio (CIR), bubble size reflects regional Sale Manager headcount.
-     - *Combo Column & Line Chart – Profit Trend & Capital Efficiency*: Benchmarks Profit Before Tax (Column) against Capital Efficiency (Line) across 7 regions (led in volume by Southwest at **167,883** million with **131.7%** capital efficiency; led in capital efficiency by South Central at **203.5%** with **50,036** million; Southeast is the sole loss-making region at **-48,763** million with **-78.0%** capital efficiency).
+     - *Combo Column & Line Chart – Profit Trend & Return on Capital*: Benchmarks Profit Before Tax (Column) against Return on Capital (Line) across 7 regions (led in volume by Southwest at **167,883** million with **131.7%** capital efficiency; led in capital efficiency by South Central at **203.5%** with **50,036** million; Southeast is the sole loss-making region at **-48,763** million with **-78.0%** capital efficiency).
      - *Performance Evaluation & Key Takeaways Panel*: Summarizes 3 insight groups covering leading territories, loss warnings, and cross-selling potential in Bancassurance (only **1.69%** TOI) and card services (**5.6%** TOI) when in-term interest dominates **92.6%** and provision costs absorb **64.1%** of total operating income.
 
   5. **ASM Competency Radar *(Dashboard 04)***: Uses a 4-axis radar chart to benchmark Area Sales Managers (ASMs) across 4 core operational pillars: New Lending Volume (LTN), Active Card Customers (PSDN), Approval Rate, and NPL Safety. The page is organized into 4 clear blocks:
      - *Block 1 – Top 3 Leaders (Champion, Runner-up, Top 3)*: Built with clickable tabs directly inside the visual so viewers can switch instantly between Top 1, Top 2, and Top 3. Each tab presents a 4-axis radar polygon against the benchmark average, alongside 4 large KPI cards (LTN, PSDN, Approval, NPL) and tailored insights. For instance in February, Champion Hoang Van Nam (Red River Delta) ranked #1 with New Lending of **2,901 million VND**, onboarding **176 new customers**, an Approval Rate of **47.2%**, and keeping bad debt secure at **12.8%** NPL (well outperforming the bank-wide averages of **986 million VND**, **72 customers**, **41.8%**, and **15.5%** respectively).
-     - *Block 2 – Top 3 At-Risk Managers (Bottom 1, Bottom 2, Bottom 3)*: Uses the same interactive tabs to spotlight the 3 lowest performers or highest bad debt ratios, enabling leaders to identify operational bottlenecks for coaching or intervention.
+     - *Block 2 – Top 3 At-Risk Managers (Bottom 1, Bottom 2, Bottom 3)*: Uses the same interactive tabs to spotlight the 3 lowest performers or highest bad debt ratios, enabling leaders to identify weak spots to support or retrain staff promptly.
      - *Block 3 – 7-Region Benchmark*: Side-by-side radar plots displaying all 7 regions, clarifying balance and disparities between business volume and risk control across territories.
-     - *Block 4 – Actionable Team Governance Matrix*: Classifies ASM personnel into 4 distinct performance tiers (Star Leaders, High Potential, Needs Improvement, and High Risk), offering practical recommendations for Executive Leadership.
+     - *Block 4 – Actionable Team Governance Framework*: Classifies ASM personnel into 4 distinct performance tiers (Star Leaders, High Potential, Needs Improvement, and High Risk), offering practical recommendations for Executive Leadership.
 
   6. **Deep-Dive Diagnostic & Executive Proposals**: Multi-dimensional strategic findings and actionable recommendations for Executive Leadership (detailed in Section 6 – Part C).
 
@@ -295,60 +269,52 @@ Data moves through 3 processing stages from input Excel files to Power BI dashbo
 |---|---|---|
 | **Look up & reconcile actual P&L across 7 regions** | **01. BÁO CÁO KẾT QUẢ KINH DOANH** | **Satisfied**: Features all 32 financial metrics for 7 regions and Head Office post-allocation, matching 100% of GL for direct audit. |
 | **Fairly rank ASMs for rewarding & coaching** | **02. BÁO CÁO XẾP HẠNG ASM** | **Satisfied**: Summarizes the 2-pillar scorecard for 74 - 84 ASM personnel, clearly identifying top performers to reward and underperformers to coach. |
-| **Compare revenue – cost – provision & profitability** | **03. HIỆU QUẢ KINH DOANH THEO VÙNG** | **Satisfied**: Visualizes 8 profit formation steps, Profit vs CIR correlation, and Capital Efficiency across 7 regions. |
+| **Compare revenue – cost – provision & profitability** | **03. HIỆU QUẢ KINH DOANH THEO VÙNG** | **Satisfied**: Visualizes 8 profit formation steps, Profit vs CIR correlation, and Return on Capital across 7 regions. |
 | **Identify ASMs trading credit risk for scale** | **04. ĐÁNH GIÁ NĂNG LỰC ASM** | **Well Satisfied**: Uses a 4-axis radar chart to benchmark sales and credit risk between top performers and at-risk managers, with clickable tabs to inspect each person directly on the dashboard. |
-| **Standardize definitions & propose executive actions** | **DATA DICTIONARY & DEEP-DIVE DIAGNOSTIC** | **Satisfied**: Standardizes 68 business metrics and delivers an in-depth diagnostic report with a quantitative action matrix for leadership. |
+| **Standardize definitions & propose executive actions** | **DATA DICTIONARY & NATIONWIDE BUSINESS RESULTS** | **Satisfied**: Standardizes 68 business metrics and delivers a nationwide business results report with practical action recommendations for leadership. |
 
 ### Part B – Notable Findings from May 2023 Figures:
 
-1. **Southwest Region – Profit increased mainly due to reduced net provision expenses:**
-   - *Observed Facts:* Regional pre-tax profit increased by **+4,267.8 million VND**, accounting for **97.2%** of system-wide profit growth in May. However, net card income increased by only 16.3 million VND and operating expenses reduced profit by −195.9 million VND, whereas **net provision expenses decreased by +4,447.3 million VND**. The region recorded the **highest extended NPL ratio in the system (21.99%)** with zero Area Sales Managers (ASMs) reaching the top 25 nationwide.
-   - *Business Assessment:* May profit growth stemmed primarily from lower net provision charges. Net income from card operations grew by just 16.3 million VND compared to the prior month, remaining nearly flat and showing no significant improvement in core business revenue during the period.
-   - *Points Requiring Further Inspection:* Verify whether the provision decrease came from actual debt recovery or technical debt restructuring adjustments; propose on-site collection quality audits in July.
+1. **Southwest Region – Highest profit growth across the bank but concealing the peak bad debt exposure:**
+   Pre-tax profit for the Southwest rose by **+4,267.8 million VND**, accounting for **97.2%** of system-wide profit growth in May. However, this surge did not stem from core lending (net card income grew by only 16.3 million VND while operating expenses reduced profit by −195.9 million VND), but was driven entirely by **net credit provision expenses decreasing sharply by +4,447.3 million VND**. Crucially, the region recorded the **highest extended Non-Performing Loan ratio (NPL) nationwide (21.99%)** with zero ASMs reaching the top 25. Executive Leadership must conduct on-site field audits in July to verify whether provision drops reflect genuine cash recovery or artificial technical restructuring.
 
-2. **Southeast Region – Net income grew but profit remained negative under provision expense pressure:**
-   - *Observed Facts:* The region recorded a pre-tax loss of **−8,787.4 million VND** incurred in May alone (5-month cumulative loss of **−48,763 million VND**, or **−48.8 billion VND**). Sales activity expanded strongly as **net income rose by +3,210.7 million VND**, but this was offset by **provision expenses increasing by −3,234.2 million VND**, pushing **16 out of 19 Area Sales Managers** into the bottom group of the ranking despite high sales volume.
-   - *Business Assessment:* The region recorded negative profit because credit risk provision expenses incurred during the period exceeded the incremental net income generated from business operations.
-   - *Points Requiring Further Inspection:* Conduct vintage/cohort analysis to verify whether rapid loan originations from prior periods are migrating into overdue debt buckets; review delinquent contracts in the Southeast within 30 days to assess migration speed and tighten approval criteria.
+2. **Southeast Region – Strong sales performance completely erased by heavy provision charges:**
+   The Southeast demonstrated vigorous commercial momentum, generating **+3,210.7 million VND** in incremental net income. However, this entire gain was wiped out by **new credit provision charges escalating by −3,234.2 million VND**, plunging the region into a monthly pre-tax loss of **−8,787.4 million VND** (5-month cumulative loss of **−48,763 million VND**, or **−48.8 billion VND**). Under the territorial delinquency penalty framework, **16 out of 19 Area Sales Managers** were pushed to the bottom ranking tier despite impressive individual sales volumes. A cohort analysis of loan vintages alongside a 30-day review of all delinquent accounts in the Southeast is required to arrest bad debt migration.
 
-3. **Red River Delta – Profit increased due to lower net provisions while maintaining safe scale leadership:**
-   - *Observed Facts:* Regional pre-tax profit increased by **+1,310.9 million VND** compared to the prior month, while actual net card income declined by **−232.2 million VND** and net provision expenses decreased by **+1,455.8 million VND**. Cumulatively through May, the region led nationwide new loan disbursement (**55,010 million VND**, 1.5 times the second-ranked region) while keeping its NPL ratio at **13.9%** (below the **17.3%** bank-wide average).
-   - *Business Assessment:* Although the region serves as the safest scale pillar in the system, the slight dip in net card income in May warrants continued monitoring in upcoming periods.
-   - *Points Requiring Further Inspection:* Because accounting ledgers do not separate new provision charges from write-back recoveries, internal audit should inspect detailed provision entries to distinguish natural risk reduction from technical accounting adjustments before concluding long-term trends.
+3. **Red River Delta – Leading national lending scale while maintaining healthy credit quality:**
+   The region firmly remains the bank's volume anchor, leading nationwide in new loan disbursements (**55,010 million VND**, 1.5 times the second-ranked region) while maintaining its **extended Non-Performing Loan ratio (NPL)** at a safe **13.9%** (comfortably below the national average of **17.3%**). May pre-tax profit rose by **+1,310.9 million VND**, where a slight softening in net card income of **−208 million VND** was offset by a net provision decrease of **+1,518.9 million VND**. Key management focus is maintaining disbursement momentum and coaching managers to elevate team productivity evenly.
 
-4. **South Central Coast – Strong ranking results paired with the lowest NPL ratio and leading capital efficiency:**
-   - *Observed Facts:* Operating with 5 Area Sales Managers, the territory maintained the lowest extended NPL ratio bank-wide (**11.24%**), achieved the highest return on capital in the system (**203.5%** on the cumulative May chart), and placed **4 out of 5 Area Sales Managers** in the top 25 nationwide.
-   - *Business Assessment:* These results position the South Central Coast as a benchmark model for capital safety optimization and credit quality control worthy of further study for replication.
-   - *Points Requiring Further Inspection:* Given the small territory scale (5 Area Sales Managers), survey actual underwriting and customer screening procedures in the South Central Coast and evaluate controlled pilot testing before scaling to other regions.
+4. **South Central Coast – Exemplary benchmark for capital efficiency and credit safety:**
+   The South Central Coast stands out as a high-performing model, sustaining the **lowest extended Non-Performing Loan ratio (NPL) nationwide (11.24%)**, achieving the **highest return on capital (203.5%)**, and contributing **50,036 million VND** to cumulative pre-tax profit. Supported by territory-wide credit quality and consistent sales productivity, **4 out of 5 Area Sales Managers** secured spots in the nationwide top 25. Commercial and Risk divisions should conduct a 60-day field survey to document underwriting practices for broader replication.
 
-### Part C – Deep-Dive Diagnostic Report and Executive Decision Support:
+### Part C – Nationwide Business Results and Executive Decision Support:
 
 P&L findings from 7 regions and ASM scorecard results are synthesized into **4 governance tiers**:
 
 1. **4 Core Indicators:**
    - **Highest Profit Contribution – `67.0%`:** Southwest leads the bank, contributing +167.9 billion VND to total system profit.
-   - **Peak NPL Ratio – `22.0%`:** Southwest far exceeds the safe bank-wide average benchmark.
+   - **Peak NPL Ratio – `22.0%`:** Southwest far exceeds the safe nationwide average benchmark.
    - **Negative Pre-Tax Profit – `-48.8 billion`:** Southeast is the sole region recording a cumulative 5-month loss.
    - **Optimal Quality Governance – `11.2% NPL`:** South Central Coast maintains the lowest NPL ratio while contributing 20% of profit (+50.0 billion VND).
 
 2. **Profit Analysis – Pre-Tax Profit Contribution Across 7 Regions (Waterfall Chart):**
    - *Positive cumulative contributions:* Red River Delta (**+54.3 billion VND**), South Central Coast (**+50.0 billion VND**), Southwest (**+167.9 billion VND**), and 3 Other Regions (**+27.0 billion VND**) build cumulative profit from these territories to **+299.2 billion VND**.
    - *Downward drag:* The **−48.8 billion VND** loss in the Southeast reduces cumulative profit from profitable regions by **16%**.
-   - *System-wide finish line:* Consolidated bank-wide pre-tax profit closes at **+250.5 billion VND**.
+   - *System-wide finish line:* Consolidated nationwide pre-tax profit closes at **+250.5 billion VND**.
 
 3. **Impact of Southeast Financial Results on ASM Rankings:**
-   - *Maximum financial penalty score (`26 points` – Maximum Penalty):* Because the region incurred a −48.8 billion VND loss (ranking 7/7 bank-wide across financial indicators), all Area Sales Managers in the Southeast received the maximum penalty of **26 points**, regardless of personal sales success.
+   - *Maximum financial penalty score (`26 points` – Maximum Penalty):* Because the region incurred a −48.8 billion VND loss (ranking 7/7 nationwide across financial indicators), all Area Sales Managers in the Southeast received the maximum penalty of **26 points**, regardless of personal sales success.
    - *Impact on ASM Rankings:*
      * Actual figures in Southeast illustrate: Nguyen T. Loan (sales **Good – Top sale**, **16** points) only reaches **Rank 18**; Tran V. Hung (sales **Fair**, **14** points) reaches **Rank 21**; Le T. Mai (sales **Average**, **11** points) reaches **Rank 24**.
      * On the full nationwide leaderboard: Le Van Binh dropped from sales rank #24 to final rank #31 (down 7 places); Tran Van Hai dropped from sales rank #28 to #33 (down 5 places); Tran Van Anh dropped from sales rank #36 to #41 (down 5 places).
    - *Recommendation:* **16/19 ASMs (84%)** in the Southeast fall into the bottom ranking tier. Individual sales performance should be decoupled from regional loss results to retain talent, while assigning regional profit and bad debt recovery accountability to territory directors to address the cumulative **48.8 billion VND** loss.
 
-4. **Proposed Action Matrix by Territory and Quantitative Impact:**
+4. **Proposed Action Plan by Territory and Quantitative Impact:**
 
-| Priority Level | Territory | Core Issue | Primary Action | Quantitative Impact |
+| Priority Level | Territory | Main Challenge | Key Actions | Data Scope & Expected Impact |
 |:---:|---|---|---|---|
-| **Urgent** | **Southwest** | Peak NPL at **22.0%** – Profit reliant on provision decrease | Audit loan portfolio; separate new provision charges from write-back recoveries | **290,377 million VND** *(Provision transparency)* |
-| **Urgent** | **Southeast** | Loss of **−48.8 billion** – **84%** of managers pulled to bottom | Recover bad debt & **Decouple individual Scorecard** from regional profit targets | **+55 billion VND** *(Eliminate loss when NPL reaches **14%**)* |
+| **Urgent** | **Southwest** | Peak NPL at **22.0%** – Profit reliant on provision decrease | Audit loan portfolio; clearly separate new provision charges from write-back recoveries | Audit entire **290,377 million VND** at-risk debt and provisions *(verify actual cash recoveries)* |
+| **Urgent** | **Southeast** | Loss of **−48.8 billion** – **84%** of managers pulled to bottom | Recover bad debt & **Decouple individual Scorecard** from regional profit targets | Expected **+55 billion VND** profit *(eliminate loss when bringing NPL to safe **14%** benchmark)* |
 | **Priority** | **North Central Coast** | Operating expenses exceeding the **24%** revenue cap | Review branch expenses; lock spending caps to actual sales turnover | **~1.5 billion VND/month** *(Bring CIR to safe **21%** level)* |
 | **Long-term** | **South Central Coast** | High capital efficiency – Low NPL (**11.2%**) | Standardize underwriting & cost management procedures for replication | **Keep NPL below 12%** *(Capital efficiency above **200%**)* |
 | **Sustain** | **Red River Delta** | Scale leader (accounting for **30.6%** of new lending) | Maintain lending growth pace; coach managers to evenly lift team productivity | **Disbursement above 55 billion VND/month** *(Hold **30.6%** share)* |
@@ -367,23 +333,19 @@ P&L findings from 7 regions and ASM scorecard results are synthesized into **4 g
 
 ## 7. 📚 Key Takeaways
 
-1. **Understand banking domain fundamentals before writing code:**
-   When working with banking data, understanding the business meaning of metrics is essential before writing SQL queries. For instance, knowing why funding costs carry negative signs and why Head Office expenses use province code `'00'` and zone `'A'` is vital for correct allocation logic. Approaching the problem purely from a technical angle makes it difficult to design valid allocations.
+1. **Business Logic Must Precede SQL Code:**
+   Without understanding banking mechanics (funding cost is negative, Head Office costs use province `'00'`), even flawless SQL will completely misallocate regional P&L results.
 
-2. **Cleaning dimensional master data is critical:**
-   Detecting the two naming conventions `"Bà Rịa - Vũng Tàu"` and `"Vũng Tàu"` enabled proper normalization, preserving over **36,000 card contracts** and preventing severe distortion in Southeast NPL figures.
+2. **A Single Province Name Mismatch Can Skew The Entire Model:**
+   Because card statements recorded `"Bà Rịa - Vũng Tàu"` while parameters wrote `"Vũng Tàu"`, skipping string cleanup would drop over **36,000 card contracts**, distorting Southeast's NPL ratio entirely.
 
-3. **Enforce data integrity and transaction control in ETL pipelines:**
-   Six intermediate tables utilize a shared vertical schema. Stored procedures strictly control transactions and record execution history in `log_proc_run`, pinpointing errors and facilitating rollbacks.
+3. **Understand Data Boundaries To Avoid Unfair Employee Evaluations:**
+   Card statements track bad debt by branch, not by individual ASM. Penalizing individual sales reps with whole-region NPL scores creates unfairness and demotivates top performers in challenging territories.
 
-4. **Design reporting systems serving both reconciliation and executive analysis:**
-   Detailed reconciliation tables enable users to audit exact figures, while visual dashboards and analytical sections highlight trends and issues requiring intervention. Combining both approaches satisfies operational teams and Executive Leadership alike.
-
-5. **Recognize data boundaries to avoid premature conclusions:**
-   When delinquency data on card statements is tagged only to branch codes at the regional level rather than individual ASM contracts, reports must state this limitation clearly (and transparently analyze the impact of regional penalties in executive proposals) so leadership can make fair, grounded personnel decisions.
+4. **Assess Profitability By Isolating Provision Expenses:**
+   Profit growth does not necessarily reflect strong commercial sales. Without separating risk provision reversals, banks risk mistakenly rewarding regions with high credit risk that merely lowered provision charges temporarily.
 
 ---
-
 ## 8. 🛠️ Tools Used
 
 Tools were selected to align with the 3 stages in the data processing pipeline:
@@ -393,7 +355,7 @@ Tools were selected to align with the 3 stages in the data processing pipeline:
 | **Microsoft Excel** | 3 Input Data Files (`.xlsx`) | Supplies the 3 raw input datasets: `1. Dữ liệu hạch toán mỗi tháng (GL)`, `2. Dữ liệu sao kê thẻ mỗi tháng`, and `3. Dữ liệu kết quả sale của ASM mỗi tháng` | Native file format exported from core operational systems across banking divisions |
 | **DBeaver 24** | Data Import, ER Diagram | Performs direct **`Import`** of data from the 3 input Excel files (117.2 MB) into 3 PostgreSQL `staging` tables, manages 9 virtual foreign keys, and executes SQL scripts | Visual database administration tool supporting fast large-file imports and relational diagram inspection |
 | **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedures | Hosts the Star Schema data warehouse (19 tables, 3 `views`), automatically executing Head Office cost allocation logic (Rule 1 & Rule 2) and ASM ranking calculations | Processes nearly 3 million rows with exact numeric precision and strict transaction control |
-| **Power BI Desktop** | DirectQuery, 82 DAX Measures, HTML Content | Builds the **intuitive management reporting system** (centered on **4 Core Output Dashboards**, Data Dictionary of **68** metrics, and Deep-Dive diagnostic reports `INSIGHT`) | Enables Executive Leadership and operational divisions to both look up/reconcile detailed figures and perform interactive visual analysis |
+| **Power BI Desktop** | DirectQuery, 82 DAX Measures, HTML Content | Builds the **intuitive management reporting system** (centered on **4 Core Output Dashboards**, Data Dictionary of **68** metrics, and Nationwide Business Results report) | Enables Executive Leadership and operational divisions to both look up/reconcile detailed figures and perform interactive visual analysis |
 
 ---
 

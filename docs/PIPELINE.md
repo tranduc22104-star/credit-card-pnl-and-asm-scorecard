@@ -70,7 +70,7 @@ Triển khai trong schema `banking_project` (**19 bảng · 3 view · 11 thủ t
 Khởi tạo **3 View báo cáo sạch** trong schema `banking_project` để Power BI kết nối trực tiếp:
 1. `v_baocao_tonghop` (`sql/rpt/rpt_pnl_view.sql` — 35 dòng, 32 cột, đơn vị triệu đồng, lọc `area_code <> 'A'` kèm cột `sort` 1..7).
 2. `v_xephang_asm` (`sql/rpt/rpt_xephang_view.sql` — 388 dòng, 28 cột, kèm cột `sort` theo thứ hạng chung cuộc `rank_final` 1..84).
-3. `v_baocao_pnl_excel_pivoted` (`sql/rpt/rpt_pnl_excel_pivoted_view.sql` — 160 dòng = 32 dòng chỉ tiêu P&L × 5 tháng, trải ngang 10 cột hiển thị khớp 100% bảng ma trận Trang 3 `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` trên Power BI).
+3. `v_baocao_pnl_excel_pivoted` (`sql/rpt/rpt_pnl_excel_pivoted_view.sql` — 160 dòng = 32 dòng chỉ tiêu P&L × 5 tháng, trải ngang 10 cột hiển thị khớp 100% bảng tổng hợp Trang 3 `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` trên Power BI).
 
 ### Giai Đoạn 3: Trực Quan Các Báo Cáo (Power BI — Executive Orange Theme)
 - Tệp `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` kết nối vào PostgreSQL, vận hành **100 measure DAX** (bao gồm bộ measure tính chỉ số KPI, bộ 21 measure định dạng có điều kiện màu nền `PnlTable_BgColor_*` & màu chữ `PnlTable_FontColor_*` cho từng cột bảng P&L vùng, và các visual HTML Content cỡ chữ lớn) cùng bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa**).
@@ -84,8 +84,8 @@ Khởi tạo **3 View báo cáo sạch** trong schema `banking_project` để Po
   3. **2 Bản Báo Cáo Trực Quan Hoá Đánh Giá**:
      - Trang 5: `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` (*Chứa* biểu đồ cơ cấu thu – chi – dự phòng *để* so sánh hiệu quả sinh lời giữa 7 vùng).
      - Trang 6: `ĐÁNH GIÁ HIỆU SUẤT ASM` (*Chứa* biểu đồ tương quan doanh số bán hàng và nợ xấu NPL *để* nhận diện các ASM đánh đổi rủi ro lấy quy mô).
-  4. **1 Bản Phân Tích Chuyên Sâu**:
-     - Trang 7: `INSIGHT` / `PHÂN TÍCH CHUYÊN SÂU VÀ ĐƯA RA KẾT LUẬN` (Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét 19px – 48px: 4 thẻ KPI điều hành, Biểu đồ Thác nước đóng góp LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ làm 84% quản lý tụt hạng, và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng).
+  4. **1 Bản Kết Quả Kinh Doanh Toàn Quốc**:
+     - Trang 7: `KẾT QUẢ KINH DOANH TOÀN QUỐC` (Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét 19px – 48px: 4 thẻ KPI điều hành, Biểu đồ Thác nước đóng góp LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ làm 84% quản lý tụt hạng, và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng).
 
 ---
 
@@ -106,5 +106,5 @@ Khởi tạo **3 View báo cáo sạch** trong schema `banking_project` để Po
 4. **Khởi tạo 3 View báo cáo đầu ra**:
    Chạy 3 tệp trong `sql/rpt/`: `rpt_pnl_view.sql` ➔ `rpt_xephang_view.sql` ➔ `rpt_pnl_excel_pivoted_view.sql`.
 5. **Kiểm tra số đối chiếu chuẩn**:
-   - Lợi nhuận trước thuế toàn hàng tháng `202302` đạt **92.226,35 triệu đồng**; tháng `202305` đạt **250.450,06 triệu đồng**.
+   - Lợi nhuận trước thuế toàn quốc tháng `202302` đạt **92.226,35 triệu đồng**; tháng `202305` đạt **250.450,06 triệu đồng**.
    - Quán quân bảng xếp hạng ASM tháng `202302` là **Hoàng Văn Nam** với **34 điểm** (`sort = 1`).
