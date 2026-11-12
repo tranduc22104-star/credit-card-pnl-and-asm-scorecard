@@ -337,3 +337,11 @@ ewpage`) sang trang mới. Nên "thêm bao nhiêu chữ" không quyết định 
       1. Không dùng thẻ `<input type='radio'>` cho visual HTML Content. Thay bằng thẻ `<button type='button' tabindex='0'>` hoặc `<div>`.
       2. Luôn đặt panel mặc định (Top 1, Đội sổ) ở trạng thái hiển thị trực tiếp `display: grid / block` thay vì `display: none` ngay trong CSS ban đầu.
       3. Dùng bộ chọn CSS hiện đại `:has()` (ví dụ `.bar:has(.btn-2:hover) ~ .panel-2 { display: grid; }`) để chuyển đổi nội dung mà không cần can thiệp JavaScript hay thẻ input.
+
+58. **Lỗi `This file is corrupted or was created by an unrecognized version of Power BI Desktop` khi giải nén và zip lại file .pbix bên ngoài**
+   - **Hiện tượng**: Khi chỉnh sửa file `.pbix` bằng công cụ ngoài (giải nén ZIP, sửa các tệp `visual.json` hoặc theme JSON rồi đóng gói lại bằng Python `zipfile`), khi mở bằng Power BI Desktop ứng dụng báo lỗi: `This file is corrupted or was created by an unrecognized version of Power BI Desktop. It can't be opened.`
+   - **Nguyên nhân**: Định dạng file `.pbix` thế hệ mới (PBIR Enhanced Report Format) tích hợp các chữ ký metadata nội bộ giữa `[Content_Types].xml`, `Metadata`, `SecurityBindings` và cấu trúc các thư mục trang. Thư viện ZIP thông thường không tái tạo được đúng cấu trúc khối và chữ ký mà Power BI Desktop yêu cầu để xác thực khi mở tệp.
+   - **Cách xử lý**:
+     1. Luôn tạo bản sao lưu an toàn của file `.pbix` trước khi can thiệp.
+     2. Khi xảy ra sự cố, khôi phục ngay lập tức bản sao lưu nguyên gốc để bảo toàn dữ liệu.
+     3. Tuyệt đối không can thiệp sửa trực tiếp file `.pbix` qua giải nén/nén ZIP ngoài. Đối với các visual native dựng sẵn (Page Navigator, Slicers, Card native), việc chỉnh màu phải thực hiện an toàn trên giao diện Format Pane của chính Power BI Desktop; còn các visual HTML Content thì chỉnh trực tiếp và an toàn tuyệt đối qua mã DAX / TOM API.

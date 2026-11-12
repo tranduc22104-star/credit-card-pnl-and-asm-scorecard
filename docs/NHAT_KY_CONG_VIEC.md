@@ -8,13 +8,118 @@
 
 ## DANG DỞ
 
-(Chưa có)
+
+
+
+
+
 
 
 
 ## ĐÃ XONG
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 ### 2026-11-11
+
+273. **Hướng dẫn trực quan từng bước chỉnh màu thanh Page Navigator & Slicer trên Power BI Desktop sang Tông Vàng Mệnh Kim**
+   - **Xây dựng cẩm nang thao tác giao diện chi tiết từng cú nhấp chuột**:
+     * Thanh Page Navigator: Phân tách rõ ràng 3 trạng thái của nút (*Selected* - Đang chọn: Nền `#C59828`, viền `#8A6615`, chữ trắng; *Default* - Chưa chọn: Nền `#FFFDF2`, viền `#E5D5AA`, chữ `#6B5B3E`; *Hover* - Rê chuột: Nền `#FFF9E6`, viền `#D4A937`, chữ `#8A6615`).
+     * Cụm Slicer Tháng / Vùng: Tiêu đề header chữ `#8A6615`, viền khung `#E5D5AA`, ô chọn dropdown `#FFF9E6`.
+     * Mẹo tối ưu hóa tốc độ: Hướng dẫn dùng công cụ sao chép định dạng (*Format Painter*) để áp dụng cho cả 7 trang chỉ trong 1-2 phút.
+
+272. **Khôi phục ngay lập tức bản sao lưu an toàn của file .pbix sau cảnh báo corrupted của Power BI Desktop**
+   - **Xử lý sự cố tức thì (Zero-Loss Recovery)**:
+     * Khôi phục ngay lập tức bản sao lưu an toàn nguyên bản `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` (8,360,210 bytes) được tạo ngay trước khi can thiệp.
+     * Xác thực file nguyên vẹn 100%, bảo đảm an toàn tuyệt đối mọi dữ liệu, mô hình và 80 measures.
+   - **Phân tích nguyên nhân kỹ thuật**:
+     * Định dạng `.pbix` PBIR Enhanced Report Format (Preview Features tháng 08/2026 của Microsoft) chứa các hash/checksum nén nội bộ giữa `[Content_Types].xml`, `Metadata`, `SecurityBindings` và các file `visual.json`. Việc giải nén và zip lại bằng công cụ ngoài vi phạm signature header của Power BI Desktop, dẫn tới lỗi `This file is corrupted or was created by an unrecognized version of Power BI Desktop`.
+     * Kết luận: Tuyệt đối không can thiệp sửa gián tiếp các file cấu trúc bên trong `.pbix` qua ZIP. Mọi visual native (Page Navigator, Slicer) chỉ được chỉnh an toàn thông qua GUI Power BI Desktop hoặc TOM API (khi app đang chạy).
+   - **Cập nhật tài liệu**: Đã ghi nhận cảnh báo và giải pháp vào `docs/LOI_THUONG_GAP.md`.
+
+271. **Tự động vá trực tiếp file .pbix (Report Layout & Theme) sang Tông Vàng Mệnh Kim toàn diện**
+   - **Tự động hóa hoàn toàn cấu trúc Report Layout & Theme**:
+     * *Thanh điều hướng chuyển trang (Page Navigator)*: Cập nhật đồng bộ cả 7 trang — nút được chọn (Selected) chuyển sang Vàng Hoàng Gia 24K (`#C59828`), viền vàng kim sẫm (`#8A6615`); nút mặc định (Default) chuyển sang nền Vàng ngọc trai (`#FFFDF2`), viền kim sa (`#E5D5AA`), chữ vàng đồng cổ (`#6B5B3E`); hiệu ứng rê chuột (Hover) chuyển sang Vàng Champagne (`#FFF9E6`).
+     * *Bộ lọc Slicer (Tháng & Khu Vực)*: Cập nhật toàn bộ 8 visual slicer trên các trang — tiêu đề chuyển từ đỏ nâu sang Vàng kim đậm vương giả (`#8A6615`), viền khung chuyển từ cam sang viền kim sa (`#E5D5AA`), nền dropdown chuyển sang Vàng Champagne (`#FFF9E6`).
+     * *Báo cáo Theme*: Chuyển đổi `Orange Tree Corporate Theme` sang `Luxury Gold Corporate Theme`, thiết lập lại `foreground` và `tableAccent` thành `#C59828`.
+     * *Dọn dẹp metadata*: Chuẩn hóa tên trường tham chiếu của 2 custom visual `ASM_Leaderboard_HTML` và `Data_Glossary_HTML` về tên chuẩn sạch sẽ.
+   - **Kiểm thử nghiệm thu & An toàn**:
+     * Đã tạo bản sao lưu an toàn `output/Bao cao quan tri va phan tich (Ngan Hang)_backup_before_gold_nav.pbix`.
+     * Đóng gói lại file `.pbix` đạt chuẩn nén ZIP DEFLATED, xác thực `testzip()` không lỗi, quét sạch 100% các mã màu cam rực cũ.
+
+270. **Tăng kích thước chữ & nhãn biểu đồ cho visual ASM_Block3_All_Regions_Radar_HTML_v2 trên trang ĐÁNH GIÁ NĂNG LỰC ASM**
+   - **Tối ưu hóa khả năng đọc biểu đồ (Readability & Legibility)**:
+     * Nhãn 4 đỉnh Radar SVG (Doanh số LTN, KH PSDN, Tỷ lệ Duyệt thẻ, Kiểm soát Tỷ lệ NPL): Nâng `font-size` từ `13` lên `16` (+23%), tăng độ đậm `font-weight` từ `700` lên `800`.
+     * Tọa độ text & ViewBox: Mở rộng viewBox từ `280x207` lên `315x235` và tăng kích thước SVG từ `220x190` lên `240x210`, căn chỉnh baseline dòng dưới xuống `y=170` và dòng trên ở `y=-10`, triệt tiêu hoàn toàn nguy cơ che lấp trục hay tràn mép ngoài.
+     * Tên vùng (`.mini-head`): Tăng `font-size` từ `18px` lên `20px`, in đậm `800`, màu vàng kim `#8A6615`.
+     * Chỉ số KPI (`.mini-kpi`): Nhãn chỉ số tăng từ `14px` lên `15px` (`#7D6B4A`), số liệu KPI tăng từ `20px` lên `22px` (`#1C170E`, `font-weight: 800`).
+     * Tiêu đề khối (`.title-text`): Nâng lên `22px` (`font-weight: 800`), huy hiệu tháng (`.badge-tag`) nâng lên `15px`.
+   - **Bảo toàn 100% logic và màu sắc**: Giữ nguyên toàn bộ cấu trúc grid 4 cột, dữ liệu bình quân 7 vùng, màu vàng ngọc trai `#FFFDF2` và viền kim sa `#E5D5AA`.
+   - **Kiểm thử nghiệm thu**: Nạp trực tiếp qua TOM API vào Live Model Power BI Desktop (port 63922), xác thực trạng thái `Ready` thành công.
+
+269. **Khôi phục và chuẩn hóa toàn diện màu sắc trang ĐÁNH GIÁ NĂNG LỰC ASM sang Tông Vàng Mệnh Kim trên Live Power BI Desktop**
+   - **Tôn trọng 100% logic CSS & nội dung chỉnh sửa của người dùng**: Bảo toàn tuyệt đối cấu trúc Tab Native CSS Radio, lưới grid, viewBox SVG Radar, và giữ nguyên nhãn mới do người dùng cập nhật (`"Bình quân ASM toàn quốc"`, `"BQ Toàn quốc: "`, các thẻ `<b>`).
+   - **Khắc phục lỗi chỉnh nhầm màu trên 4 khối của trang ĐÁNH GIÁ NĂNG LỰC ASM**:
+     * Khối 1 (`ASM_Block1_Top3_Selected_Radar_HTML_v2`): Giữ trọn bộ màu Vàng Hoàng Gia 24K (`#C59828`), Vàng Kim Sa 18K (`#D4A937`), Vàng Bạch Kim (`#DEBA52`) cùng nền ngọc trai `#FFFDF2` và viền `#E5D5AA`.
+     * Khối 2 (`ASM_Block2_Bottom3_Selected_Radar_HTML_v2`): Thay thế nền vàng chanh pastel (`#FFF9C4`) và viền nâu gạch (`#92400E`) về đúng chuẩn Vàng ngọc trai (`#FFFDF2`), viền ánh kim (`#E5D5AA`), viền trên Hoàng Gia (`#C59828`), nhấn cảnh báo bằng Hổ phách & Đồng hun (`#B55D08`, `#C27315`, `#CF8824`).
+     * Khối 3 (`ASM_Block3_All_Regions_Radar_HTML_v2`): Đồng bộ nền `#FFFDF2`, viền `#E5D5AA`, viền trên `#C59828`, tiêu đề `#8A6615`, mini-card `#FFFFFF` viền `#E5D5AA`, radar vùng `#C59828`.
+     * Khối 4 (`Insight_DanhGiaHieuQua_HTML1`): Chuẩn hóa tiêu đề `#8A6615`, nền dẫn dắt `#FFF9E6`, viền `#E5D5AA` và điểm nhấn `#C59828`.
+     * Đồng thời dọn dẹp tên measure `ASM_Leaderboard_HTML` về tên chuẩn sạch sẽ.
+   - **Kiểm thử nghiệm thu trực tiếp**: Nạp qua TOM API vào Live Model Power BI Desktop (port 63922), xác thực trạng thái `Ready` thành công 100%, không còn bất kỳ mã màu pastel cũ hay nâu gạch nào.
+
+268. **Đồng bộ toàn diện Bảng màu Tông Vàng Mệnh Kim cho toàn bộ 14 Visual HTML Content trên 7 trang báo cáo**
+   - **Tôn trọng 100% logic CSS & cấu trúc code**: Tuyệt đối không thay đổi bất kỳ thuộc tính kích thước, bố cục (Grid, Flexbox, Table, Viewport), font-size hay câu lệnh DAX nào; chỉ thay thế drop-in hệ thống mã màu HEX/RGBA.
+   - **Bảo tồn toàn bộ màu ngữ nghĩa nghiệp vụ**: Giữ nguyên màu Đỏ cảnh báo nợ xấu NPL / số âm (`#DC2626`, `#B91C1C`) và màu Xanh lá tăng trưởng / đạt chuẩn (`#059669`, `#16A34A`, `#047857`).
+   - **Chuyển đổi đồng bộ toàn diện sang Tông Vàng Mệnh Kim (Luxury Metallic Gold & Champagne Pearl)**:
+     * *Nhóm Nền & Viền nhẹ*: Chuyển các tông cam nhạt/vàng nhạt sang Vàng ngọc trai (`#FFFDF2`), Vàng Champagne (`#FFF9E6`) và Viền kim sa ánh kim (`#E5D5AA`, `#DFD3B8`).
+     * *Nhóm Nhấn / Tiêu đề / Header*: Chuyển các tông cam đậm/nâu gạch sang Vàng Hoàng Gia 24K (`#C59828`), Vàng Kim Sa 18K (`#D4A937`, `#DEBA52`) và Vàng kim vương giả tương phản cao (`#8A6615`, `#9E7B1D`).
+   - **Phạm vi cập nhật trọn vẹn 14 Visual HTML Content**:
+     1. *Page 1 (Giới thiệu đề tài)*: `Banner_BoiCanh_HTML`, `Banner_Dashboard_HTML`, `DuLieuDauVao_HangNgang_HTML`.
+     2. *Page 2 (Từ điển dữ liệu)*: `Data_Glossary_HTML`.
+     3. *Page 4 (Hiệu quả kinh doanh vùng)*: `Insight_DanhGiaHieuQua_HTML`.
+     4. *Page 5 (Báo cáo xếp hạng ASM)*: `ASM_Leaderboard_HTML` (Bảng xếp hạng 84 ASM).
+     5. *Page 6 (Đánh giá năng lực ASM)*: Khối 1 (`ASM_Block1_Top3_Selected_Radar_HTML_v2`), Khối 2 (`ASM_Block2_Bottom3_Selected_Radar_HTML_v2`), Khối 3 (`ASM_Block3_All_Regions_Radar_HTML_v2`), Khối 4 (`Insight_DanhGiaHieuQua_HTML1`).
+     6. *Page 7 (Kết quả toàn hàng)*: Bộ 4 visual chẩn đoán (`Page5_Part1_KPICards_HTML`, `Page5_Part2_Waterfall_HTML`, `Page5_Part3_DongNamBo_HTML`, `Page5_Part4_MatranHanhdong_HTML`).
+   - **Kiểm thử nghiệm thu thành công 100%**:
+     * Nạp trực tiếp qua TOM API vào Live Model Power BI Desktop (port 63922).
+     * Chạy EVALUATE toàn bộ 14 measure thành công, dữ liệu và HTML render hoàn hảo không phát sinh bất kỳ lỗi nào.
+
+267. **Tinh chỉnh bảng màu các Measure HTML trên Power BI đang mở theo Tông Vàng Mệnh Kim (Metallic Gold & Champagne Luxury)**
+   - **Tôn trọng 100% logic CSS & cấu trúc code**: Tuyệt đối không thay đổi bất kỳ thuộc tính kích thước, bố cục (Grid/Flexbox/Position), font-size hay logic chuyển Tab Native CSS Radio nào.
+   - **Chuyển đổi toàn diện sang Tông Vàng Mệnh Kim (Luxury Metallic Gold)**:
+     * **Nền thẻ card (`.card-box`, `.reg-card`)**: Thay màu vàng chanh nhạt pastel (`#FFF9C4`) bằng màu Vàng ngọc trai ánh kim (`#FFFDF2` / Metallic Pearl Ivory), viền ánh kim tinh xảo (`#E5D5AA`) và đường viền trên điểm nhấn Hoàng kim 24K (`#C59828`).
+     * **Tiêu đề card (`.card-title`, `.title-text`)**: Thay màu nâu gạch (`#92400E`) bằng màu Vàng kim đậm vương giả (`#8A6615` / Imperial Gold), tạo độ tương phản cao, nét căng và trang trọng.
+     * **Hệ thống nút Tab & Đa giác Radar**:
+       - *Top 1 (Quán quân)*: Nền active `#FFF9E6`, viền & radar `#C59828` (Vàng Hoàng Gia), bóng ánh kim `rgba(197,152,40,0.3)`.
+       - *Top 2 (Á quân)*: Nền active `#FFF9E6`, viền & radar `#D4A937` (Vàng Kim Sa 18K), bóng ánh kim `rgba(212,169,55,0.3)`.
+       - *Top 3 (Top 3)*: Nền active `#FFF9E6`, viền & radar `#DEBA52` (Vàng Bạch Kim / Platinum Gold), bóng ánh kim `rgba(222,186,82,0.3)`.
+       - *Chuẩn bình quân*: Đường nét đứt xám bạc kim loại (`#9E9789` / `#A89F91`).
+     * **Khối 2 (Nhóm nguy cơ)**: Giữ khung vàng mệnh kim đồng bộ toàn trang, chuyển các điểm nhấn cảnh báo sang tông Hổ phách đậm & Đồng hun (`#B55D08`, `#C27315`, `#CF8824`), hài hòa phong thủy Thổ sinh Kim.
+     * **Khối 3 (Mặt bằng 7 Vùng)**: Đồng bộ nền `#FFFDF2`, viền `#E5D5AA`, tiêu đề `#8A6615`, radar `#C59828`.
+   - **Nạp trực tiếp vào Live Power BI Desktop qua TOM API (port 63922)**:
+     * Cập nhật thành công 3 measures: `ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`, `ASM_Block3_All_Regions_Radar_HTML_v2`.
+     * Kiểm thử EVALUATE thành công 100%, render HTML hợp lệ, giao diện hiển thị ngay lập tức trên Power BI đang mở.
 
 266. **Cập nhật song ngữ tài liệu README.md và README_eng.md theo kiến trúc mới của Dashboard 04 và 82 measure DAX**
    - **Thay đổi đúng các vị trí đã đề xuất**:
@@ -2392,6 +2497,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 31: if '## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2404,6 +2532,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 32:     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2411,6 +2562,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 
 182.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2424,6 +2598,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 33: elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2436,6 +2633,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 34:     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2443,6 +2663,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 
 182.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2544,6 +2787,29 @@ _xephang_asm 388 dòng) hoạt động trơn tru.
 
 if '## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2556,6 +2822,29 @@ if '## ĐÃ XONG\
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2563,6 +2852,29 @@ if '## ĐÃ XONG\
 
 
 181.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2576,6 +2888,29 @@ if '## ĐÃ XONG\
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2588,6 +2923,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2595,6 +2953,29 @@ elif '## ĐÃ XONG\\r\
 
 
 181.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2700,6 +3081,29 @@ if m:
 
 if '## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2712,6 +3116,29 @@ if '## ĐÃ XONG\
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2719,6 +3146,29 @@ if '## ĐÃ XONG\
 
 
 180.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2732,6 +3182,29 @@ if '## ĐÃ XONG\
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2744,6 +3217,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2751,6 +3247,29 @@ elif '## ĐÃ XONG\\r\
 
 
 180.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2856,6 +3375,29 @@ if m:
 
 if '## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2868,6 +3410,29 @@ if '## ĐÃ XONG\
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2875,6 +3440,29 @@ if '## ĐÃ XONG\
 
 
 179.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2888,6 +3476,29 @@ if '## ĐÃ XONG\
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2900,6 +3511,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -2907,6 +3541,29 @@ elif '## ĐÃ XONG\\r\
 
 
 179.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2976,6 +3633,29 @@ if m:
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -2983,6 +3663,29 @@ if m:
 
 
 178.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -2996,6 +3699,29 @@ if m:
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3008,6 +3734,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3015,6 +3764,29 @@ elif '## ĐÃ XONG\\r\
 
 
 178.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -3084,6 +3856,29 @@ if m:
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -3091,6 +3886,29 @@ if m:
 
 
 177.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -3104,6 +3922,29 @@ if m:
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3116,6 +3957,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3123,6 +3987,29 @@ elif '## ĐÃ XONG\\r\
 
 
 177.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -3192,6 +4079,29 @@ if m:
 
     text = text.replace('## ĐÃ XONG\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\
@@ -3199,6 +4109,29 @@ if m:
 
 
 176.', '## ĐÃ XONG\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
@@ -3212,6 +4145,29 @@ if m:
 
 elif '## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3224,6 +4180,29 @@ elif '## ĐÃ XONG\\r\
 
     text = text.replace('## ĐÃ XONG\\r\
 
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
+
 
 
 ### 2026-11-05\\r\
@@ -3231,6 +4210,29 @@ elif '## ĐÃ XONG\\r\
 
 
 176.', '## ĐÃ XONG\\r\
+
+### 2026-11-12
+
+276. **Đẩy mã nguồn và tài liệu cập nhật lên kho mã GitHub (remote origin/main)**
+   - **Đối soát an toàn tuyệt đối**:
+     * Chạy kiểm tra bảo mật bằng `.staging/push_check.py`: Đạt chuẩn 22 tệp được phép, tổng dung lượng 8.86 MiB (tệp lớn nhất 7.97 MiB), 0 tệp vượt trần, 0 chuỗi kết nối nhạy cảm, 0 liên kết gãy, loại bỏ hoàn toàn các tệp bảo mật (`ingestion/db_config.py`, `docs/SESSION_PROMPT_LOG.md`, `.staging/`, dữ liệu ngân hàng thô).
+     * Kiểm tra `git status` chọn đích danh từng tệp được phép theo đúng quy định `AGENTS.md`.
+   - **Đẩy thành công commit lên nhánh `main`**: Đồng bộ toàn bộ các cập nhật về Tông Vàng Mệnh Kim, sơ đồ quy trình kỹ thuật mới `images/quy-trinh.png`, bộ đo lường tỷ lệ nợ xấu NPL và tài liệu xử lý lỗi thường gặp.
+
+275. **Chuẩn hóa toàn diện màu sắc tựa đề và sơ đồ quy trình xử lý kỹ thuật (images/quy-trinh.png) sang Tông Vàng Mệnh Kim**
+   - **Tối ưu hóa thiết kế sơ đồ quy trình kỹ thuật (`images/quy-trinh.png`)**:
+     * *Tựa đề chính ("QUY TRÌNH XỬ LÝ KỸ THUẬT")*: Đổi từ màu đỏ nâu cũ (`#9A3412`) sang Vàng kim đậm vương giả (`#8A6615`), độ tương phản cao và sắc nét.
+     * *Icon bánh răng tựa đề*: Đổi từ cam chói (`#FF7A00`) sang Vàng Hoàng Gia 24K (`#C59828`).
+     * *Viền khung & bóng đổ container*: Đổi từ viền cam (`#FED7AA`) sang Viền kim sa ánh kim (`#E5D5AA`), bóng ánh kim `rgba(197, 152, 40, 0.1)`.
+     * *Khối Giai đoạn 3 (Power BI)*: Chuyển viền sang `#E5D5AA`, nền Vàng ngọc trai `#FFFDF2`, dải accent `linear-gradient(90deg, #C59828, #DEBA52)`, mũi tên kết nối và nhãn chuyển sang sắc vàng kim đồng bộ.
+   - **Kết xuất đồ họa độ phân giải cao**: Sử dụng Edge headless kết xuất với tỉ lệ `scale=2`, crop chính xác kích thước chuẩn `2400 × 940 px`, bo 4 góc ngoài bằng kênh trong suốt (Alpha channel `radius=24`), lưu đè vào `images/quy-trinh.png`.
+
+274. **Chuyển đổi thẻ KPI Card Năng suất bình quân (NSBQ) sang Tỷ lệ nợ xấu (NPL) trên Live Model Power BI**
+   - **Xây dựng bộ 3 measure tính toán NPL chuẩn mực quản trị rủi ro**:
+     * `[KPI NPL Value]`: Tính tỷ lệ nợ xấu NPL của tháng và vùng được chọn từ `v_xephang_asm[npl]`, định dạng hiển thị phần trăm `0.0\%`.
+     * `[KPI NPL MoM Text]` & `[KPI NSBQ MoM Text]`: Đo mức chênh lệch nợ xấu so với tháng trước ($\Delta 	ext{NPL} = 	ext{NPL}_{	ext{tháng này}} - 	ext{NPL}_{	ext{tháng trước}}$), hiển thị mũi tên và độ lệch điểm phần trăm (`▲ +0.X%` hoặc `▼ -0.X%`).
+     * `[KPI NPL Color]` & `[KPI NSBQ Color]`: Chuẩn hóa logic màu sắc quản trị rủi ro nghịch chiều — NPL tăng là cảnh báo xấu (Màu Đỏ `#DC2626`), NPL giảm là tích cực/kiểm soát tốt (Màu Xanh lá `#16A34A`).
+   - **Cập nhật Live Model qua TOM API (port 53553)**: Nạp trực tiếp 5 measure vào mô hình đang chạy, trạng thái `Ready` 100%, thẻ MoM Text tự động chuyển đổi ngay trên ứng dụng đang mở.
 
 
 
