@@ -345,3 +345,15 @@ ewpage`) sang trang mới. Nên "thêm bao nhiêu chữ" không quyết định 
      1. Luôn tạo bản sao lưu an toàn của file `.pbix` trước khi can thiệp.
      2. Khi xảy ra sự cố, khôi phục ngay lập tức bản sao lưu nguyên gốc để bảo toàn dữ liệu.
      3. Tuyệt đối không can thiệp sửa trực tiếp file `.pbix` qua giải nén/nén ZIP ngoài. Đối với các visual native dựng sẵn (Page Navigator, Slicers, Card native), việc chỉnh màu phải thực hiện an toàn trên giao diện Format Pane của chính Power BI Desktop; còn các visual HTML Content thì chỉnh trực tiếp và an toàn tuyệt đối qua mã DAX / TOM API.
+
+59. **Lỗi cộng dồn tỷ lệ (%) ở cột Total của View ma trận xoay ngang `v_baocao_pnl_excel_pivoted`**
+   - **Hiện tượng**: Trên bảng ma trận P&L xoay ngang của Power BI, các dòng số tiền (LNTT, Thu nhập, Chi phí) thì cột `Total = SUM(7 Vùng)` hiển thị chuẩn xác, nhưng các dòng tỷ số (Sort 310 CIR, Sort 320 Margin, Sort 330 Hiệu suất vốn, Sort 340 Hiệu suất BQ/SM) thì cột Total bị vọt lên rất cao phi lý (ví dụ: Hiệu suất vốn Total vọt lên **493,34%**, trong khi chuẩn toàn hàng là **73,55%**).
+   - **Nguyên nhân**: Trong định nghĩa View xoay ngang cũ, cột Total được viết chung bằng câu lệnh:
+     `COALESCE(SUM(f.value) FILTER (WHERE f.area_code IN ('B','C','D','E','F','G','H')), 0) AS "Total"`.
+     Hàm `SUM` đã cộng gộp đại số các tỷ lệ % của 7 vùng lại với nhau thay vì tính tỷ số trên tổng danh mục toàn ngân hàng (Total CIR, Total Margin, Total Hiệu suất vốn).
+   - **Cách xử lý**: Viết lại View `sql/rpt/rpt_pnl_excel_pivoted_view.sql` bổ sung một CTE tổng hợp trước các biến số tài chính toàn hàng (Tổng LNTT, Tổng Chi phí vốn, Tổng TOI, Tổng OPEX, Tổng Doanh thu H, Tổng SM) rồi dùng mệnh đề `CASE` phân nhánh:
+     * Dòng 91 (CIR): `-tot_opex / tot_toi * 100` (17,37%).
+     * Dòng 92 (Margin): `tot_lntt / tot_dt_h * 100` (13,83%).
+     * Dòng 93 (Hiệu suất vốn): `tot_lntt / (-tot_cp_kdv) * 100` (73,55%).
+     * Dòng 94 (Hiệu suất BQ/SM): `tot_lntt / tot_sm` (3.430,82 trđ/người).
+     * Các dòng tiền còn lại: Giữ nguyên `SUM(f.value)` của 7 vùng để bảo toàn dòng tiền.

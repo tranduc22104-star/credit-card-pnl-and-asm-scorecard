@@ -1,7 +1,7 @@
-# HIỆN TRẠNG HỆ THỐNG (cập nhật 2026-11-09)
+# HIỆN TRẠNG HỆ THỐNG (cập nhật 2026-11-15)
 
 ## 1. Kiến trúc tổng thể & Kết nối (Quy trình 3 giai đoạn)
-- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (bảng màu chủ đạo **Executive Orange / Orange Tree**).
+- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (bảng màu chủ đạo **Pure Yellow** theo `output/Pure_Yellow_Improved_Theme.json`).
 - **Quy trình xử lý kỹ thuật 3 giai đoạn**:
   1. **Giai đoạn 1 — Tìm dữ liệu đầu vào (Excel – 3 File Số Liệu)**:
      - **1. Dữ liệu hạch toán mỗi tháng (GL)** (`fact_txn_month_raw_data_202402020504.xlsx` — **63.134** dòng: 62.953 dòng đơn vị mạng lưới + 181 dòng Hội sở mã `'00'`): *Chứa* bút toán thu - chi thực tế của 7 vùng & Hội sở ➔ *Dùng để* gán trực tiếp vào vùng và tổng hợp báo cáo lãi lỗ (P&L) lũy kế 7 vùng.
@@ -12,18 +12,15 @@
      - **Bước 2 (Tính toán)**: Thực thi kịch bản SQL tạo 7 bảng danh mục (`dim_`), 6 bảng tạm 3 bước (`tmp_pnl_step1..3`, `tmp_xh_step1..3`), 2 bảng sự kiện (`fct_pnl_value`, `fct_asm_value`) và 1 bảng nhật ký (`log_proc_run`) thông qua **11 Stored Procedures** (điều phối tự động toàn bộ 5 tháng bằng lệnh `CALL banking_project.sp_run_all_months();`).
      - **Bước 3 (Đầu ra View báo cáo)**: Dựng **3 View sạch** trong `sql/rpt/` (`v_baocao_tonghop`, `v_xephang_asm`, `v_baocao_pnl_excel_pivoted`) phục vụ trực tiếp cho Power BI.
   3. **Giai đoạn 3 — Trực quan các báo cáo (Power BI)**:
-     - Mô hình `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` kết nối vào PostgreSQL, vận hành **82 measure DAX** (bao gồm hệ thống measure Đánh giá năng lực ASM trên Trang 6: bộ 4 khối HTML chuyên sâu `ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`, `ASM_Block3_All_Regions_Radar_HTML_v2`, `Insight_DanhGiaHieuQua_HTML1`, bộ measure KPI, hệ thống 21 measure định dạng có điều kiện màu nền `PnlTable_BgColor_*` & màu chữ `PnlTable_FontColor_*` tương phản cao cho từng cột bảng P&L vùng, cùng các measure HTML Content cỡ chữ lớn) và bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa** chia làm 5 phân nhóm).
-     - Xuất bản **7 trang báo cáo** đồng bộ theo bảng màu **Executive Orange / Orange Tree** (`#FF7A00`, `#EA580C`, `#2B1406`, `#FFBE2E`, `#FED7AA`):
-       * **2 Trang Nền Tảng**:
-         - Trang 1 (`GIỚI THIỆU ĐỀ TÀI`): Tổng quan bối cảnh nghiệp vụ, 3 nguồn dữ liệu đầu vào (theo cấu trúc *Chứa – Dùng để*), sơ đồ quy trình kỹ thuật 3 giai đoạn và 4 dashboard đầu ra.
-         - Trang 2 (`TỪ ĐIỂN DỮ LIỆU`): Tra cứu 68 trường biến và chỉ tiêu nghiệp vụ ngân hàng.
-       * **4 Trang Báo Cáo & Đánh Giá Trọng Tâm (Trang 3 đến Trang 6)**:
-         - Trang 3 (`BÁO CÁO KẾT QUẢ KINH DOANH VÙNG`): *Chứa* 32 chỉ tiêu tài chính P&L (từ `v_baocao_pnl_excel_pivoted`) *để* tra cứu và đối soát số liệu thu – chi – lãi lỗ của 7 vùng và Hội sở (tự động phân cấp dòng nền tối chữ sáng `#FFFFFF`/`#FECACA` và dòng chi tiết nền sáng chữ đậm `#0F172A`/`#DC2626`).
-         - Trang 4 (`BÁO CÁO XẾP HẠNG ASM`): *Chứa* bảng điểm xếp hạng tổng hợp 84 ASM *để* khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu.
-         - Trang 5 (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`): *Chứa* các biểu đồ trực quan hóa cơ cấu thu – chi – dự phòng *để* so sánh hiệu quả sinh lời giữa 7 vùng.
-         - Trang 6 (`ĐÁNH GIÁ NĂNG LỰC ASM`): *Chứa* 4 khối biểu đồ & nhận xét chuyên sâu: Khối 1 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Dẫn đầu khu vực (kèm 3 tab chuyển đổi người); Khối 2 - Biểu đồ Radar 5 trục hiển thị 1 cá nhân đang được chọn trong Top 3 Cuối bảng khu vực (kèm 3 tab cảnh báo điểm nghẽn rủi ro); Khối 3 - Biểu đồ Radar năng lực toàn bộ 7 Vùng toàn quốc (sử dụng REMOVEFILTERS cố định 7 vùng, không bị lọc bởi Slicer Vùng, highlight rực rỡ vùng đang chọn); Khối 4 - Text Box Nhận xét đánh giá hiệu quả kinh doanh và đề xuất hành động.
-       * **1 Trang Kết Quả Kinh Doanh Toàn Quốc**:
-         - Trang 7 (`KẾT QUẢ KINH DOANH TOÀN QUỐC`): Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét (19px – 48px), gồm 4 thẻ KPI điều hành, Biểu đồ Thác nước LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ (+26 điểm khiến 84% tức 16/19 quản lý rơi xuống nhóm đáy bảng) và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng.
+     - Mô hình `output/Ket qua kinh doanh va xep hang asm.pbix` kết nối trực tiếp vào PostgreSQL (`DirectQuery`), vận hành **90 measure DAX** (**89** trong `'LAI LO (Visuals & DAX)'` và **1** trong `'Data Glossary'`, gồm bộ HTML Trang 4 `KPI_Cards_DanhGiaHieuQua_HTML` & `Insight_DanhGiaHieuQua_HTML`, bộ 4 khối Trang 6 `ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`, `ASM_Block3_All_Regions_Radar_HTML_v2`, `Insight_DanhGiaHieuQua_HTML1`, bộ 4 khối Trang 7 `Page5_Part1..4`, cùng hệ thống 21 measure định dạng có điều kiện màu nền `PnlTable_BgColor_*` & màu chữ `PnlTable_FontColor_*` cho bảng P&L vùng) và bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa** chia làm 5 phân nhóm).
+     - Xuất bản **7 trang báo cáo** đồng bộ theo bảng màu **Pure Yellow** (`#545400`, `#858500`, `#FFFF00`, `#FFFFE8`, `#253659`, `#16A34A`, `#DC2626`):
+       * **Trang 1 (`GIỚI THIỆU ĐỀ TÀI`)** (`1920x1900`): Tổng quan đề bài, 4 nhóm báo cáo chính, 3 nguồn dữ liệu đầu vào và sơ đồ quy trình kỹ thuật 3 giai đoạn (`images/quy-trinh.png` với nhãn `Import` và `DirectQuery`).
+       * **Trang 2 (`TỪ ĐIỂN DỮ LIỆU`)** (`1920x1080`): Tra cứu 68 trường biến và chỉ tiêu nghiệp vụ ngân hàng.
+       * **Trang 3 (`BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG`)** (`1920x1080`): *Chứa* 32 chỉ tiêu tài chính P&L lũy kế (từ `v_baocao_pnl_excel_pivoted`) *để* tra cứu và đối soát số liệu thu – chi – lãi lỗ của 7 vùng và Hội sở (dòng `1. Lợi nhuận trước thuế` tô vàng `#FFFF00`, tổng cấp 1 ô-liu `#545400` chữ sáng, dòng chi tiết nền kem/trắng, số âm chữ đỏ `#DC2626`).
+       * **Trang 4 (`ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`)** (`1920x1800`): 5 thẻ KPI lớn (`KPI_Cards_DanhGiaHieuQua_HTML`) tách rõ số phát sinh tháng và lũy kế đầu năm, biểu đồ thác nước phát sinh tháng, biểu đồ bong bóng Lợi nhuận vs CIR, biểu đồ cột & đường xu hướng theo tháng và khung `Insight_DanhGiaHieuQua_HTML` tự động đổi nội dung theo Tháng & Khu Vực.
+       * **Trang 5 (`BÁO CÁO XẾP HẠNG ASM`)** (`1920x1080`): Bảng tổng hợp điểm xếp hạng 26 chỉ tiêu đối chiếu của 74–84 ASM để khen thưởng cá nhân xuất sắc và hỗ trợ nhân sự yếu.
+       * **Trang 6 (`ĐÁNH GIÁ NĂNG LỰC ASM`)** (`1920x2360`): 4 khối Radar & phân nhóm: Top 3 Dẫn đầu (3 tab chuyển người), 3 người Cuối bảng (3 tab), Năng lực Toàn hàng / Theo vùng, và Khối phân nhóm 4 loại dễ hiểu (*Bán tốt - Nợ thấp*, *Bán tốt - Nợ cao*, *Bán chậm - Nợ thấp*, *Bán kém - Nợ cao*).
+       * **Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP VÀ ĐỀ XUẤT`)** (`1920x2350`): 4 thẻ KPI tổng quan toàn hàng, biểu đồ thác nước cấu trúc lợi nhuận 250,5 tỷ đồng kèm 3 thẻ vùng nổi bật (bao gồm Đông Nam Bộ lỗ −48,8 tỷ kéo 16/19 tức 84% quản lý xuống nhóm cuối) và bảng `Kế hoạch hành động trọng tâm theo vùng kinh doanh` 5 cột (`Mức độ`, `Khu vực`, `Thực trạng hiện tại`, `Giải pháp cần làm`, `Mục tiêu hướng tới`).
 
 ---
 
@@ -78,5 +75,5 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 ---
 
 ## 4. Phạm vi bộ tệp đẩy lên GitHub (`.staging/push_check.py`)
-- Bộ đẩy hiện tại gồm **22 tệp** (~3,3 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 2 tệp sơ đồ kỹ thuật trong `images/` (`quy-trinh.png`, `thiet-ke-schema.png`), 1 tệp sản phẩm `.pbix` trong `output/` và 13 tệp SQL trong `sql/`.
+- Bộ đẩy hiện tại gồm **23 tệp** (~8,9 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 2 tệp sơ đồ kỹ thuật trong `images/` (`quy-trinh.png`, `thiet-ke-schema.png`), 2 tệp sản phẩm trong `output/` (`Ket qua kinh doanh va xep hang asm.pbix`, `Pure_Yellow_Improved_Theme.json`) và 13 tệp SQL trong `sql/`.
 - Kiểm tra an toàn bằng `python .staging/push_check.py`, `python .staging/check_toc.py` và `python .staging/check_int_pair.py` trước mỗi lần commit/push: đảm bảo 0 lộ mật khẩu, 0 tệp vượt trần GitHub, 0 liên kết gãy và 0 lệch số liệu giữa hai bản README song ngữ.

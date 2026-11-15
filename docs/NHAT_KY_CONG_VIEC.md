@@ -8,11 +8,646 @@
 
 ## DANG DỞ
 
-
+_(Không có)_
 
 ## ĐÃ XONG
 
+### 2026-11-15
+
+333. **Cập nhật `README.md`, `README_eng.md` và `docs/HIEN_TRANG_HE_THONG.md` bằng ngôn ngữ tự nhiên, dễ hiểu và đồng bộ 7 trang báo cáo Pure Yellow**
+   - Viết lại toàn bộ 11 mục của `README.md` (và bản đối ứng `README_eng.md`, mỗi bản `392` dòng) bằng văn phong gần gũi, dễ đọc, loại bỏ từ ngữ sáo rỗng kiểu AI; đồng bộ với 7 trang báo cáo trong `output/Ket qua kinh doanh va xep hang asm.pbix` (`90` measure DAX, bảng màu `Pure Yellow` `#545400` / `#858500` / `#FFFF00` / `#FFFFE8` / `#253659` / `#16A34A`, sơ đồ `images/quy-trinh.png` với `Import` và `DirectQuery`, 5 KPI Card tách số phát sinh tháng/lũy kế cùng khung nhận xét động trên Trang 4, 4 nhóm năng lực `Bán tốt - Nợ thấp` / `Bán tốt - Nợ cao` / `Bán chậm - Nợ thấp` / `Bán kém - Nợ cao` trên Trang 6, và bảng kế hoạch hành động 5 vùng ngôn ngữ tự nhiên trên Trang 7).
+   - Cập nhật `docs/HIEN_TRANG_HE_THONG.md` khớp trạng thái ngày `2026-11-15` (`output/Ket qua kinh doanh va xep hang asm.pbix`, `output/Pure_Yellow_Improved_Theme.json`, `90` measure DAX, thứ tự 7 trang báo cáo và phạm vi push `23` tệp).
+   - Cập nhật `.staging/push_check.py` để loại các tệp thử nghiệm/dự phòng cục bộ, thay `40` đường dẫn `file:///C:/Users/.../*.png` trong `docs/NHAT_KY_CONG_VIEC.md` thành tên tệp ngắn gọn không lộ đường dẫn máy cá nhân (`0` liên kết gãy).
+   - Đã chạy kiểm tra `.staging/check_toc.py` (`0` lỗi mục lục hai chiều), `.staging/check_int_pair.py` (`lech chi co ban VI : khong co`, `lech chi co ban EN : khong co` cho mọi số `>= 10`, `"tháng 5"` = `15` khớp `"May"` = `15`), `.staging/check_readme_pair.py` (`4 / 4 CAN BANG`), `.staging/push_check.py` (`23` tệp, `0` liên kết gãy, `0` lỗ hổng) và đẩy lên `origin/main`.
+
+332. **Viết lại `Page5_Part4_MatranHanhdong_HTML` (Trang 7) bằng ngôn ngữ dễ hiểu, diễn giải rõ ràng**
+   - Sửa `scratch/update_page7_v3.py` (tự động dò cổng `msmdsrv` đang chạy thay cho port gán cứng) và cập nhật `Page5_Part4_MatranHanhdong_HTML` lên Power BI Desktop (`localhost:62446`, `len=15020`, `SaveChanges succeeded!`):
+     - Đổi 5 tiêu đề cột thành `Mức độ`, `Khu vực`, `Thực trạng hiện tại`, `Giải pháp cần làm`, `Mục tiêu hướng tới` và tinh chỉnh cỡ chữ (`21.5–22.5px`) giúp câu diễn giải đầy đủ hiển thị thoáng, không tràn chiều cao bảng.
+     - Viết lại toàn bộ 5 dòng vùng (`Tây Nam Bộ`, `Đông Nam Bộ`, `Bắc Trung Bộ`, `ĐB Sông Hồng`, `Nam Trung Bộ`) bằng câu văn tự nhiên, nêu rõ nguyên nhân – hành động – mục tiêu định lượng (trong đó Nam Trung Bộ diễn giải động `"cứ 1 đồng vốn thu về X đồng lãi"` khớp cả 5 tháng `202301..202305`).
+   - Đã chạy `py_compile`, kiểm tra ADOMD qua 5 tháng (`202301..202305`) xác nhận `0` từ cấm/`NaN`/`#ERROR`, cập nhật `scratch/capture_all_7_pages.py` trỏ tới `output/Ket qua kinh doanh va xep hang asm.pbix` và kiểm chứng trực quan qua `page7_v3_t5.png`, `page7_v3_t2.png`, `all7_page7_kqkd_doanh_nghiep.png`.
+
+331. **Nâng cấp `Insight_DanhGiaHieuQua_HTML` (Trang 4) thành DAX động 100%, chuẩn màu Pure Yellow và căn thẳng 4 cạnh**
+   - Viết `scratch/update_page4_insight_v2.py` và đẩy lên Power BI Desktop (`localhost:51329`, `TOM_SAVE_OK len=23992`):
+     - Chuyển từ chuỗi HTML tĩnh (trộn lẫn số lũy kế Tháng 2 với Tháng 5) sang DAX động 100% tính theo `Tháng` (`_effectiveCurMonth`) và `Khu Vực`, đồng bộ số liệu phát sinh tháng với Waterfall / Scatter / Combo Chart / KPI Card kèm số lũy kế đầu năm trong ngoặc để đối chiếu Trang 3.
+     - Tách riêng 2 nhánh ngữ cảnh: **Toàn hàng (7 vùng)** tự động tìm vùng Top 1 / Top 2 LNTT, vùng dẫn đầu sinh lời vốn & vùng kiểm soát CIR tốt nhất, vùng thâm hụt và cơ cấu thu/dự phòng; **Lọc 1 vùng** tự động xếp hạng `X/7`, so sánh tỷ trọng dự phòng với bình quân toàn hàng và đưa khuyến nghị riêng theo trạng thái lãi/lỗ.
+     - Chuẩn hóa Pure Yellow (`#545400` header chữ `#FFFF00`, `#FFFFE8` nền thân, `#16A34A` xanh / `#DC2626` đỏ / `#FFFFB3` badge nổi), bỏ bóng cam cũ và Việt hóa `CIR / SM / TOI / Bancas`.
+     - Chỉnh `body { padding: 1px 2px 1px 3px }` (khử cộng đôi padding `html,body` trong khung `fcda613253c6181dee98`) giúp 4 cạnh khớp thẳng với `Scatter` (`970..1890`) và `Combo` (`1230..2020`), đồng thời đặt header `21px` / badge `15px` để không bị cắt `...` kể cả với tên vùng dài nhất (`Đồng Bằng Sông Hồng`).
+   - Đã chạy `py_compile`, truy vấn ADOMD 4 ngữ cảnh (`202305_All`, `202302_All`, `202305_DBSH`, `202305_DNB`) thành công 100%, cập nhật `scratch/capture_all_7_pages.py` + `scratch/render_verify_p4_insight.py` và kiểm chứng trực quan qua `verify_page4_insight_states.png` + `all7_page4_danh_gia_vung.png`.
+
+330. **Căn đều mép trái/phải dải KPI Card Trang 4 (`KPI_Cards_DanhGiaHieuQua_HTML`) với các visual trên trang và tăng cỡ chữ thêm +3–4px**
+   - Sửa `scratch/update_page4_kpi_v2.py` và đẩy lên Power BI Desktop (`localhost:51566`, `TOM_SAVE_OK len=13291`):
+     - Đổi `.kpi-row` sang `padding: 4px 4px; height: 236px;` để triệt tiêu phần lề hụt vào bên trong khung `htmlContent` (`x=0, width=1908`), căn thẳng mép trái/phải với `Page Navigator`, `Slicer`, `Waterfall` và `Scatter` (`inner_left=17`, `inner_right=1890`).
+     - Tăng cỡ chữ thêm `+3–4px`: `.kpi-title` (`16.5 -> 20.5px`), `.kpi-val` (`38 -> 42px`), `.kpi-unit` (`16 -> 19.5px`), `.kpi-mom` (`16 -> 19.5px`), `.kpi-ytd` (`16 -> 19.5px`), đồng thời bỏ badge `Tháng XX` góc phải để toàn bộ 5 tiêu đề hiển thị trọn vẹn 100%, không bị cắt `...`.
+   - Đã chạy `py_compile`, kiểm tra ADOMD qua 3 bối cảnh (`202305_All`, `202301_All`, `202305_DNB`), cập nhật `capture_all_7_pages.py` (`iframe left:11px; width:1886px`) và kiểm chứng trực quan qua `verify_page4_kpi_states.png` + `all7_page4_danh_gia_vung.png`.
+
+329. **Đổi nhãn badge dưới mũi tên Power BI ở Giai đoạn 2 → 3 trên `images/quy-trinh.png` từ `Import` thành `DirectQuery`**
+   - Cập nhật lại `.conn-badge` (`font-size: 10.5px; padding: 2px 3px`) và đổi chữ badge ở `Connector 2 -> 3` từ `Import` thành `DirectQuery` trong `workflow_quy_trinh_ky_thuat.html`.
+   - Chạy lại `.staging/render_gold_quytrinh.py` (`images/quy-trinh.png`, kích thước `2400x940`) và `render_verify_p1_p4.py` (`verify_page1_pure_yellow.png`), kiểm tra trực quan xác nhận chữ `DirectQuery` hiển thị sắc nét, không chạm viền.
+
+328. **Nâng cấp KPI Card Trang 4 (`KPI_Cards_DanhGiaHieuQua_HTML`) lên chuẩn 9.2+ điểm của Trang 7, tạo lại ảnh `images/quy-trinh.png` chuẩn bảng màu Pure Yellow (`Import`) và bổ sung `visualStyles` trong `output/Pure_Yellow_Improved_Theme.json`**
+   - Cập nhật measure `KPI_Cards_DanhGiaHieuQua_HTML` trong bảng `'LAI LO (Visuals & DAX)'` trên Power BI Desktop (`localhost:51566`, `update_page4_kpi_v2.py`):
+     - Đổi sang nền thẻ trắng `#FFFFFF`, viền vàng `#E5E500`, bóng đổ `0 5px 14px rgba(84,84,0,0.10)` và thanh chỉ báo đỉnh `6px` (`#16A34A` xanh lá / `#DC2626` đỏ).
+     - Tô màu ngữ nghĩa cho con số chính `38px`: `Thu Nhập Hoạt Động`, `Lợi Nhuận Trước Thuế`, `Năng Suất Bình Quân` tự động đổi `#16A34A` (`>= 0`) ↔ `#DC2626` (`< 0`); `Chi Phí Hoạt Động` & `Chi Phí Dự Phòng` giữ `#DC2626` và dòng biến động `so với T...` giữ quy tắc chi phí giảm xanh lá (`#16A34A`) / tăng đỏ (`#DC2626`).
+     - Chuẩn hóa tiếng Việt (`Tháng 05`, `so với T04`, `Lũy kế:`, xử lý riêng tháng `202301` thành `Kỳ đầu năm (Tháng 01)`) và sửa thẻ thứ 5 (`Năng Suất Bình Quân`) hiển thị phát sinh tháng ở trên (`+915.7 trđ/người` tại T05) và `Lũy kế: 4,099.5 trđ/người` ở dưới để không lặp số.
+   - Tạo lại `images/quy-trinh.png` (`2400x940` RGBA) qua `.staging/render_gold_quytrinh.py` từ `workflow_quy_trinh_ky_thuat.html` với đúng bảng màu Pure Yellow (`#545400`, `#858500`, `#FFFF00`, `#FFFFE8`, `#253659`, `#16A34A`) và sửa nhãn kết nối Power BI từ `DirectQuery` thành `Import` (`Power BI` / `Import`).
+   - Bổ sung `visualStyles` cho `pageNavigator`, `shape`, `waterfallChart`, `scatterChart`, `lineClusteredColumnComboChart` vào `output/Pure_Yellow_Improved_Theme.json` (`11` visual styles, JSON hợp lệ) và quét các thuộc tính màu gán cứng (`#FED7AA`, `#FFB877`, `#FF7A00`, `#C59828`, `#FBD38D`) trong `output/duphong.pbix` để hướng dẫn chuẩn xác từng mục Reset trong Power BI Desktop.
+   - Đã kiểm `py_compile`, kiểm ADOMD qua 4 bối cảnh (`202305_All`, `202302_All` khớp LNTT `92,226`, `202301_All`, `202305_DNB` đổi Đỏ tự động), đối chiếu trực quan `images/quy-trinh.png`, `verify_page1_pure_yellow.png`, `verify_page4_kpi_states.png` và `all7_page4_danh_gia_vung.png`.
+
+327. **Đánh giá ảnh chụp và thu nhỏ các cỡ chữ quá lớn trên Trang 6 (`ĐÁNH GIÁ NĂNG LỰC ASM`) về tỷ lệ cân đối**
+   - Rà soát 4 ảnh chụp hiện trạng Trang 6 (`page6_v2_t5.png`, `page6_v2_t5_tab2.png`, `page6_v2_t2.png`, `page6_v2_t5_H.png`) và điều chỉnh hạ các cỡ chữ bị phóng quá khổ trong `update_page6_v1.py`:
+     - **Khối 1 & 2 (`ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`)**: `.card-title` (`26 -> 21.5px`), `.badge-month` (`21 -> 18px`), `label.tab-btn` (`23 -> 20px`), `.status-sub-bar` (`23.5 -> 19.5px`), Radar SVG (`25 -> 19.5`, `viewBox='-58 -14 466 320'`), `.radar-legend` (`18 -> 16.5px`), `.kpi-lbl` (`21.5 -> 18.5px`), `.kpi-val` (`41 -> 35px`), `.kpi-sub` (`20.5 -> 17.5px`).
+     - **Khối 3 (`ASM_Block3_All_Regions_Radar_HTML_v2`)**: `.title-text` (`32 -> 27px`), `.badge-scope`/`.badge-month`/`.note-line` (`23 -> 19.5px`), Radar SVG (`25 -> 20.5`, `viewBox='-60 -14 470 320'`), `.kpi-lbl` (`24 -> 20px`), `.kpi-val` (`45 -> 38px`), `.kpi-sub` (`23 -> 18.5px`), `.insight-head` (`27.5 -> 22.5px`), `.insight-row` (`26 -> 21px`).
+     - **Khối 4 (`Insight_DanhGiaHieuQua_HTML1`)**: tiêu đề băng rôn (`33 -> 27px`), badge (`25 -> 20px`), tiêu đề nhóm (`28.5 -> 23px`), số đếm (`42 -> 34px` / `26 -> 20px`), mô tả nhóm (`26 -> 20px`), nhãn phụ KPI (`26 -> 19.5px`), giá trị (`44 -> 36px`), hộp `Việc cần làm` (`27.5 -> 21px`).
+   - Đã chạy `py_compile`, cập nhật lên Power BI Desktop (`localhost:53952`, `SaveChanges succeeded!`), kiểm tra `0` lỗi trên `16` chuỗi HTML qua 4 bối cảnh và đối chiếu trực quan 4 ảnh kết xuất mới (`page6_v2_t5.png`, `page6_v2_t5_tab2.png`, `page6_v2_t2.png`, `page6_v2_t5_H.png`).
+
+326. **Căn đều mép trái/phải khối KPI Card (`Page5_Part1_KPICards_HTML`) thẳng hàng với khối Waterfall (`Page5_Part2_Waterfall_HTML`) trên Trang 7**
+   - Sửa `DAX_PART1` (`Page5_Part1_KPICards_HTML`) trong `update_page7_v3.py`: bỏ `12px` lề ngang ở `.kpi-row` (`width: 100%; padding: 8px 0; height: 172px;`) để thẻ đầu và thẻ cuối giãn sát `100%` chiều rộng khung visual giống `.panel` của `Page5_Part2_Waterfall_HTML`.
+   - Đồng bộ `body { padding: 4px 0; }` cho `DAX_PART2` (`Page5_Part2_Waterfall_HTML`) và `DAX_PART4` (`Page5_Part4_MatranHanhdong_HTML`) để thống nhất lề ngang `0px` cả trong Power BI `HTML Content` lẫn khi xuất ảnh đối chiếu.
+   - Đã chạy `py_compile`, cập nhật lên Power BI Desktop qua `localhost:53952` (`SaveChanges succeeded!`), vượt qua toàn bộ kiểm tra (`0` lỗi trên `20` chuỗi HTML qua 5 kỳ `202301..202305`) và đo kiểm pixel trên `page7_v3_t5.png` (`first_white = 2`, `last_white = 1917` trùng khít cả 3 khối `Part1`, `Part2`, `Part4`).
+
+325. **Tăng cỡ chữ (+3–4px), chuyển chú thích radar & dòng phụ KPI sang bố cục 2 hàng chống tràn/mờ trên Trang 6 và xuất file Power BI Theme Pure Yellow cải tiến**
+   - Chuyển `.radar-legend` (`18px`) và `.kpi-sub` (`20.5px`) Khối 1–2 sang 2 hàng chống cắt tên dài (`Hạng 2: Hoàng Thị Hà`, `Hạng 83: Phạm Thị Thanh`, `Nguyễn Văn Khánh`), tinh chỉnh radar SVG (`font-size='25'`, `viewBox='-70 -18 490 330'`) và nâng cỡ chữ +3–4px trên cả 4 khối (Khối 3 `45px`/`24px`/`23px`/`26px`, Khối 4 `28.5px`/`26px`/`44px`/`27.5px`).
+   - Thay toàn bộ viền/lưới nhạt `#FFFFB3` trên nền trắng bằng `#CCCC00`/`#858500`, sửa đa giác Tab 2 sang `#858500`, đồng bộ `"D"` -> `"Đồng Bằng Sông Hồng"`, sửa lỗi Khối 4 hiển thị `()` thành `0 (0.0%)` khi nhóm trống (`COALESCE(COUNTROWS(...), 0)`), tách mô tả 4 nhóm thành 2 hàng rõ nét và giữ 4 tiêu đề nhóm thẳng 1 hàng.
+   - Xuất file theme chuẩn Power BI Desktop tại `output/Pure_Yellow_Improved_Theme.json` (và bản sao artifact), kiểm chứng `json.load` + `py_compile`, cập nhật `localhost:53952` (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên `16` chuỗi HTML và đối chiếu trực quan 4 ảnh (`page6_v2_t5.png`, `page6_v2_t5_tab2.png`, `page6_v2_t2.png`, `page6_v2_t5_H.png`).
+
+324. **Chuẩn hóa Trang 6 (Đánh giá năng lực ASM) theo Cách 1, bảng màu Pure Yellow (#FFFF00) và chuẩn đọc 5–10 giây**
+   - Sửa `Thang 5` -> `Tháng MM/YYYY`, xóa sạch viết tắt (`LTN`, `KH PSDN`, `NPL`, `BQ`, `ASM`, `TOP 84/83/82`), đồng bộ thuật ngữ `toàn hàng` / `7 vùng`, áp bảng màu Pure Yellow (`#FFFF00` + `#25251F` + Navy `#253659`) cùng chuẩn màu Tốt = Xanh (`#16A34A`) / Xấu = Đỏ (`#DC2626`), bỏ dòng giải thích dài, căn chỉnh `.radar-legend` (`14px`) / `.kpi-sub b` (`nowrap`) không tràn viền và nâng cỡ chữ đọc rõ ở zoom 50%.
+
+323. **Xóa dòng mô tả phụ `.panel-desc` dưới tiêu đề chính trên Khối 2 và Khối 4 Trang 7**
+   - Bỏ `<p class='panel-desc'>` cùng rule CSS tương ứng trên `Page5_Part2_Waterfall_HTML` và `Page5_Part4_MatranHanhdong_HTML`, tăng chiều cao `.chart-svg` lên `525px` và `.action-table` lên `724px`, đẩy lên `localhost:53952` (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên `20` HTML qua 5 kỳ và đối chiếu `page7_v3_t4.png`, `page7_v3_t5.png`.
+
+322. **Xóa hộp tổng góc phải trên Khối 2, chỉ giữ nhãn tháng/năm gọn cho Khối 2 và Khối 4 Trang 7**
+   - Thay hộp `.total-pill` 3 dòng ở Khối 2 (`Page5_Part2_Waterfall_HTML`) bằng nhãn gọn `Tháng MM/YYYY` (`<span class='period-tag'>`), đồng bộ sang Khối 4 (`Page5_Part4_MatranHanhdong_HTML`), cập nhật vào `localhost:53952` (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên `20` HTML qua 5 kỳ và đối chiếu `page7_v3_t4.png`, `page7_v3_t5.png`.
+
+321. **Căn chỉnh lại 4 thẻ KPI, đổi màu % tăng/giảm chi phí & dự phòng và chuẩn hóa câu chữ biểu đồ thác nước Trang 7**
+   - Căn đều `Page5_Part1_KPICards_HTML` (`height: 172px`, `padding: 15px 16px 11px 16px`, `.kpi-label: 20.5px`, `.kpi-value: 44px`, `.kpi-sub: 18.5px`) giúp 4 thẻ cân đối theo cả 2 chiều và tránh chạm cụm icon góc phải của Power BI; đổi chú thích Thẻ 1 thành `Đã trừ chi phí vốn`.
+   - Đổi quy ước màu `% so với tháng trước` cho Chi phí vận hành và Dự phòng nợ xấu: tăng (`> 0`) tô Đỏ (`#DC2626`), giảm (`<= 0`) tô Xanh (`#16A34A`).
+   - Chuẩn hóa câu chữ Khối 2 & Khối 4: đổi tiêu đề sang `... của doanh nghiệp`, `Hiệu suất vốn toàn hàng`, `Đơn vị: Tỷ đồng (Lũy kế từ đầu năm <năm>)`, chú giải biểu đồ thành `Thu nhập / Lợi nhuận` và `Chi phí / Dự phòng`, và thống nhất dùng `Toàn hàng` / `Toàn hàng (7 vùng)` trên toàn bộ 7 vùng.
+   - Đẩy vào mô hình trực tiếp `localhost:53952` (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên `20` chuỗi HTML qua 5 kỳ (`202301..202305`) và chụp ảnh kiểm chứng `page7_v3_t4.png`, `page7_v3_t5.png`.
+
+320. **Bỏ hẳn Khối 3 (`Page5_Part3_DongNamBo_HTML`) và cô đặc 3 khối còn lại của Trang 7 theo chuẩn nhìn 5–10 giây**
+   - Làm rỗng `Page5_Part3_DongNamBo_HTML` (`84` ký tự HTML trong suốt) trên mô hình TOM trực tiếp (`localhost:53952`) và đưa điểm nhấn nhân sự Đông Nam Bộ (`84%` / `75%` / `69%` quản lý vùng rớt nhóm cuối) vào dòng thứ 2 của thẻ đáy Khối 2.
+   - Đánh giá và chuẩn hóa 3 khối còn lại (`Page5_Part1_KPICards_HTML`, `Page5_Part2_Waterfall_HTML`, `Page5_Part4_MatranHanhdong_HTML`) cho người xem mới hoàn toàn đọc hiểu trong 5–10 giây: loại bỏ toàn bộ từ viết tắt/thuật ngữ (`Lãi TH`, `CP KD khác`, `CP HĐ`, `Dự phòng RR`, `CIR`, `ASM`, `LTN`, `TỔNG LNTT`, `Chiếm X% TN`), gán động nhãn vùng lỗ (`v_NegAreaCnt`), giữ chuẩn màu Xanh (`#16A34A` = dương/tăng/lãi) / Đỏ (`#DC2626` = âm/giảm/lỗ/chi phí) và cỡ chữ lớn đọc rõ ở zoom 50%.
+   - Kiểm tra ADOMD và chụp ảnh đối chiếu 4 kỳ (`T05`, `T03`, `T02`, `T01` — `0 NaN/Infinity/chữ viết tắt` trên 16 HTML): `page7_v3_t5.png`, `page7_v3_t3.png`, `page7_v3_t2.png`, `page7_v3_t1.png`.
+
+319. **Hoàn thiện Trang 7: Đồng nhất 4 thẻ KPI, sửa 3 điểm thiết kế Khối 2, áp dụng chuẩn màu Xanh/Đỏ và tăng cỡ chữ +3–4px đọc rõ ở zoom 50%**
+   - **Đồng nhất 4 thẻ KPI (`Page5_Part1_KPICards_HTML`):** Chuyển toàn bộ về khung trắng viền Pure Yellow + vạch màu trên đồng nhất 3 dòng (`Tổng thu nhập hoạt động`, `Chi phí hoạt động`, `Chi phí dự phòng rủi ro`, `Lợi nhuận trước thuế`), bổ sung tỷ lệ tăng/giảm phát sinh tháng so với tháng trước (xử lý an toàn riêng cho T1 `202301`), bỏ văn phong AI/kỹ thuật.
+   - **Sửa 3 điểm hạn chế Khối 2 (`Page5_Part2_Waterfall_HTML`):** Bắt buộc màu Xanh lá (`#16A34A`) cho thu nhập/lợi nhuận/chỉ số tăng và Đỏ (`#DC2626`) cho chi phí/dự phòng/lỗ; bỏ `justify-content: space-between` trên 3 thẻ nhận định đáy để xóa khoảng trống giữa thẻ; chuẩn hóa câu chữ ngân hàng phổ thông.
+   - **Đồng bộ Khối 3 & 4 (`Page5_Part3_DongNamBo_HTML`, `Page5_Part4_MatranHanhdong_HTML`) & tăng cỡ chữ +3–4px:** Tăng cỡ chữ toàn trang ~3–4px để đọc rõ ở mức thu nhỏ 50%, thu gọn tiêu đề thẻ để bỏ rớt dòng thừa, thay số `26` gõ cứng bằng biến động `vH_FinScore`.
+   - **Nghiệm thu (Verify):** Cập nhật lên `localhost:53952` qua TOM (`SaveChanges succeeded!`), evaluate ADOMD qua 4 tháng `202305`, `202303`, `202302`, `202301` (`0 NaN/Infinity/AI jargon tokens` qua 16 HTML payloads), đối chiếu ảnh thực tế tại `page7_v2_top_blocks_t5.png`, `page7_v2_t5.png`, `page7_v2_t3.png`, `page7_v2_t2.png`.
+
+318. **Dựng thử Phương án 1 cho Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`) trên file Power BI Desktop đang mở (`localhost:53952`)**
+   - **Cập nhật 4 DAX HTML measures theo Phương án 1 (100% động theo tháng, chuẩn Pure Yellow + Shadow 3D + chữ to + ngôn ngữ ngân hàng thuần Việt):**
+     * `Page5_Part1_KPICards_HTML`: 4 thẻ KPI tổng hợp cấp ngân hàng (Thu nhập hoạt động toàn hàng, Phân bổ Hội sở & Vận hành, Dự phòng rủi ro & Nợ xấu, Lợi nhuận trước thuế toàn hàng kèm quy mô bán của 84 ASM).
+     * `Page5_Part2_Waterfall_HTML`: Biểu đồ SVG Cầu nối cấu trúc hình thành Lợi nhuận lũy kế toàn hàng (Thu nhập thẻ -> CP Vốn KDV -> CP KD khác -> Tổng thu nhập HĐ -> Chi phí HĐ -> Dự phòng RR -> Tổng LNTT) tự động co giãn tỷ lệ theo tháng, đi kèm 3 thẻ phân tích vùng trọng điểm.
+     * `Page5_Part3_DongNamBo_HTML`: Lấy động `TOPN 3` ASM có doanh số LTN cao nhất tại Đông Nam Bộ trực tiếp từ `v_xephang_asm` (loại bỏ hoàn toàn 3 tên giả gõ cứng cũ; cập nhật động cả chú thích vượt chuẩn BQ và tổng số ASM toàn quốc).
+     * `Page5_Part4_MatranHanhdong_HTML`: Bảng kế hoạch hành động 5 vùng trọng điểm tính động 100%, sửa triệt để lỗi CIR Bắc Trung Bộ bị nhân 100 lần (`2646.9%` -> `26.5%`) và thay thế số ước tính gõ cứng bằng phép tính định lượng trực tiếp từ `v_baocao_tonghop` và `v_xephang_asm`.
+   - **Nghiệm thu (Verify):** Evaluate cả 4 measures cho Tháng 5 (`202305`) và Tháng 2 (`202302`) không lỗi DAX; render và đối chiếu ảnh chụp toàn trang `page7_phuong_an_1_t5.png` và `page7_phuong_an_1_t2.png`.
+
+### 2026-11-14
+
+317. **Lược bỏ phần danh sách nhân sự (gương mặt tiêu biểu, lưu ý nợ, giữ nợ sạch, cần hỗ trợ) ở đáy 4 thẻ Ma Trận Năng Lực ASM (`Insight_DanhGiaHieuQua_HTML1`)**
+   - **Tối ưu bố cục thẻ tinh gọn & thoáng đãng**:
+     * Bỏ hoàn toàn dòng liệt kê tên ASM và đường viền nét đứt phân cách ở cuối mỗi thẻ.
+     * Khối thẻ tập trung trọn vẹn vào 3 trọng tâm quản trị:
+       1. Tên nhóm & Phụ đề điều kiện xếp loại (gọn gàng, không rớt dòng).
+       2. Hai ô chỉ số KPI cốt lõi (Doanh số BQ & Tỷ lệ nợ xấu BQ) với số to **38px** cực kỳ nổi bật.
+       3. Khối màu định hướng hành động `💡 Việc cần làm` với chữ to **25px** rõ ràng.
+   - **Nghiệm thu trên Power BI Desktop**:
+     * Cập nhật measure `Insight_DanhGiaHieuQua_HTML1` qua TOM API.
+     * Snapshot đối soát:
+       + `matrix_pbi_dbsh_clean.png` (Vùng ĐBSH)
+       + `matrix_pbi_all_clean.png` (Toàn hệ thống).
+
+### 2026-11-14
+
+316. **Phóng to vượt trội toàn bộ chữ trong 4 khối thẻ Ma Trận Năng Lực ASM (KPI 38px, Việc cần làm 25px, Tên tiêu biểu 24px) theo ảnh chụp thực tế của người dùng**
+   - **Tối ưu kích thước chữ các thành phần trong 4 thẻ (Khắc phục tình trạng chữ bị lọt thỏm)**:
+     * Con số KPI (Doanh số & Tỷ lệ nợ xấu): Tăng mạnh lên **`38px`** (black 900), đơn vị `Tr.đ` / `%` lên **`23px`** đậm nét.
+     * Nhãn KPI (`Doanh số bình quân`, `Tỷ lệ nợ xấu bình quân`): Tăng lên **`23px`** (màu đậm `#555`, font-weight 600).
+     * Dòng định hướng `💡 Việc cần làm`: Tăng lên **`25px`** (dòng cao 1.45, font-weight 500).
+     * Dòng danh sách nhân sự (`Gương mặt tiêu biểu`, `Cần lưu ý kiểm soát nợ`, `Giữ nợ rất sạch`, `Cần hỗ trợ ngay`): Tăng lên **`24px`** (màu chữ than đậm `#25251F`, rõ ràng dễ đọc).
+     * Phụ đề dưới tên nhóm: Tăng lên **`23px`** (font-weight 600).
+     * Số lượng nhân sự trong Badge: Tăng lên **`38px`** bold 900, tỷ lệ % lên **`24px`**.
+     * Tinh chỉnh tên 4 nhóm gọn gàng không bị rớt dòng:
+       + `🌟 NHÓM BÁN TỐT - NỢ THẤP (TOÀN DIỆN)`
+       + `⚡ NHÓM BÁN TỐT - NỢ CAO (TĂNG NÓNG)`
+       + `🛡️ NHÓM BÁN CHẬM - NỢ THẤP (AN TOÀN)`
+       + `⚠️ NHÓM BÁN KÉM - NỢ CAO (NGUY CƠ)`
+   - **Triển khai & Kiểm thử trực tiếp**:
+     * Cập nhật vào Tabular Model Power BI Desktop qua TOM API.
+     * Chụp snapshot đối chiếu trực tiếp với ảnh người dùng cung cấp:
+       + `matrix_pbi_dbsh_v4.png` (Khớp với ngữ cảnh ảnh chụp của người dùng)
+       + `matrix_pbi_all_v4.png` (Toàn mạng lưới).
+
+### 2026-11-14
+
+315. **Tăng cỡ chữ lên 5-6px và bản địa hóa ngôn ngữ thuần Việt quản trị ngân hàng cho Ma Trận 4 Nhóm Năng Lực ASM (`Insight_DanhGiaHieuQua_HTML1`)**
+   - **Tăng kích thước phông chữ toàn diện (+5-6px)**:
+     * Tiêu đề khối: Tăng từ 22px lên **28px** (bold 800 `#545400`).
+     * Tên 4 nhóm: Tăng từ 21px lên **26px** (bold 800).
+     * Số lượng nhân sự trong thẻ: Tăng từ 26px lên **32px** (black 900), tỷ lệ % tăng lên **21px**.
+     * Chỉ số bình quân (LTN, NPL): Tăng từ 20px lên **26px** (nhãn tăng lên **19px**).
+     * Nội dung hướng xử lý thực tế: Tăng từ 16px lên **21px** (dòng cao 1.45).
+     * Danh sách nhân sự tiêu biểu: Tăng từ 15px lên **20px**.
+   - **Bản địa hóa ngôn ngữ thực tế ngân hàng (Loại bỏ hoàn toàn thuật ngữ dịch máy / AI)**:
+     * Chuyển đổi tên nhóm gần gũi với quản lý kinh doanh:
+       + Nhóm 1: `🌟 NHÓM BÁN TỐT - NỢ THẤP (TOÀN DIỆN)`
+       + Nhóm 2: `⚡ NHÓM BÁN TỐT - NỢ CAO (TĂNG TRƯỞNG NÓNG)`
+       + Nhóm 3: `🛡️ NHÓM BÁN CHẬM - NỢ THẤP (AN TOÀN)`
+       + Nhóm 4: `⚠️ NHÓM BÁN KÉM - NỢ CAO (CẦN GIẢI QUYẾT GẤP)`
+     * Định hướng hành động thực tiễn ngân hàng thay cho khẩu hiệu sáo rỗng:
+       + Nhóm 1: Khen thưởng kịp thời, nhân rộng cách làm hay cho các vùng khác và đưa vào danh sách quy hoạch quản lý.
+       + Nhóm 2: Tạm dừng việc chạy theo doanh số, siết lại khâu xét duyệt hồ sơ và tập trung gọi điện nhắc nợ sớm.
+       + Nhóm 3: Giao thêm chỉ tiêu bán hàng, hướng dẫn kỹ năng chốt hợp đồng và thúc đẩy nhân viên chủ động tìm khách mới.
+       + Nhóm 4: Lãnh đạo vùng ngồi lại rà soát từng hồ sơ nợ, cử người có kinh nghiệm kèm cặp trực tiếp và kiểm tra lại địa bàn.
+   - **Triển khai & Nghiệm thu trên Power BI Desktop**:
+     * Cập nhật measure `Insight_DanhGiaHieuQua_HTML1` qua TOM API.
+     * Render đối soát trực quan:
+       + `matrix_pbi_all_v2.png` (Toàn mạng lưới)
+       + `matrix_pbi_dbsh_v2.png` (Vùng ĐBSH)
+       + `matrix_pbi_dnb_v2.png` (Vùng ĐNB).
+
+### 2026-11-14
+
+314. **Thiết kế Ma Trận 4 Góc Năng Lực 2x2 (Doanh số LTN vs. Kiểm soát Rủi ro NPL) cho trang Đánh Giá Năng Lực ASM (`Insight_DanhGiaHieuQua_HTML1`)**
+   - **Mục tiêu & Nghiệp vụ Quản trị**:
+     * Thay thế visual `81d1a6c0a44c33d91ee5` (W = 1920, H = 820) đang bị gắn nhầm measure của trang P&L.
+     * Phân loại toàn bộ 84 Quản lý kinh doanh (ASM) tại 7 Vùng theo 2 chiều năng lực cốt lõi: Năng lực tăng trưởng doanh số (LTN) và Năng lực kiểm soát chất lượng nợ (Tỷ lệ NPL) so với Mốc chuẩn toàn hàng (T5: BQ LTN = 2,141 tr.đ, BQ NPL = 17.3%).
+     * 4 nhóm năng lực chiến lược:
+       1. 🌟 **Ngôi sao toàn diện (Stars)** (LTN $\ge$ BQ & NPL $\le$ BQ): T5 toàn mạng lưới có 22 ASM (26.2%). BQ LTN 3,287 tr.đ, BQ NPL 14.1%. Định hướng: Khen thưởng, giữ chân nhân tài, quy hoạch bổ nhiệm cán bộ nguồn.
+       2. ⚡ **Động lực tăng tốc (Challengers)** (LTN $\ge$ BQ & NPL > BQ): T5 có 12 ASM (14.3%). BQ LTN 3,031 tr.đ, BQ NPL 20.6%. Định hướng: Siết chặt thẩm định tín dụng, đôn đốc thu hồi nợ sớm, sàng lọc phân khúc.
+       3. 🛡️ **Thận trọng / An toàn (Conservative)** (LTN < BQ & NPL $\le$ BQ): T5 có 18 ASM (21.4%). BQ LTN 1,522 tr.đ, BQ NPL 14.0%. Định hướng: Giao thêm room chỉ tiêu, đào tạo kỹ năng bán hàng & chốt deal.
+       4. ⚠️ **Cần can thiệp / Nguy cơ (At-Risk)** (LTN < BQ & NPL > BQ): T5 có 32 ASM (38.1%). BQ LTN 1,368 tr.đ, BQ NPL 20.1%. Định hướng: Áp dụng PIP cải thiện hiệu suất 30-60 ngày, cử Stars kèm cặp 1-1, tái cơ cấu địa bàn.
+   - **Tương tác linh hoạt theo Slicer Vùng & Tháng**:
+     * Khi xem Toàn hàng: Tổng kết 84 nhân sự toàn mạng lưới.
+     * Khi click Slicer chọn Vùng (ví dụ ĐBSH, ĐNB): Giữ nguyên mốc chuẩn toàn hàng làm thước đo tham chiếu, tự động phân bổ và hiển thị tỷ lệ % + danh sách ASM cụ thể của Vùng đó (ví dụ ĐBSH có 11 Stars, 12 Conservative, 0 At-risk; ĐNB có 15 At-risk, 4 Challengers).
+   - **Chuẩn thiết kế Pure Yellow + Shadow 3D + Chữ to**:
+     * Nền toàn visual `#FFFFF5`, thẻ nền trắng `#FFFFFF`, chữ than `#25251F`, đối ứng Navy `#253659`, dải vàng `#858500`, `#CCCC00`, `#545400`, `#FFFF00`.
+     * Shadow 3D sâu `0 6px 18px rgba(84,84,0,0.14)`, viền trái 6px đặc trưng, font-size lớn (tiêu đề 22px, số lượng 26px bold, KPI 20px, nội dung 18px).
+   - **Triển khai & Kiểm thử**:
+     * Cập nhật measure `Insight_DanhGiaHieuQua_HTML1` và alias `ASM_Block4_Matrix_4Quadrant_HTML` vào bảng `'LAI LO (Visuals & DAX)'` qua TOM API.
+     * Render đối soát trực quan:
+       + `matrix_pbi_all.png` (Toàn mạng lưới)
+       + `matrix_pbi_dbsh.png` (Vùng ĐBSH)
+       + `matrix_pbi_dnb.png` (Vùng ĐNB).
+
+### 2026-11-14
+
+313. **Đồng bộ hóa 100% vạch lưới Radar & Trục SVG của `ASM_Block3_All_Regions_Radar_HTML_v2` theo đúng chuẩn Block 1 & Block 2**
+   - **Đồng bộ toàn diện hệ thống vạch lưới đa giác (Spider Web Grid) sắc nét & tương phản cao**:
+     * Thay thế vạch mờ `#FFFFB3` đơn điệu cũ bằng hệ thống 4 cấp độ đa giác chuẩn của Block 1 & 2:
+       + Vòng 100%: Nét đứt `4,4` màu mù tạt `#CCCC00` dày 1.5px.
+       + Vòng 75%: Nét đứt `3,3` màu mù tạt `#CCCC00` dày 1.2px.
+       + Vòng 50%: Nét liền màu mù tạt `#CCCC00` dày 1.2px.
+       + Vòng 25%: Nét liền màu vàng nhạt `#FFFFB3` dày 1px.
+     * 4 trục thẳng đứng/ngang nối từ tâm ra 4 đỉnh sử dụng màu ô liu đậm **`#858500`** dày 1.2px, hiển thị vững chãi, rõ nét trên nền thẻ trắng.
+     * Tọa độ chuẩn hóa: Tâm `(175, 145)`, bán kính tối đa `_r_max = 100`, ViewBox `-40 -10 410 310` rộng rãi.
+   - **Nghiệm thu trực tiếp trên mô hình Power BI Desktop (port 58239)**:
+     * Cập nhật thành công vào Tabular Model qua TOM API.
+     * Render và snapshot đối soát:
+       + `block3_all_v3.png` (Chế độ Toàn Hàng)
+       + `block3_region_v3.png` (Chế độ Khu Vực).
+
+### 2026-11-14
+
+312. **Nâng cấp khối Insight `ASM_Block3_All_Regions_Radar_HTML_v2`: Thay đổi số liệu sang Tổng quy mô & Tỷ trọng mạng lưới, Tăng font chữ lên 20.5px**
+   - **Thay đổi hoàn toàn bản chất con số phân tích (Loại bỏ trùng lặp với 4 thẻ KPI)**:
+     * *Chế độ Toàn Hàng*:
+       + Quy mô nhân sự động: Tự động đếm theo tháng (`_total_asm`, ví dụ 84 ASM ở T5, 74 ASM ở T1-T2) phân bổ trên 7 Vùng.
+       + **Tổng quy mô kinh doanh toàn hệ thống**: Tính tổng doanh số LTN toàn hàng `179,846 triệu đồng` (≈ `179.8 tỷ đồng`) và tổng khách hàng PSDN phát sinh `8,459 KH` (thay vì lặp lại số BQ 2,141 tr và 100.7 KH).
+       + **Phân hóa mạng lưới & Điểm sáng vùng**: Tự động tìm Vùng dẫn đầu doanh số LTN bình quân (`Bắc Trung Bộ` 3,089 tr/ASM) và Vùng kiểm soát nợ NPL tốt nhất (`Nam Trung Bộ` 11.2%).
+     * *Chế độ Từng Khu Vực (ví dụ Đồng Bằng Sông Hồng)*:
+       + Quy mô vùng: 23 ASM (chiếm `27.4%` lực lượng toàn hàng).
+       + **Đóng góp kinh doanh thực tế**: Tạo ra `55,010 triệu đồng LTN` (đóng góp `30.6%` toàn hàng) và `2,499 KH PSDN` (đóng góp `29.5%` toàn hàng).
+       + Tương quan năng lực so với mốc chuẩn BQ toàn hàng.
+   - **Tăng kích thước chữ to rõ, chuẩn thị giác Executive Dashboard**:
+     * Tiêu đề khối `.insight-head`: Tăng lên **22.5px** (đậm nét 900 `#545400`).
+     * Nội dung các dòng `.insight-row`: Tăng từ 17.5px lên **20.5px** (dòng cao 1.5, số liệu bôi đậm 900 `#25251F`).
+     * Thẻ KPI: Số chính tăng lên **36px**, nhãn lên **19px**, dòng tương quan lên **18px**.
+   - **Nghiệm thu trực tiếp trên mô hình Power BI Desktop (port 58239)**:
+     * Cập nhật thành công vào Tabular Model qua TOM API.
+     * Render và snapshot đối soát:
+       + `block3_all_v2.png` (Chế độ Toàn Hàng)
+       + `block3_region_v2.png` (Chế độ Khu Vực).
+
+### 2026-11-14
+
+311. **Tái thiết kế toàn diện `ASM_Block3_All_Regions_Radar_HTML_v2`: Chuyển đổi từ 7 mini radar cố định sang 1 Executive Radar tương tác thông minh theo Slicer Vùng & BQ toàn hàng**
+   - **Tái cấu trúc giao diện theo chuẩn thiết kế Pure Yellow + Shadow 3D + Chữ to**:
+     * Thay thế hoàn toàn bố cục cũ (7 mini radar nhồi nhét, chữ nhỏ, không phản ứng với Slicer Vùng).
+     * Thiết kế thành **1 Biểu đồ Radar Executive duy nhất**, bố cục 2 cột cân đối:
+       + Cột trái: Khung Radar SVG lớn (`width: 500`, `height: 375`, bán kính `_r_max = 125`), lưới nhện 3 cấp sắc nét, nhãn 4 trục to rõ **17.5px** màu than `#25251F`, đa giác năng lực viền vàng đậm `#858500` dày 3.2px kèm 4 điểm đỉnh tròn.
+       + Cột phải: Hệ thống 4 Thẻ KPI lớn viền trái 5.5px (`#858500`) với số chính cực to **34px** (đậm nét 900 `#25251F`), nhãn KPI **18.5px** in hoa và dòng tương quan so sánh **17.5px** màu xanh navy `#253659`.
+       + Khối Phân Tích Tổng Quan / Đánh Giá Năng Lực (Executive Summary Box) tự động sinh nhận xét chi tiết bằng DAX cho từng trục chỉ số.
+   - **Cơ chế tương tác Slicer Vùng linh hoạt & Chuẩn hóa thuật ngữ**:
+     * **Chuẩn hóa nhãn mốc chuẩn**: Đổi toàn bộ thành **"BQ toàn hàng"** (Bình quân toàn hàng / 84 ASM toàn hệ thống).
+     * **Chế độ Toàn Hàng (Khi Slicer Vùng = All hoặc chưa chọn)**:
+       + Tiêu đề: `🌐 NĂNG LỰC NHÂN SỰ TOÀN HÀNG`.
+       + Badge: `Toàn Hàng · 84 ASM`.
+       + Radar hiển thị 1 đa giác vàng `#858500` đại diện cho năng lực bình quân của toàn bộ 84 ASM.
+       + 4 Thẻ KPI hiển thị mức chuẩn bình quân toàn hệ thống (2,141 trđ LTN, 100.7 KH PSDN, 42.8% duyệt thẻ, 17.3% nợ xấu NPL).
+       + Khối nhận xét tóm tắt quy mô nhân sự và chất lượng danh mục toàn hàng.
+     * **Chế độ Từng Khu Vực (Khi Slicer Vùng chọn 1 Vùng cụ thể, ví dụ ĐB Sông Hồng)**:
+       + Tiêu đề tự động cập nhật: `🌐 NĂNG LỰC NHÂN SỰ KHU VỰC — [Tên Vùng]`.
+       + Badge: `[Tên Vùng] · [Số lượng ASM] ASM`.
+       + Radar hiển thị đối chiếu 2 lớp trực quan: Lớp mốc chuẩn **BQ toàn hàng** nét đứt xanh navy `#253659` và Lớp năng lực **Khu Vực** nét liền vàng đậm `#858500`.
+       + 4 Thẻ KPI hiển thị số liệu thực tế của Vùng kèm dòng delta so sánh trực tiếp với BQ toàn hàng (ví dụ: `BQ toàn hàng: 2,141 tr (▲ +11.7%)`).
+       + Khối nhận xét tự động đánh giá thế mạnh vượt trội (vượt chuẩn) hoặc điểm cần cải thiện (thấp hơn BQ toàn hàng hoặc nợ xấu cao hơn).
+   - **Nghiệm thu trực tiếp trên mô hình Power BI Desktop (port 58239)**:
+     * Cập nhật thành công vào Tabular Model qua TOM API.
+     * Render và snapshot đối soát độc lập cả 2 kịch bản:
+       + `block3_all_preview.png` (Chế độ Toàn Hàng - BQ toàn hàng)
+       + `block3_region_preview.png` (Chế độ Khu vực - ĐB Sông Hồng đối chiếu BQ toàn hàng).
+
+### 2026-11-14
+
+310. **Nâng cấp đồng bộ Measure `ASM_Block2_Bottom3_Selected_Radar_HTML_v2` theo chuẩn Pure Yellow + Shadow 3D + Chữ to +3px**
+   - **Đồng bộ hóa 100% thiết kế theo chuẩn chung của Dashboard**:
+     * Áp dụng trọn vẹn Palette "Pure Yellow": Nền `#FFFFF5`, thẻ `#FFFFFF`, chữ than `#25251F`, chuỗi so sánh xanh navy `#253659`.
+     * Giữ nguyên toàn bộ logic DAX: Lọc tháng, lọc vùng, chuẩn so sánh BQ Toàn quốc, tie-breaker chọn Top 3 cuối bảng (Top 84, 83, 82 toàn hàng hoặc 3 vị trí cuối vùng).
+     * Hệ thống bóng đổ Shadow 2 lớp nổi khối 3D rõ nét: `.card-box` (`0 8px 24px rgba(84,84,0,0.18)`), `.kpi-card` (`0 4px 12px rgba(84,84,0,0.12)`), nút Tab và thanh trạng thái.
+     * Tăng Font-size thêm +3px đồng bộ: Tiêu đề lên **25px**, nút Tab lên **19px**, Thanh trạng thái lên **20.5px** (cao 46px), Nhãn 4 trục Radar lên **17.5px**, Số KPI chính lên **34px**, Nhãn KPI lên **18.5px**, Dòng so sánh lên **18px**.
+     * Phối màu sắc độ cảnh báo theo dải vàng chuẩn:
+       + **🚨 Đội sổ (Top 84)**: Viền trái thẻ KPI 5.5px `#545400`, stroke radar 3.2px `#545400`, tab active viền `#545400`.
+       + **⚠️ Á chót (Top 83)**: Viền trái thẻ KPI 5.5px `#858500`, stroke radar 3.2px `#858500`, tab active viền `#858500`.
+       + **⚠️ Hạng 3 cuối (Top 82)**: Viền trái thẻ KPI 5.5px `#CCCC00`, stroke radar 3.2px `#CCCC00`, tab active viền `#CCCC00`.
+       + **Chuỗi so sánh BQ Toàn quốc**: Màu xanh navy **`#253659`** nét đứt 2.2px trên radar và dòng text KPI.
+   - **Nghiệm thu trực tiếp trên mô hình Power BI Desktop (port 58239)**:
+     * Đã cập nhật thành công qua TOM API.
+     * Đã render và snapshot đối soát cả 3 tab:
+       + `bottom3_pure_yellow_tab1.png` (Tab 1 Top 84)
+       + `bottom3_pure_yellow_tab2.png` (Tab 2 Top 83)
+       + `bottom3_pure_yellow_tab3.png` (Tab 3 Top 82).
+
+### 2026-11-14
+
+309. **Nâng cấp bóng đổ Shadow nổi khối 3D & Tăng kích thước chữ +3px toàn diện cho `ASM_Block1_Top3_Selected_Radar_HTML_v2`**
+   - **Tối ưu bóng đổ Shadow nổi khối 3D sâu và rõ nét**:
+     * `.card-box`: Nâng cấp shadow lên `0 8px 24px rgba(84, 84, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08)`, tạo chiều sâu tách biệt hẳn với nền trang dashboard.
+     * `.radar-box` & `.profile-box`: Bổ sung shadow `0 4px 14px rgba(84, 84, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06)`.
+     * `.kpi-card`: Nâng cấp shadow `0 4px 12px rgba(84, 84, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.05)`, nổi rõ 4 khối thẻ độc lập trên nền trắng.
+     * Nút bấm Tab: Shadow nhẹ `0 2px 6px rgba(84, 84, 0, 0.10)`, khi active nổi gồ lên như nút bấm vật lý với `0 4px 14px rgba(133, 133, 0, 0.35)`.
+     * Thanh trạng thái ASM: Shadow `0 3px 10px rgba(84, 84, 0, 0.12)`.
+   - **Tăng Font-size thêm +3px cực kỳ to rõ, dễ quan sát từ xa**:
+     * Tiêu đề card header: Tăng từ 22px lên **25px** (đậm nét 900 `#545400`).
+     * Nhãn 3 nút Tab: Tăng từ 16px lên **19px** (đậm nét 800, padding 8px 22px).
+     * Thanh trạng thái ASM: Tăng từ 17.5px lên **20.5px** (chiều cao tăng lên 46px).
+     * Nhãn 4 trục biểu đồ Radar SVG: Tăng từ 14.5px lên **17.5px** (chữ than `#25251F`, mở rộng viewBox SVG không chạm mép).
+     * Legend Radar: Tăng lên **16px**.
+     * Chip Tháng: Tăng lên **17px**.
+     * Nhãn 4 chỉ tiêu KPI (`.kpi-lbl`): Tăng từ 15.5px lên **18.5px** (in hoa, đậm nét 800).
+     * Con số chỉ tiêu chính (`.kpi-val`): Tăng từ 31px lên **34px** (font-weight: 900, cực kỳ to rõ và ấn tượng).
+     * Dòng so sánh KPI (`.kpi-sub`): Tăng từ 15px lên **18px** (màu xanh navy `#253659`).
+   - **Giữ trọn vẹn 100% Palette Pure Yellow**: Nền kem `#FFFFF5`, thẻ `#FFFFFF`, chữ `#25251F`, so sánh `#253659`, dải vàng `#858500`, `#CCCC00`, `#545400`.
+   - **Nghiệm thu trực tiếp trên mô hình Power BI Desktop (port 58239)**:
+     * Đã cập nhật thành công qua TOM API.
+     * Đã render và snapshot đối soát cả 3 tab:
+       + `radar_shadow_tab1.png` (Tab 1 Top 1)
+       + `radar_shadow_tab2.png` (Tab 2 Top 2)
+       + `radar_shadow_tab3.png` (Tab 3 Top 3).
+
+### 2026-11-14
+
+308. **Chuẩn hóa 100% màu sắc Measure `ASM_Block1_Top3_Selected_Radar_HTML_v2` theo bảng màu "Pure Yellow" gốc của dự án**
+   - **Tuân thủ tuyệt đối Palette "Pure Yellow" theo ảnh quy chuẩn của dự án**:
+     * Dải vàng tươi từ sáng đến đậm: `#FFFFE8` · `#FFFFB3` · `#FFFF66` · `#FFFF00` · `#CCCC00` · `#858500` · `#545400`.
+     * **Nền trang / Nền Block**: `#FFFFF5` (ngà vàng thanh lịch).
+     * **Nền thẻ / Khung biểu đồ**: `#FFFFFF` (nền thẻ trắng tinh, viền `#FFFFB3` và `#858500`).
+     * **Màu chữ chính**: `#25251F` (chữ than đậm, tương phản cao, dễ đọc).
+     * **Chuỗi so sánh**: **`#253659`** (xanh navy chuẩn mực theo tài liệu: *"và xanh navy #253659 cho chuỗi so sánh"*).
+     * **Đường biểu đồ trên nền trắng**: **`#858500`** theo tài liệu: *"Với cột và đường biểu đồ trên nền trắng, dùng #858500 để dễ nhìn hơn"*.
+   - **Phối màu chi tiết từng thành phần & thứ hạng**:
+     * **👑 TOP 1 (Quán quân)**: Viền trái thẻ KPI 5.5px `#858500`, đường polygon radar stroke 3px `#858500` (fill `rgba(133,133,0,0.28)`), tab active viền `#858500`.
+     * **🥈 TOP 2 (Á quân)**: Viền trái thẻ KPI 5.5px `#CCCC00`, đường polygon radar stroke 3px `#CCCC00` (fill `rgba(204,204,0,0.25)`), tab active viền `#CCCC00`.
+     * **🥉 TOP 3 (Quý quân)**: Viền trái thẻ KPI 5.5px `#545400`, đường polygon radar stroke 3px `#545400` (fill `rgba(84,84,0,0.22)`), tab active viền `#545400`.
+     * **Đường Benchmark BQ Toàn quốc**: Chuỗi so sánh mang màu xanh navy **`#253659`** (nét đứt 2.2px, fill trong suốt 12%), nhãn text trong legend `- - BQ Toàn quốc` cũng mang màu xanh navy `#253659`.
+     * **Dòng so sánh KPI (`.kpi-sub`)**: Màu xanh navy **`#253659`** (chữ 15px, in đậm `BQ Toàn quốc:`).
+     * **Mạng nhện nấc thang Radar**: Stroke `#CCCC00` (1.5px nét đứt) và `#FFFFB3` sắc nét, không bị chìm hay mờ trên nền trắng.
+   - **Giữ trọn vẹn kích thước Font-size to rõ**:
+     * Tiêu đề: 22px (đậm 900 `#545400`).
+     * Nút Tab: 16px (đậm 800).
+     * Thanh trạng thái: 17.5px (cao 42px).
+     * Nhãn 4 trục Radar: 14.5px (chữ than `#25251F`, đậm 800).
+     * Số KPI chính: **31px** (chữ than `#25251F`, đậm 900).
+     * Nhãn KPI: 15.5px (chữ hoa `#545400`, đậm 800).
+   - **Nghiệm thu thực tế trên mô hình Power BI Desktop (port 58239)**:
+     * Đã cập nhật thành công vào bảng `LAI LO (Visuals & DAX)` qua TOM API.
+     * Đã snapshot đối soát cả 3 tab:
+       + `radar_pure_yellow_tab1.png` (Tab 1 Top 1)
+       + `radar_pure_yellow_tab2.png` (Tab 2 Top 2)
+       + `radar_pure_yellow_tab3.png` (Tab 3 Top 3).
+   - **Nâng cấp bảng màu thiết kế theo chuẩn Olympic (Vàng Kim - Xanh Bạc - Đồng Cam Đất)**:
+     * Viền ngoài Card tổng thể: Đổi sang `#C8BA90` (Warm Taupe 1.5px) viền đỉnh 5px `#854D0E` sang trọng, bóng đổ mềm `0 4px 16px rgba(0,0,0,0.06)`.
+     * Mạng nhện nấc thang Radar SVG: Thay thế đường màu vàng mờ `#FFFFB3` bằng `#CBD5E1` (Xám bạc 1.5px và nét đứt `4,4` sắc sảo, hiển thị rõ 4 cấp độ 25% - 50% - 75% - 100%).
+     * Đường Benchmark Toàn quốc: Nét đứt dày 2.2px màu than chì `#475569` (fill trong suốt 12%).
+     * **👑 TOP 1 (Quán quân - Vàng Kim)**: Viền trái 5.5px `#D97706`, đường radar stroke 3px `#B45309`, fill cam vàng ấm `#F59E0B` (opacity 28%), tab active gradient vàng kim sang trọng.
+     * **🥈 TOP 2 (Á quân - Xanh Sapphire / Bạc)**: Viền trái 5.5px `#2563EB`, đường radar stroke 3px `#2563EB`, fill xanh dương dịu (opacity 22%), tab active gradient xanh navy hiện đại.
+     * **🥉 TOP 3 (Quý quân - Đồng Cam Đất)**: Viền trái 5.5px `#C2410C`, đường radar stroke 3px `#C2410C`, fill cam đất (opacity 25%), tab active gradient đồng ấm áp.
+   - **Xác thực & nghiệm thu trực tiếp**:
+     * Đã cập nhật thành công vào bảng `LAI LO (Visuals & DAX)` trong Power BI Desktop qua TOM API (port 58239).
+     * Đã đánh giá (Evaluate) dữ liệu thực tế và chụp 3 snapshot đối soát:
+       + `radar_live_evaluated.png` (Tab 1 Quán quân)
+       + `radar_live_tab2.png` (Tab 2 Á quân)
+       + `radar_live_tab3.png` (Tab 3 Top 3).
+
+### 2026-11-14
+
+307. **Chuyển đổi đơn vị bảng `banking_project v_baocao_pnl_excel_pivoted` sang Triệu đồng bằng Power Query (M-Code)**
+   - **Xây dựng M-Code biến đổi linh hoạt bằng `List.Accumulate` & `Table.ReplaceValue`**:
+     * Danh sách 9 cột tiền tệ được xử lý đồng loạt: `HỘI SỞ (Phân Bổ)`, `Đông Bắc Bộ`, `Tây Bắc Bộ`, `Đồng Bằng Sông Hồng`, `Bắc Trung Bộ`, `Nam Trung Bộ`, `Tây Nam Bộ`, `Đông Nam Bộ`, `Total`.
+     * Tự động lọc ngoại lệ thông minh: Các dòng Nhân sự (`report_id = 90`), Chỉ số tài chính CIR, Margin, Hiệu suất trên/vốn (`report_id IN (91, 92, 93)`) và dòng Tiêu đề nhóm (`report_id = 95`) được giữ nguyên giá trị gốc không chia.
+     * Toàn bộ các dòng tiền tệ (Doanh thu, Chi phí, Lợi nhuận trước thuế, Hiệu suất BQ/SM) được chia cho $1.000.000$ và làm tròn số nguyên triệu đồng bằng `Number.Round(..., 0)`.
+   - **Kết quả nghiệm thu dữ liệu trong Power BI Tabular Model (port 58239)**:
+     * Dòng 30 (LNTT) ĐBSH: **54,286** | Total: **250,450** (khớp $100\%$ với biểu đồ Waterfall và KPI Card).
+     * Dòng 50 (Lãi trong hạn) ĐBSH: **252,826** | Total: **1,676,835** (khớp $100\%$ với Waterfall cột 1).
+     * Dòng 220 (Tổng TOI) ĐBSH: **204,491** (khớp $100\%$ với Card KPI Thu nhập hoạt động).
+     * Dòng 290 (Số lượng SM) ĐBSH: **22** | Total: **73** (giữ nguyên số người).
+     * Dòng 310 (CIR %): **19.72%** | Total: **17.37%** (giữ nguyên tỷ lệ %).
+     * Dòng 340 (Hiệu suất BQ/SM): **2,468** trđ/người (khớp chuẩn).
+   - Đã refresh thành công trực tiếp vào mô hình Power BI Desktop.
+
+### 2026-11-14
+
+306. **Nâng cấp trực quan Measure `Data_Glossary_HTML`: Tăng kích thước chữ 3.5px & Làm tối đường lưới Grid đồng bộ chuẩn UX**
+   - **Tăng kích thước Font-size toàn diện (+3.5px)**:
+     * Header từng cột tiêu chí (`STT`, `THUẬT NGỮ`, `MÔ TẢ`, `CÁCH TÍNH`, `KÝ HIỆU`): Tăng từ 22px lên **25.5px** (in hoa, đậm nét 800).
+     * Chữ nội dung trong các ô dữ liệu (`td`): Tăng từ 20px lên **23.5px** (rất to, dễ đọc từ xa).
+     * Dòng tiêu đề Section (`row-header-a`, `row-header-b`): Tăng từ 19.5px lên **23px**.
+     * Dòng tiêu đề phụ (`row-sub-a`, `row-sub-b`): Tăng từ 17.5px lên **21px**.
+     * Padding của từng ô tăng lên 13px 16px để chữ to 23.5px không bị chạm sát viền.
+   - **Tối ưu mã màu đường lưới (Grid & Border) tối lại, sắc nét theo chuẩn UX ngân hàng**:
+     * Khung viền ngoài bảng (`.excel-container`): Đổi từ `#FFFFB3` (vàng nhạt mờ) sang **`#858500`** (Olive Gold 2px bo góc 8px).
+     * Đường kẻ lưới giữa các ô và các dòng (`.excel-table td`): Đổi từ `#FFFFB3` (mờ tiệp vào màu trắng) sang **`#C8BA90`** (Warm Taupe / Ochre 1.5px tối hơn 3 bậc, tạo đường phân chia từng ô dứt khoát, sắc sảo).
+     * Đường viền Header: Nâng cấp thành **`1.5px solid #3E3E00`**.
+   - **Mở rộng không gian hiển thị**:
+     * Tăng bề rộng bảng từ 1870px lên **2030px** và nới rộng độ rộng từng cột (STT: 80px, Thuật ngữ: 420px, Mô tả: 620px, Cách tính: 740px, Ký hiệu: 170px) đảm bảo tỷ lệ hoàn hảo.
+   - Cập nhật trực tiếp vào bảng `Data Glossary` trong mô hình Power BI Desktop qua TOM API (port 58239).
+   - Đã render và chụp ảnh snapshot đối soát `glossary_large_grid_dark_preview.png`.
+
+### 2026-11-14
+
+305. **Tiếp tục tăng kích thước Font-size thêm 3px cho `ASM_Leaderboard_HTML` (Chữ số liệu lên 20px, Tên ASM lên 21px)**
+   - **Mở rộng kích thước hiển thị chữ cực kỳ rõ nét**:
+     * Tiêu đề Banner: Tăng lên 22.5px (font-weight: 900).
+     * Tag tổng số ASM: Tăng lên 19px.
+     * Header nhóm cột (Thông tin chung, Quy mô, Tài chính): Tăng lên 20px.
+     * Header từng cột tiêu chí: Tăng lên 19px (chữ phụ đơn vị lên 16px).
+     * Tên Giám đốc Vùng (ASM): Tăng lên 21px (rất rõ ràng, đậm nét).
+     * Email liên hệ: Tăng lên 17.5px.
+     * Số liệu trong bảng: Tăng lên 20px.
+     * Badges xếp hạng / điểm số: Tăng lên 20px - 20.5px (Huy hiệu #1, #2, #3 min-width 42px).
+   - **Tối ưu không gian hiển thị**:
+     * Mở rộng bề rộng min-width bảng lên 3250px, nới rộng độ rộng từng cột thêm 15-25px và tăng padding ô lên 12px 10px để chữ to không chạm viền.
+     * Header cột stick tại top: 52px để không bị đè bởi Group header to hơn.
+   - Cập nhật trực tiếp vào mô hình Power BI Desktop qua TOM API (port 58239).
+   - Đã render và chụp ảnh snapshot đối soát `leaderboard_large_grid_dark_preview.png`.
+
+### 2026-11-14
+
+304. **Nâng cấp trực quan Measure `ASM_Leaderboard_HTML`: Tăng kích thước chữ 2-3px & Làm tối đường lưới Grid chuẩn mã màu UX**
+   - **Tăng kích thước Font-size toàn diện (+2 đến 3px)**:
+     * Tiêu đề Banner: Tăng từ 17px lên 19.5px (font-weight: 900).
+     * Tag tổng số ASM: Tăng từ 14px lên 16px.
+     * Header nhóm (Thông tin chung, Quy mô, Tài chính): Tăng từ 14.5px lên 17px.
+     * Header cột tiêu chí: Tăng từ 14px lên 16px.
+     * Tên Giám đốc Vùng (ASM): Tăng từ 15.5px lên 18px (đậm nét).
+     * Email liên hệ: Tăng từ 12.5px lên 14.5px.
+     * Số liệu và Badges xếp hạng / điểm số: Tăng từ 14.5px - 15px lên 17px - 17.5px.
+     * Mở rộng bề rộng min-width bảng từ 2650px lên 2850px để đảm bảo không bị ngắt dòng hay tràn ô.
+   - **Tối ưu mã màu đường lưới (Grid & Border) tối lại, sắc nét theo bảng màu Pure Yellow / Neutral**:
+     * Khung viền ngoài bảng (`.lb-table-box`): Đổi từ `#FFFFB3` (vàng chanh cực nhạt mờ) sang `#858500` (Olive Gold 2px chắc chắn).
+     * Đường kẻ chân Header cột (`.lb-th`): Nâng cấp thành viền 2.5px solid `#858500`.
+     * Đường kẻ dọc phân cách 3 khối lớn (`.lb-sep`): Đổi thành viền 2.5px solid `#858500`.
+     * Đường kẻ ngang phân tách các dòng (`.lb-c, .lb-l, .lb-r`): Đổi từ `#FFFFB3` (mờ tiệp vào nền trắng) sang `#C8BA90` (Warm Taupe/Ochre trung tính tối hơn 3 bậc, tạo ranh giới từng hàng dứt khoát, dễ dò số liệu).
+     * Bọc chuẩn định dạng số nguyên cho các chỉ số rank/điểm (`FORMAT(..., "0")` và `INT()`), loại bỏ hoàn toàn số thập phân `.000000`.
+   - Cập nhật trực tiếp vào mô hình Power BI Desktop qua TOM API (port 58239).
+   - Đã render và chụp ảnh snapshot đối soát `leaderboard_large_grid_dark_preview.png`.
+
+### 2026-11-14
+
+303. **Xử lý triệt để hiển thị dòng phụ theo chiều dọc & Phân tách màu sắc chữ MoM/YTD (màu đen) và số % (màu xanh/đỏ)**
+   - **Bóc tách nguyên nhân kỹ thuật trên Native New Card của Power BI**:
+     * Visual phụ hiện tại dùng Callout Value nên Power BI mặc định ép trên 1 dòng đơn (Single Line, không hỗ trợ `UNICHAR(10)`), dẫn đến chuỗi bị cắt bằng dấu `...`.
+     * Toàn bộ Callout Value bị áp đặt một mã màu duy nhất (`KPI Color`), khiến cả chữ `MoM` và `YTD:` đều bị nhuộm màu xanh lá hoặc đỏ theo % tăng trưởng.
+   - **Xây dựng giải pháp toàn diện**:
+     * *Giải pháp 1 (Measure HTML Content hoàn mỹ)*: Xây dựng measure `KPI_Cards_DanhGiaHieuQua_HTML` render 5 thẻ chuẩn mực Pure Yellow Banking. Hiển thị dạng dọc tuyệt đối, chữ `MoM` và `YTD:` màu đen/xám chuẩn, chỉ có số `%` và mũi tên `▲/▼` mang màu xanh/đỏ.
+     * *Giải pháp 2 (Bộ Measure riêng cho Reference Labels Native)*: Tách độc lập `KPI LNTT MoM Pct`, `KPI LNTT YTD Text`, v.v. để cấu hình trực tiếp vào tính năng Reference Labels của Native New Card nếu muốn giữ visual gốc.
+   - Cập nhật toàn bộ measures vào bảng `LAI LO (Visuals & DAX)` qua cổng TOM API (port 52905).
+   - Chụp ảnh kiểm định giao diện `kpi_cards_vertical_preview.png`.
+
+### 2026-11-14
+
+302. **Chuyển đổi định dạng hiển thị của 5 Measures `KPI ... MoM Text` sang dạng dọc (2 dòng với `UNICHAR(10)`)**
+   - **Tái cấu trúc chuỗi hiển thị thành 2 dòng riêng biệt**:
+     * Dòng 1: Tỷ lệ biến động MoM (`▲ +30.7% MoM` hoặc `▼ -8.2% MoM`).
+     * Dòng 2: Số lũy kế từ đầu năm (`YTD: 54,286 trđ`).
+   - **Áp dụng đồng bộ cho cả 5 thẻ KPI**:
+     * `KPI LNTT MoM Text`: Dòng 1 MoM %, Dòng 2 YTD LNTT.
+     * `KPI ThuNhap MoM Text`: Dòng 1 MoM %, Dòng 2 YTD TOI.
+     * `KPI ChiPhi MoM Text`: Dòng 1 MoM %, Dòng 2 YTD OPEX.
+     * `KPI ChiPhiDuPhong MoM Text`: Dòng 1 MoM %, Dòng 2 YTD Dự phòng.
+     * `KPI NSBQ MoM Text`: Dòng 1 MoM %, Dòng 2 NSBQ tháng (`Tháng: ... trđ/người`).
+   - Cập nhật trực tiếp vào mô hình Power BI Desktop qua cổng TOM API (port 52905).
+
+### 2026-11-14
+
+301. **Triển khai Hướng 1 nâng cấp cụm 5 KPI Card trang "Đánh giá HQKD Vùng" (Chuẩn Doonie: Số Tháng MoM làm số chính, kèm YTD và MoM % phụ)**
+   - **Tạo 5 Measures Callout Value phát sinh riêng trong THÁNG (MoM)**:
+     * `KPI LNTT MoM Value`: LNTT phát sinh riêng trong tháng (Format: `#,##0`).
+     * `KPI ThuNhap MoM Value`: Tổng thu nhập thuần TOI riêng trong tháng (Format: `#,##0`).
+     * `KPI ChiPhi MoM Value`: Chi phí hoạt động OPEX riêng trong tháng (Format: `#,##0`).
+     * `KPI ChiPhiDuPhong MoM Value`: Chi phí dự phòng rủi ro riêng trong tháng (Format: `#,##0`).
+     * `KPI NSBQ MoM Value`: Năng suất bình quân riêng trong tháng (Format: `#,##0.0`).
+   - **Nâng cấp 5 Measures phụ đề hiển thị kết hợp đa chiều (`▲/▼ % MoM | YTD: ... tr`)**:
+     * `KPI LNTT MoM Text`: Tỷ lệ tăng giảm MoM kèm số lũy kế YTD (Ví dụ: `▲ +30.7% MoM  |  YTD: 54,286 tr`).
+     * `KPI ThuNhap MoM Text`: Biến động thu nhập MoM kèm lũy kế TOI (Ví dụ: `▲ +1.8% MoM  |  YTD: 204,491 tr`).
+     * `KPI ChiPhi MoM Text`: Biến động chi phí MoM kèm lũy kế OPEX.
+     * `KPI ChiPhiDuPhong MoM Text`: Biến động dự phòng MoM kèm lũy kế dự phòng.
+     * `KPI NSBQ MoM Text`: Biến động NSBQ MoM kèm chỉ số NSBQ tháng.
+   - **Đồng bộ hóa 100% hệ quy chiếu với 3 biểu đồ phía dưới**: Cả KPI Card, Waterfall, BCG Scatter và Combo Xu hướng đều nhất quán đo lường kết quả phát sinh trong tháng của vùng và tháng được chọn.
+   - Cập nhật trực tiếp vào bảng `LAI LO (Visuals & DAX)` trong folder `04. Đánh giá HQKD Vùng` qua cổng TOM API (port 52905).
+
+### 2026-11-14
+
+300. **Tái cấu trúc bảng Measures `LAI LO (Visuals & DAX)` theo từng trang & Chuyển 3 biểu đồ sang tính theo từng tháng (MoM)**
+   - **Tổ chức phân nhóm Folder cho toàn bộ 73 measures trong bảng `LAI LO (Visuals & DAX)`**:
+     * Xóa 12 measures rác/thừa không còn sử dụng (`Stacked_...`, `Share_...`, `Insight_...1`, `KPI ChiPhiDuPhong`).
+     * Phân nhóm DisplayFolder chuẩn xác theo các trang báo cáo:
+       + `01. Giới thiệu đề tài` (3 measures).
+       + `03. Báo cáo KQKD Vùng (P&L)` (21 measures format matrix).
+       + `04. Đánh giá HQKD Vùng` (20 measures chuyên biệt phục vụ KPI Cards, Waterfall, BCG Scatter, Combo Trend & Vốn, Insight HTML).
+       + `05. Báo cáo Xếp hạng ASM` (5 measures).
+       + `06. Đánh giá Năng lực ASM` (3 measures).
+       + `07. KQKD Doanh nghiệp` (6 measures).
+   - **Chuyển đổi toàn diện 3 biểu đồ trực quan sang dạng phát sinh riêng trong tháng (MoM)**:
+     * *Biểu đồ 1 (Waterfall Chart - Cơ cấu hình thành LNTT)*: Measure `Waterfall_Value` được viết lại hoàn toàn sang dạng MoM = `Cur - Prev` cho 7 bậc thu nhập/chi phí và bậc 8 LNTT, khớp chính xác số liệu phát sinh trong tháng của vùng được chọn và toàn hàng (Ví dụ: Tháng 5 ĐBSH ra LNTT MoM 12.749,3 trđ thay vì số lũy kế 54.286 trđ; Thu lãi trong hạn 52.982,5 trđ thay vì 252.826 trđ).
+     * *Biểu đồ 2 (Scatter BCG - LNTT vs CIR)*: Sử dụng `BCG_LNTT_Sum` (MoM) và `BCG_CIR_Avg` (MoM) theo tháng được chọn.
+     * *Biểu đồ 3 (Combo Xu hướng & Vốn)*: Sử dụng `Combo_LNTT_YTD` (MoM) và `Combo_HsVon_Avg` (MoM) theo từng mốc tháng.
+   - **Bảo toàn nội dung nhận xét**: Giữ nguyên vẹn nội dung của visual nhận xét/kết luận `Insight_DanhGiaHieuQua_HTML`, không tự ý bổ sung kết luận mới khi chưa có ý kiến của người dùng.
+   - Cập nhật trực tiếp vào mô hình Power BI Desktop đang mở qua cổng TOM API (port 52905).
+
+### 2026-11-14
+
+299. **Khảo sát cấu trúc KPI Card trong `doonie_report.pbix` & Chuẩn hóa bố cục kết hợp Tháng, MoM và YTD**
+   - **Bóc tách kiến trúc KPI Card của `doonie_report.pbix`**:
+     * Sử dụng **New Card Visual (`cardVisual`)** native của Power BI với tính năng **Reference Labels**.
+     * *Giá trị chính (Callout Value)*: Hiển thị số phát sinh trong THÁNG (`Total Revenue`, `Total Expense`, `Net Profit`), font 30-34pt đậm.
+     * *Reference Label 1*: Biến động so với tháng trước (`Revenue MoM Arrow`), gồm ký tự mũi tên ▲/▼ và tỷ lệ tăng giảm %, tô màu động qua measure màu (`Revenue MoM Color` xanh/đỏ).
+     * *Reference Label 2*: Số lũy kế từ đầu năm (`YTD Total Revenue`), đặt nhãn tiền tố `YTD:`, màu xám `#9CA3AF` phụ trợ.
+   - **Nâng cấp trực tiếp vào Báo cáo của dự án**:
+     * Tái cấu trúc 4 Card KPI trên trang "Kết quả kinh doanh doanh nghiệp" theo đúng chuẩn mực reference label của Doonie kết hợp bảng màu **Pure Yellow**:
+       1. **Card 1 (LNTT - Featured Yellow `#FFFF00`)**: Callout `56.798 trđ` | Badge MoM `▲ +8.4% MoM` | `YTD: 250,5 tỷ`.
+       2. **Card 2 (TOI)**: Callout `288.145 trđ` | Badge MoM `▲ +1.8% MoM` | `YTD: 1.354 tỷ`.
+       3. **Card 3 (OPEX & CIR)**: Callout CIR Tháng `16.9%` | Tag `OPEX: -48.577 tr` | `YTD CIR: 17.4%`.
+       4. **Card 4 (Hiệu suất vốn)**: Callout HS Vốn Tháng `80.7%` | Tag `DP: -182.771 tr` | `YTD Vốn: 73.5%`.
+   - **Kiểm định & Trực quan hóa**:
+     * Cập nhật measure `Page_KQKD_DoanhNghiep_TheoThang_HTML` lưu vào Model qua TOM API (port 52905).
+     * Render ảnh screenshot mới `kqkd_theo_thang_preview.png`.
+
+
+### 2026-11-14
+
+298. **Xây dựng trang nguyên mẫu "Kết quả kinh doanh doanh nghiệp theo từng tháng" (MoM & YTD)**
+   - **Xây dựng Measure DAX `Page_KQKD_DoanhNghiep_TheoThang_HTML`**:
+     * Đo lường toàn diện các chỉ tiêu tài chính phát sinh riêng trong tháng (`MoM`) và lũy kế (`YTD`) của toàn ngân hàng và 7 vùng kinh doanh.
+     * Tự động phản hồi động theo tháng được chọn qua Slicer (`banking_project dim_month[month_key]`), mặc định mốc chốt Tháng 05/2023.
+   - **Bố cục giao diện 4 tầng chuẩn mực Executive Dashboard**:
+     * *Tầng 1 (Header)*: Tiêu đề trang trọng thể + Badge kỳ báo cáo hiển thị tháng đang xem.
+     * *Tầng 2 (5 Thẻ KPI nổi bật)*: LNTT MoM (Nền Pure Yellow `#FFFF00` nổi bật kèm % tăng trưởng MoM và số lũy kế YTD) · Tổng thu nhập TOI · Chi phí OPEX & CIR MoM · Hiệu suất vốn MoM · Dự phòng rủi ro tín dụng.
+     * *Tầng 3 (Main Grid 2 cột)*: Bảng Đóng Góp 7 Vùng Kinh Doanh động theo tháng được chọn (Thu nhập, LNTT, CIR, Tỷ trọng đóng góp) + Biểu đồ Chuỗi thời gian LNTT MoM qua 5 tháng (T1 đến T5) thể hiện đà tăng trưởng lập đỉnh Tháng 5 (+56,8 tỷ).
+     * *Tầng 4 (Executive Takeaways)*: 3 khối khuyến nghị quản trị (Đầu tàu Tây Nam Bộ, Điểm nghẽn Đông Nam Bộ, Xu thế hiệu suất vốn).
+   - **Kiểm định & Trực quan hóa**:
+     * Triển khai lưu trữ thành công vào Power BI Model qua TOM API (port 52905).
+     * Xuất artifact HTML và ảnh chụp screenshot sắc nét `kqkd_theo_thang_preview.png` phục vụ kiểm duyệt.
+
+
 ### 2026-11-13
+
+297. **Rà soát & Chuẩn hóa công thức tính "Hiệu suất vốn" (Capital Efficiency) và sửa lỗi cộng dồn tỷ lệ ở cột Total**
+   - **Xác minh bản chất nghiệp vụ gốc**:
+     * Công thức chuẩn (theo mẫu ngân hàng & Sheet `BaocaoTonghop_T5` dòng 33):
+       $$\text{Hiệu suất trên/vốn (\%)} = \frac{\text{Lợi nhuận trước thuế (LNTT)}}{-\text{Chi phí vốn thuần KDV}} \times 100\%$$
+     * Mẫu số mang dấu âm (CP KDV âm) nên đổi dấu thành dương để phản ánh: "Mỗi 1 đồng chi phí sử dụng vốn bỏ ra mang lại bao nhiêu đồng LNTT".
+   - **Đánh giá kết quả tính toán**:
+     * Từng vùng: Đã tính **chính xác 100%** (Tháng 5: NTB đạt 203,54%, ĐBSH đạt 109,87%, BTB đạt 81,35%, ĐBB đạt 34,84%, TBB đạt 10,97%, TNB đạt 131,74%, ĐNB âm -78,96% do lỗ).
+     * Biểu đồ Combo MoM (`Combo_HsVon_Avg`): Đã tính chuẩn theo từng tháng phát sinh (T1: 57,95%, T2: 82,86%, T3: 70,18%, T4: 76,88%, T5: 80,70%).
+   - **Khắc phục lỗi kỹ thuật cột Total trong View `v_baocao_pnl_excel_pivoted`**:
+     * *Nguyên nhân:* View cũ dùng `SUM(f.value)` của 7 vùng cho toàn bộ các dòng, khiến 4 dòng tỷ số (CIR, Margin, Hiệu suất vốn, Hiệu suất BQ/SM) bị cộng dồn các tỷ lệ của 7 vùng, làm Total Hiệu suất vốn vọt lên **493,34%** (sai bản chất toán học).
+     * *Khắc phục:* Viết lại `sql/rpt/rpt_pnl_excel_pivoted_view.sql` bổ sung nhánh CTE tính động tổng toàn hàng cho 4 chỉ tiêu tỷ số: Total Hiệu suất vốn chuẩn xác về **73,55%** (khớp hoàn toàn với công thức Excel `=IFERROR(-F3/F10,0)`), Total CIR về **17,37%**, Total Margin về **13,83%**, Total HSBQ về **3.430,82 trđ/người**.
+
+
+### 2026-11-13
+
+296. **Đối soát toàn diện số liệu trang "Báo cáo kết quả kinh doanh lũy kế vùng" (Power BI vs Database vs Excel)**
+   - **Khảo sát cấu trúc trang `9d211a514d600d00a30b`**:
+     * Visual trung tâm: `fb5829f1cba9640a41e0` (`tableEx`) đọc từ bảng `v_baocao_pnl_excel_pivoted` gồm 11 cột (`TIÊU CHÍ`, `HỘI SỞ`, 7 Vùng, `Total`, `sort_order`).
+     * Bộ lọc slicer: `dim_month.ten_thang` và `v_baocao_tonghop.area_name`.
+   - **Đối soát tính bảo toàn dòng tiền (Conservation of Cashflow)**:
+     * Kiểm tra toàn bộ 26 dòng tài chính và chỉ tiêu qua 7 vùng và cột Total.
+     * Xác nhận: `Tổng 7 Vùng = 100% Total` Toàn Hàng với độ lệch Variance = 0.00 (khớp tuyệt đối từng đồng, không lệch 1 xu).
+   - **Bản chất nghiệp vụ cột HỘI SỞ**:
+     * Cột `HỘI SỞ` phản ánh thu nhập/chi phí phát sinh trước khi phân bổ theo Rule 2.
+     * Toàn bộ giá trị Hội Sở đã được phân bổ 100% về cho 7 vùng theo tiêu thức kinh tế (dư nợ, doanh số, nhân sự). Do đó số liệu của 7 vùng đã bao gồm phần trực tiếp + phần nhận phân bổ.
+   - **Kiểm định mốc chuẩn hệ thống**:
+     * LNTT Tháng 2: 92.226 triệu đồng (chính xác: 92.226.495.836,35 đ).
+     * LNTT Tháng 5: 250.450 triệu đồng (chính xác: 250.450.061.442,21 đ).
+     * Khớp hoàn toàn với file báo cáo `output/Bao cao lai lo luy ke tu dau nam 202305.xlsx`.
+
+
+
+295. **Chuyển đổi công thức "04. Bieu do 3 - Ma Tran BCG (Scatter)" sang dạng Từng tháng phát sinh riêng (MoM)**
+   - **Cập nhật 3 measure của visual Scatter Chart (`scatterChart`)**:
+     * `BCG_LNTT_Sum` (Trục Y): Chuyển sang tính LNTT phát sinh riêng trong tháng được chọn (`LNTT_MoM = LNTT_YTD_Cur - LNTT_YTD_Prev`).
+     * `BCG_CIR_Avg` (Trục X): Chuyển sang tính Tỷ lệ CIR phát sinh riêng trong tháng (`CIR_MoM = Chi_Phi_MoM / Thu_Nhap_MoM * 100`).
+     * `BCG_SM_Count` (Kích thước Bubble): Cập nhật lấy chính xác số nhân sự SM tại tháng được chọn.
+   - **Tương tác động theo Slicer Tháng**:
+     * Khi người dùng chọn Tháng 1 → Tháng 5, các bong bóng đại diện cho 7 Vùng tự động dịch chuyển tọa độ theo hiệu quả tài chính và chi phí thực tế phát sinh trong tháng đó.
+   - **Kiểm định**: Cập nhật trực tiếp qua cổng SSAS TOM (port 62913), `SaveChanges()` thành công vào Power BI Desktop đang mở.
+
+294. **Chuyển đổi công thức "05. Bieu do 4 - Xu Huong & Von (Combo)" sang dạng Từng tháng phát sinh riêng (MoM)**
+   - **Cập nhật 2 measure cốt lõi trong bảng `LAI LO (Visuals & DAX)`**:
+     * `Combo_LNTT_YTD`: Chuyển logic từ lấy thẳng số lũy kế sang tính LNTT phát sinh riêng trong tháng (`LNTT_MoM = LNTT_YTD(M) - LNTT_YTD(M_prev)`).
+     * `Combo_HsVon_Avg`: Chuyển logic sang Hệ số sinh lời trên vốn phát sinh riêng trong tháng (`HsVon_MoM = LNTT_MoM / (-CP_KDV_MoM) * 100`).
+   - **Bảo lưu tính tương tác động**:
+     * Giữ nguyên khả năng lọc động theo Slicer Khu vực (chọn Vùng nào thì biểu đồ tự động tính MoM của vùng đó; không chọn thì tính tổng toàn quốc).
+     * Tự động ẩn các tháng sau kỳ chọn trên Slicer Tháng (`_currentTrendMonth <= _selectedMonthKey`).
+   - **Kết quả hiển thị mới trên biểu đồ**:
+     * Cột LNTT MoM: T1: 40.173 trđ → T2: 52.053 trđ → T3: 49.019 trđ → T4: 52.407 trđ → T5: 56.798 trđ (lập đỉnh cao nhất).
+     * Đường Hệ số vốn MoM: T1: 57.95% → T2: 82.86% → T3: 70.18% → T4: 76.88% → T5: 80.70%.
+   - **Kiểm định**: Cập nhật trực tiếp qua cổng SSAS TOM (port 62913), `SaveChanges()` thành công vào Power BI Desktop đang mở.
+
+293. **Kiểm tra công thức và bản chất tính toán của "05. Bieu do 4 - Xu Huong & Von (Combo)"**
+   - **Xác định vị trí & cấu trúc visual**:
+     * Biểu đồ Combo `lineClusteredColumnComboChart` trên trang Đánh giá hiệu quả kinh doanh vùng (`bd547e511407ea918f5c\visuals\4b4c7241cae14e8b3e3a`).
+     * Trục Cột (Trục Y): `Combo_LNTT_YTD` (Hiển thị Lợi Nhuận Trước Thuế).
+     * Trục Đường (Trục Y2): `Combo_HsVon_Avg` (Hiển thị Hệ Số Sinh Lời Trên Vốn).
+     * Trục Hoành (Trục X): `dim_trend_month[month_key]` (Tháng 1 đến Tháng 5).
+   - **Kết luận bản chất tính toán**:
+     * CÔNG THỨC HIỆN TẠI ĐANG ĐƯỢC TÍNH **LŨY KẾ (YTD - YEAR TO DATE)**, KHÔNG PHẢI TỪNG THÁNG PHÁT SINH.
+     * Cột LNTT lấy trực tiếp từ `v_baocao_tonghop[lntt_trieu_dong]`: T1: 40.173 tr, T2: 92.226 tr (Lũy kế T1+T2), T3: 141.246 tr, T4: 193.653 tr, T5: 250.450 tr.
+     * Đường Hệ số vốn `Combo_HsVon_Avg` = `LNTT_YTD / (-CP_KDV_YTD) * 100`: T1: 57.95%, T2: 69.79%, T3: 69.93%, T4: 71.68%, T5: 73.55% (Hiệu quả sinh lời vốn lũy kế).
+   - **Đánh giá nghiệp vụ & kiến nghị**:
+     * Biểu đồ đang theo dõi tiến độ tích lũy lợi nhuận và hiệu quả vốn từ đầu năm đến kỳ báo cáo theo đúng chuẩn quản trị kế toán ngân hàng. Đã chuẩn bị sẵn công thức chuyển đổi sang dạng MoM (phát sinh riêng từng tháng) nếu người dùng có yêu cầu.
+
+292. **Bổ sung trang KẾT QUẢ KINH DOANH TOÀN QUỐC vào vị trí số 3 và đồng bộ Page Navigator 7 nút**
+   - **Tái cấu trúc thứ tự trang (Page Order)**:
+     * Cập nhật `pages.json`: Đưa trang `KẾT QUẢ KINH DOANH TOÀN QUỐC` (`aca2d310612b3d7a5563`) lên vị trí số 3 (ngay sau Giới thiệu đề tài, Từ điển dữ liệu và đứng trước Báo cáo kết quả kinh doanh vùng).
+     * Đổi tên hiển thị chính thức thành `KẾT QUẢ KINH DOANH TOÀN QUỐC`, kích hoạt hiển thị công khai (`visibility: 0`), chuẩn Full HD 1920 × 1080.
+   - **Đồng bộ toàn bộ 7 visual Page Navigator trên cả 7 trang theo hệ Pure Yellow**:
+     * Nút Selected: Nền vàng tươi `#FFFF00`, chữ than `#25251F`, viền vàng ô-liu `#858500`.
+     * Nút Default: Nền trắng `#FFFFFF`, chữ than `#25251F`, viền vàng nhạt `#FFFFB3`, bo góc mềm mại 10px.
+     * Nút Hover: Nền vàng kem nhạt `#FFFFE8`, chữ than `#25251F`, viền `#CCCC00`.
+   - **Đóng gói và bàn giao**:
+     * Đóng gói tệp `.pbix` hoàn chỉnh tại `output/Bao_cao_Pure_Yellow.pbix` (8,35 MB) và `.staging/Bao_cao_Pure_Yellow.pbix`.
+     * Xuất ảnh render thanh điều hướng 7 trang tại `nav_7_preview.png`.
+
+291. **Thiết kế & dựng lại trang Báo cáo Kết quả kinh doanh Toàn quốc theo chuẩn C-Level Executive Cockpit**
+   - **Tái cấu trúc bố cục chuẩn 1920 × 1080 (không cuộn trang)**:
+     * Chuyển đổi từ bố cục cuộn 2800px sang giao diện trực quan chuẩn Full HD, tối ưu hóa không gian cho Ban Lãnh đạo.
+   - **Ứng dụng triệt để palette Pure Yellow**:
+     * Thẻ LNTT toàn quốc (+250,5 tỷ): Nền vàng `#FFFF00` nổi bật nhất, chữ than `#25251F`, viền `#858500`.
+     * Cột doanh thu và header bảng: Vàng ô-liu `#858500`.
+     * Cột chi phí đối ứng và số liệu Hội Sở: Xanh Navy `#253659`.
+     * Nền trang ngà `#FFFFF5`, thẻ bảng trắng `#FFFFFF` bo góc mềm mại viền `#FFFFB3`.
+   - **Hệ thống dữ liệu và phân tích tích hợp**:
+     * 4 Thẻ KPI: LNTT (+250.450 trđ), Thu nhập (1.353.898 trđ), Chi phí & CIR (-235.122 trđ / CIR 17.4%), Năng suất & Nợ xấu (3.785 tr/SM / NPL 17.30%).
+     * Bảng ma trận 7 Vùng: Thể hiện chi tiết đóng góp của từng vùng (Tây Nam Bộ dẫn đầu 67%, Đông Nam Bộ âm -19.5%).
+     * Khối biểu đồ diễn tiến lũy kế 5 tháng (T01 - T05) và 3 nhận định điều hành chiến lược.
+   - **Tích hợp mô hình & xuất bản**:
+     * Tạo DAX Measure `Page_KQKD_ToanQuoc_HTML` và cập nhật trực tiếp qua TOM vào Power BI Desktop (cổng 62913).
+     * Cập nhật file layout và đóng gói pbix tại `.staging/Bao_cao_Pure_Yellow.pbix`.
+     * Kết xuất bản xem trước hoàn chỉnh tại artifact `trang_kqkd_toan_quoc.md`.
+
+290. **Chuẩn hóa triệt để 100% màu sắc measure và theme theo đúng bảng màu Pure Yellow**
+   - **Bám sát tuyệt đối bảng màu và nguyên tắc người dùng cung cấp**:
+     * Dải vàng tươi từ sáng đến đậm: `#FFFFE8`, `#FFFFB3`, `#FFFF66`, `#FFFF00`, `#CCCC00`, `#858500`, `#545400`.
+     * Màu phối báo cáo: Nền trang `#FFFFF5`, Nền thẻ `#FFFFFF`, Chữ than `#25251F`, Chuỗi so sánh Xanh Navy `#253659`.
+     * Nguyên tắc cốt lõi: `#FFFF00` làm nền KPI nổi bật đặt chữ than `#25251F` lên trên; Cột và đường biểu đồ trên nền trắng dùng `#858500`; Xanh navy `#253659` cho chuỗi so sánh.
+   - **Cập nhật 21 measure P&L (`PnlTable_BgColor_*` và `PnlTable_FontColor_*`)**:
+     * Dòng 1. LNTT (`vSort = 30` - KPI nổi bật): Nền `#FFFF00`, chữ than `#25251F` (âm `#DC2626`).
+     * Dòng Tổng cấp 1 (`vSort IN {220, 230}`): Nền `#545400` (ô-liu sẫm), chữ trắng `#FFFFFF`.
+     * Dòng Nhóm cấp 2 (`vSort IN {40, 100, 150, 280}`): Nền `#858500` (tableAccent), chữ trắng `#FFFFFF`.
+     * Dòng Nhân sự & Chỉ số (`vSort IN {290, 300}`): Nền `#FFFFB3`, chữ than `#25251F`.
+     * Dòng con: Nền `#FFFFFF` (cột Total `#FFFFF5`), chữ than `#25251F`, riêng cột Hội Sở chuỗi so sánh mang chữ Navy `#253659`.
+   - **Chuẩn hóa toàn bộ visual HTML và Data Glossary**:
+     * Sửa tên và cấu trúc measure `Data_Glossary_HTML`, quy toàn bộ mã màu về bảng Pure Yellow (header `#858500`, viền `#FFFFB3`, nền `#FFFFFF`/`#FFFFF5`, chữ `#25251F`).
+     * Rà soát loại bỏ 75 mã màu xám/cam cũ khỏi các measure HTML (`ASM_Leaderboard_HTML`, `Page5_Part2_Waterfall_HTML`, `Page5_Part3_DongNamBo_HTML`, `Page5_Part4_MatranHanhdong_HTML`, `DuLieuDauVao_HangNgang_HTML`, `Insight_DanhGiaHieuQua_HTML`, `ASM_Block1/2/3_Radar_HTML`).
+   - **Xuất bản Theme JSON và đóng gói pbix**:
+     * Tạo sẵn `Pure_Yellow.json` (bản cơ bản) và `Pure_Yellow_Theme.json` (bản mở rộng) ngay tại thư mục gốc.
+     * Cập nhật và đóng gói file `.staging/Bao_cao_Pure_Yellow.pbix` đồng bộ 100% theme và visual configs.
+
+289. **Cập nhật đồng bộ các measure hiển thị màu sắc sang bảng màu Pure Yellow**
+   - **Bảng P&L Báo cáo kết quả kinh doanh (21 measure)**:
+     * Dòng 1. LNTT (`vSort = 30`): Chuyển sang nền vàng Pure Yellow `#FFFF00` nổi bật nhất, chữ than đậm `#25251F` (hoặc đỏ `#DC2626` khi âm).
+     * Dòng Tổng cấp 1 (`vSort IN {220, 230}`): Chuyển sang nền Xanh Navy `#253659`, chữ trắng tinh `#FFFFFF`.
+     * Dòng Nhóm cấp 2 (`vSort IN {40, 100, 150, 280}`): Chuyển sang nền Vàng ô-liu `#858500`, chữ trắng tinh `#FFFFFF`.
+     * Dòng Nhân sự & Chỉ số tài chính (`vSort IN {290, 300}`): Chuyển sang nền Than đậm `#25251F`, chữ vàng sáng `#FFFF66`.
+     * Dòng con chi tiết: Nền trắng `#FFFFFF` (cột Total nền ngà `#FFFFF5`), chữ than đậm `#25251F`.
+   - **Các visual HTML Content**:
+     * `Page5_Part1_KPICards_HTML`: Thẻ nổi bật Tây Nam Bộ chuyển sang nền vàng tươi `#FFFF00`, viền `#858500`, chữ than `#25251F`; thẻ rủi ro/so sánh chuyển sang `#858500` và Navy `#253659`.
+     * Đồng bộ toàn bộ các visual HTML còn lại (`Banner_Dashboard`, `Banner_BoiCanh`, `DuLieuDauVao`, `Waterfall`, `DongNamBo`, `MatranHanhdong`, `Leaderboard`, `Radar Block 1/2/3`, `Data_Glossary`) sang hệ màu Pure Yellow.
+   - **Kiểm định**: Cập nhật trực tiếp qua cổng SSAS Tabular TOM vào Power BI Desktop đang mở, `SaveChanges()` thành công.
 
 288. **Đổi thông điệp commit trên GitHub thành dạng tự nhiên của người dùng (Add files via upload)**
    - Sửa thông điệp commit hiển thị trên GitHub từ dạng quy chuẩn Conventional Commits sang thông điệp tải tệp mặc định phổ biến của người dùng web: `Add files via upload`.
