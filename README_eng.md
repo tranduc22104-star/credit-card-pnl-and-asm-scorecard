@@ -225,7 +225,7 @@ Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI
 </div>
 
 - **Stage 3 – Interactive Reporting in Power BI (`DirectQuery`):**
-  Power BI queries PostgreSQL live over `DirectQuery` and runs **90 DAX measures** (**89** in `'LAI LO (Visuals & DAX)'` and **1** in `'Data Glossary'`, including **21** `PnlTable_BgColor_*` and `PnlTable_FontColor_*` formatting measures). Every visual across all 7 pages follows the **Pure Yellow** palette (`Pure_Yellow_Improved_Theme.json` — soft cream canvas, bright yellow highlights, deep navy labels, green for healthy/profitable metrics, and red for losses or high risk):
+  Power BI queries PostgreSQL live over `DirectQuery` and runs **90 DAX measures** (**89** in `'LAI LO (Visuals & DAX)'` and **1** in `'Data Glossary'`, including **21** `PnlTable_BgColor_*` and `PnlTable_FontColor_*` formatting measures). Every visual across all 7 pages follows the **Pure Yellow** palette (soft cream canvas, bright yellow highlights, deep navy labels, green for healthy/profitable metrics, and red for losses or high risk):
 
   1. **Page 1 – `GIỚI THIỆU ĐỀ TÀI` (Topic Introduction)**: Frames management's request, previews the 4 core analytical areas, summarizes the 3 raw data sources, and embeds the 3-stage pipeline diagram.
   2. **Page 2 – `TỪ ĐIỂN DỮ LIỆU` (Data Dictionary)**: Documents **68** fields and KPIs across 5 clear categories (`0. Identification & Hierarchy`, `1. P&L Statement`, `2. Financial & Headcount Ratios`, `3. Head Office Allocation Drivers`, `4. ASM Evaluation & Ranking`) with plain definitions and formulas.
@@ -366,7 +366,7 @@ Each stage of the 3-step workflow runs on a dedicated tool:
 │   └── rpt/            # 3 clean reporting views for Power BI: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
 ├── images/             # 3-stage pipeline diagram and Star Schema warehouse diagram
 ├── docs/               # Operational documentation: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
-├── output/             # Power BI deliverable (.pbix), Pure Yellow theme JSON, and exported Excel report
+├── output/             # Output management reporting deliverable in Power BI (.pbix)
 ├── README.md           # Project guide in Vietnamese
 └── README_eng.md       # Project guide in English
 ```

@@ -12,13 +12,20 @@ _(Không có)_
 
 ## ĐÃ XONG
 
+### 2026-11-16
+
+334. **Giữ duy nhất 1 tệp `.pbix` trong `output/` và chuẩn hóa mô tả commit GitHub thành `"Add files via upload"`**
+   - Đưa `output/Pure_Yellow_Improved_Theme.json` vào `NEVER_PUSH` trong `.staging/push_check.py` để thư mục `output/` trên GitHub chỉ giữ duy nhất 1 tệp báo cáo Power BI (`output/Ket qua kinh doanh va xep hang asm.pbix`, tổng `22` tệp toàn kho).
+   - Cập nhật mô tả dòng `output/` và lược bỏ tên tệp JSON bảng màu trong `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+   - Gỡ `output/Pure_Yellow_Improved_Theme.json` khỏi Git index (`git rm --cached`), chạy kiểm tra `.staging/check_toc.py`, `.staging/check_int_pair.py`, `.staging/check_readme_pair.py`, `.staging/push_check.py`, sửa commit với mô tả `"Add files via upload"` và đẩy lên `origin/main`.
+
 ### 2026-11-15
 
 333. **Cập nhật `README.md`, `README_eng.md` và `docs/HIEN_TRANG_HE_THONG.md` bằng ngôn ngữ tự nhiên, dễ hiểu và đồng bộ 7 trang báo cáo Pure Yellow**
    - Viết lại toàn bộ 11 mục của `README.md` (và bản đối ứng `README_eng.md`, mỗi bản `392` dòng) bằng văn phong gần gũi, dễ đọc, loại bỏ từ ngữ sáo rỗng kiểu AI; đồng bộ với 7 trang báo cáo trong `output/Ket qua kinh doanh va xep hang asm.pbix` (`90` measure DAX, bảng màu `Pure Yellow` `#545400` / `#858500` / `#FFFF00` / `#FFFFE8` / `#253659` / `#16A34A`, sơ đồ `images/quy-trinh.png` với `Import` và `DirectQuery`, 5 KPI Card tách số phát sinh tháng/lũy kế cùng khung nhận xét động trên Trang 4, 4 nhóm năng lực `Bán tốt - Nợ thấp` / `Bán tốt - Nợ cao` / `Bán chậm - Nợ thấp` / `Bán kém - Nợ cao` trên Trang 6, và bảng kế hoạch hành động 5 vùng ngôn ngữ tự nhiên trên Trang 7).
-   - Cập nhật `docs/HIEN_TRANG_HE_THONG.md` khớp trạng thái ngày `2026-11-15` (`output/Ket qua kinh doanh va xep hang asm.pbix`, `output/Pure_Yellow_Improved_Theme.json`, `90` measure DAX, thứ tự 7 trang báo cáo và phạm vi push `23` tệp).
+   - Cập nhật `docs/HIEN_TRANG_HE_THONG.md` khớp trạng thái ngày `2026-11-15` (`output/Ket qua kinh doanh va xep hang asm.pbix`, `90` measure DAX, thứ tự 7 trang báo cáo và phạm vi push `22` tệp).
    - Cập nhật `.staging/push_check.py` để loại các tệp thử nghiệm/dự phòng cục bộ, thay `40` đường dẫn `file:///C:/Users/.../*.png` trong `docs/NHAT_KY_CONG_VIEC.md` thành tên tệp ngắn gọn không lộ đường dẫn máy cá nhân (`0` liên kết gãy).
-   - Đã chạy kiểm tra `.staging/check_toc.py` (`0` lỗi mục lục hai chiều), `.staging/check_int_pair.py` (`lech chi co ban VI : khong co`, `lech chi co ban EN : khong co` cho mọi số `>= 10`, `"tháng 5"` = `15` khớp `"May"` = `15`), `.staging/check_readme_pair.py` (`4 / 4 CAN BANG`), `.staging/push_check.py` (`23` tệp, `0` liên kết gãy, `0` lỗ hổng) và đẩy lên `origin/main`.
+   - Đã chạy kiểm tra `.staging/check_toc.py` (`0` lỗi mục lục hai chiều), `.staging/check_int_pair.py` (`lech chi co ban VI : khong co`, `lech chi co ban EN : khong co` cho mọi số `>= 10`, `"tháng 5"` = `15` khớp `"May"` = `15`), `.staging/check_readme_pair.py` (`4 / 4 CAN BANG`), `.staging/push_check.py` (`22` tệp, `0` liên kết gãy, `0` lỗ hổng) và đẩy lên `origin/main`.
 
 332. **Viết lại `Page5_Part4_MatranHanhdong_HTML` (Trang 7) bằng ngôn ngữ dễ hiểu, diễn giải rõ ràng**
    - Sửa `scratch/update_page7_v3.py` (tự động dò cổng `msmdsrv` đang chạy thay cho port gán cứng) và cập nhật `Page5_Part4_MatranHanhdong_HTML` lên Power BI Desktop (`localhost:62446`, `len=15020`, `SaveChanges succeeded!`):

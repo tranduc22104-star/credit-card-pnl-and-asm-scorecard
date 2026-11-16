@@ -225,7 +225,7 @@ Toàn bộ dữ liệu đi qua 3 bước khép kín từ file Excel thô cho t�
 </div>
 
 - **Bước 3 – Dựng 7 trang báo cáo trên Power BI (`DirectQuery`):**
-  Power BI kết nối thẳng vào kho dữ liệu PostgreSQL qua `DirectQuery`, chạy **90 measure DAX** (gồm **89** measure trong `'LAI LO (Visuals & DAX)'` và **1** measure trong `'Data Glossary'`, trong đó có **21** measure tự tô màu nền `PnlTable_BgColor_*` và màu chữ `PnlTable_FontColor_*` cho bảng lãi lỗ). Toàn bộ 7 trang được đồng bộ theo bộ màu **Pure Yellow** (`Pure_Yellow_Improved_Theme.json` — nền kem dịu mắt, nhấn vàng sáng, chữ xanh đậm, số lãi/tốt màu xanh lá, số lỗ/chi phí cao màu đỏ). Cụ thể từng trang:
+  Power BI kết nối thẳng vào kho dữ liệu PostgreSQL qua `DirectQuery`, chạy **90 measure DAX** (gồm **89** measure trong `'LAI LO (Visuals & DAX)'` và **1** measure trong `'Data Glossary'`, trong đó có **21** measure tự tô màu nền `PnlTable_BgColor_*` và màu chữ `PnlTable_FontColor_*` cho bảng lãi lỗ). Toàn bộ 7 trang được đồng bộ theo bộ màu **Pure Yellow** (nền kem dịu mắt, nhấn vàng sáng, chữ xanh đậm, số lãi/tốt màu xanh lá, số lỗ/chi phí cao màu đỏ). Cụ thể từng trang:
 
   1. **Trang 1 – `GIỚI THIỆU ĐỀ TÀI`**: Tóm tắt đề bài của Ban Điều Hành, giới thiệu 4 nhóm báo cáo đầu ra, 3 nguồn dữ liệu đầu vào và gắn sơ đồ quy trình 3 bước từ Excel → PostgreSQL → Power BI.
   2. **Trang 2 – `TỪ ĐIỂN DỮ LIỆU`**: Giải thích **68** chỉ tiêu và biến số thuộc 5 nhóm (`0. Định danh & Phân cấp`, `1. Báo cáo Lãi Lỗ (P&L)`, `2. Chỉ số Tài chính & Nhân sự`, `3. Tiêu thức Phân bổ Hội sở`, `4. Đánh giá & Xếp hạng ASM`) kèm đơn vị tính, ý nghĩa và cách tính để mọi phòng ban đọc chung một chuẩn.
@@ -366,7 +366,7 @@ Mỗi bước trong quy trình 3 giai đoạn dùng đúng một nhóm công c�
 │   └── rpt/            # 3 view đầu ra sạch cho Power BI: rpt_pnl_view, rpt_xephang_view, rpt_pnl_excel_pivoted_view
 ├── images/             # Ảnh sơ đồ quy trình 3 giai đoạn và sơ đồ kho dữ liệu Star Schema
 ├── docs/               # Tài liệu vận hành chi tiết: HIEN_TRANG_HE_THONG, PIPELINE, NHAT_KY_CONG_VIEC, LOI_THUONG_GAP
-├── output/             # File báo cáo Power BI (.pbix), file JSON bảng màu Pure Yellow và báo cáo Excel xuất tự động
+├── output/             # Sản phẩm báo cáo quản trị đầu ra trên Power BI (.pbix)
 ├── README.md           # Tài liệu giới thiệu dự án bằng tiếng Việt
 └── README_eng.md       # Tài liệu giới thiệu dự án bằng tiếng Anh
 ```

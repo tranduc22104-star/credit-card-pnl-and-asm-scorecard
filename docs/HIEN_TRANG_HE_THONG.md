@@ -1,7 +1,7 @@
 # HIỆN TRẠNG HỆ THỐNG (cập nhật 2026-11-15)
 
 ## 1. Kiến trúc tổng thể & Kết nối (Quy trình 3 giai đoạn)
-- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (bảng màu chủ đạo **Pure Yellow** theo `output/Pure_Yellow_Improved_Theme.json`).
+- **Công cụ & Cơ sở dữ liệu**: DBeaver 24 + PostgreSQL 16 (`localhost:5432`, database `postgres`, schema `banking_project`) + Power BI Desktop (bảng màu chủ đạo **Pure Yellow**).
 - **Quy trình xử lý kỹ thuật 3 giai đoạn**:
   1. **Giai đoạn 1 — Tìm dữ liệu đầu vào (Excel – 3 File Số Liệu)**:
      - **1. Dữ liệu hạch toán mỗi tháng (GL)** (`fact_txn_month_raw_data_202402020504.xlsx` — **63.134** dòng: 62.953 dòng đơn vị mạng lưới + 181 dòng Hội sở mã `'00'`): *Chứa* bút toán thu - chi thực tế của 7 vùng & Hội sở ➔ *Dùng để* gán trực tiếp vào vùng và tổng hợp báo cáo lãi lỗ (P&L) lũy kế 7 vùng.
@@ -75,5 +75,5 @@ Kho dữ liệu gồm **19 bảng vật lý** (7 `dim_` · 3 `stg_` · 6 `tmp_` 
 ---
 
 ## 4. Phạm vi bộ tệp đẩy lên GitHub (`.staging/push_check.py`)
-- Bộ đẩy hiện tại gồm **23 tệp** (~8,9 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 2 tệp sơ đồ kỹ thuật trong `images/` (`quy-trinh.png`, `thiet-ke-schema.png`), 2 tệp sản phẩm trong `output/` (`Ket qua kinh doanh va xep hang asm.pbix`, `Pure_Yellow_Improved_Theme.json`) và 13 tệp SQL trong `sql/`.
+- Bộ đẩy hiện tại gồm **22 tệp** (~8,9 MiB): `README.md`, `README_eng.md`, 4 tệp trong `docs/`, 2 tệp sơ đồ kỹ thuật trong `images/` (`quy-trinh.png`, `thiet-ke-schema.png`), 1 tệp sản phẩm `.pbix` trong `output/` (`Ket qua kinh doanh va xep hang asm.pbix`) và 13 tệp SQL trong `sql/`.
 - Kiểm tra an toàn bằng `python .staging/push_check.py`, `python .staging/check_toc.py` và `python .staging/check_int_pair.py` trước mỗi lần commit/push: đảm bảo 0 lộ mật khẩu, 0 tệp vượt trần GitHub, 0 liên kết gãy và 0 lệch số liệu giữa hai bản README song ngữ.
