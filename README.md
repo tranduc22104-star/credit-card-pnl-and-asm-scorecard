@@ -1,6 +1,6 @@
 <div align="center">
 
-# Báo cáo quản trị lãi lỗ thẻ tín dụng và xếp hạng Quản lý vùng (ASM)
+# Xây dựng hệ thống báo cáo quản trị lãi lỗ thẻ tín dụng và xếp hạng Quản lý vùng (ASM)
 
 **Ngôn ngữ / Language**: **Tiếng Việt** · [English](README_eng.md)
 
@@ -38,32 +38,19 @@ Mảng thẻ tín dụng của ngân hàng được chia về **7 vùng kinh doa
 Dự án bắt đầu từ một yêu cầu khá rộng:
 > *"**Ban Điều Hành** cần một **hệ thống báo cáo quản trị** để theo dõi kết quả kinh doanh thẻ tín dụng ở từng vùng và **đánh giá công bằng hiệu quả làm việc** của đội ngũ **Quản lý vùng (ASM)**."*
 
-Đề bài ban đầu chỉ nêu mong muốn chung như vậy, chưa có công thức tính sẵn, chưa có bảng điểm mẫu hay mẫu báo cáo. Khi bắt tay vào làm, nhóm phải tự xây dựng từ đầu các phần việc:
+Đề bài ban đầu chỉ nêu mong muốn chung như vậy, chưa có công thức tính sẵn, chưa có bảng điểm mẫu hay mẫu báo cáo. Khi bắt tay vào làm, phải tự xây dựng từ đầu các phần việc:
 - Xác định cách tính xem từng vùng thực sự lãi hay lỗ bao nhiêu.
 - Xây dựng nguyên tắc chia các khoản chi phí chung đang hạch toán tập trung ở Hội sở về cho 7 vùng.
 - Chốt bộ chỉ tiêu vừa đo sức bán hàng vừa kiểm soát rủi ro nợ xấu.
 - Thiết kế thước đo công bằng để đánh giá Quản lý vùng.
 - Lên phương án chấm điểm, xếp hạng và mẫu biểu trình bày rõ ràng.
 
-### Những bất cập trên báo cáo sổ sách cũ
-Khi đọc lại số liệu kế toán trước đây, có một số điểm vướng dễ khiến người quản lý hiểu nhầm:
-
-1. **Vùng nào nhìn trên sổ cũng tưởng có lãi:**
-   Khoản thu từ lãi thẻ và phí mở thẻ thì ghi thẳng về từng chi nhánh, nhưng nhiều khoản chi lớn như chi phí vốn, tiếp thị, công nghệ hay lương khối hỗ trợ lại dồn hết lên Hội sở. Nếu không chia phần chi phí chung này về lại cho 7 vùng, báo cáo sẽ đẹp một cách giả tạo: cả 7 vùng đều lãi, không thấy vùng nào đang lỗ ngầm.
-
-2. **Chấm điểm theo doanh số dễ khiến nhân viên chạy ẩu:**
-   Nếu chỉ nhìn số tiền giải ngân mới hay số thẻ mở thêm để khen thưởng, người bán sẽ dễ nới lỏng khâu duyệt hồ sơ để chạy chỉ tiêu. Tháng đầu doanh số vọt lên rất đẹp, nhưng vài tháng sau nợ xấu phình ra và tiền dự phòng sẽ ăn sạch phần lãi đó.
-
-3. **Số kế toán gộp lũy kế nên khó nhìn ra biến động từng tháng:**
-   Sổ sách cũ thường cộng dồn từ đầu năm đến thời điểm xem báo cáo, không tách riêng con số phát sinh của từng tháng. Vì vậy, rất khó biết tháng này lãi tăng lên là nhờ kinh doanh thẻ khởi sắc thật, hay chỉ nhờ chi phí dự phòng giảm đi bất thường.
-
-Để giải quyết trọn vẹn các điểm vướng trên, hệ thống báo cáo tập trung làm rõ những câu hỏi sát sườn với việc điều hành:
+Từ đề bài đó, hệ thống báo cáo tập trung làm rõ những câu hỏi sát sườn với việc điều hành:
 
 | Khía cạnh | Câu hỏi cần trả lời rõ | Đầu ra của báo cáo |
 |---|---|---|
 | **Lãi lỗ thật của từng vùng** | Sau khi gánh đủ phần chi phí Hội sở, vùng nào lãi thật và vùng nào đang lỗ? | Lập bảng lãi lỗ đầy đủ của 7 vùng và Hội sở |
 | **Lý do lãi tăng hay giảm** | Tháng này lãi đổi chiều là do thu nhập tăng, chi phí giảm hay do dự phòng? | Tách riêng số từng tháng và dựng biểu đồ từng bước hình thành lợi nhuận |
-| **Kiểm soát nợ xấu** | Vùng nào đang có dấu hiệu nợ xấu tăng nhanh cần siết lại ngay? | Theo dõi 5 nhóm nợ, nợ đã xóa ngoại bảng và tỷ lệ nợ xấu từng vùng |
 | **Năng lực Quản lý vùng** | Ai vừa bán khỏe vừa giữ được nợ xấu thấp, ai chỉ chạy doanh số? | Bảng điểm xếp hạng từ 74 đến 84 người theo cả bán hàng và tài chính vùng |
 | **Cách tra cứu và đối soát** | Làm sao để xem nhanh, đối chiếu khớp từng đồng với sổ cái và quyết định kịp thời? | Bộ 7 trang báo cáo trên Power BI đồng bộ số liệu với PostgreSQL |
 
@@ -71,15 +58,18 @@ Khi đọc lại số liệu kế toán trước đây, có một số điểm v
 
 ## 2. 🎯 Từ yêu cầu ban đầu đến bộ báo cáo đầu ra
 
-Thay vì nhảy thẳng vào vẽ biểu đồ, mình chia đề bài của Ban Điều Hành thành hai luồng song song để xử lý cho rành mạch: một luồng tính đúng lãi lỗ từng vùng, một luồng chấm điểm công bằng đội ngũ Quản lý vùng.
+Thay cho cách làm rời rạc từng bảng, dự án tách đề bài của Ban Điều Hành thành hai luồng song song để xử lý cho rành mạch: một luồng tính đúng lãi lỗ từng vùng, một luồng chấm điểm công bằng đội ngũ Quản lý vùng.
 
 | Giai đoạn | Luồng 1: Tính lãi lỗ 7 vùng (P&L) | Luồng 2: Chấm điểm Quản lý vùng (ASM) |
 |---|---|---|
 | **Bước 1: Nắm rõ đề bài** | Cần nhìn ra lãi lỗ thực chất của mảng thẻ tín dụng tại 7 vùng sau khi chia hết chi phí chung | Cần xếp hạng công bằng từ **74 – 84** Quản lý vùng (ASM) để khen đúng người và hỗ trợ đúng chỗ |
 | **Bước 2: Chọn chỉ tiêu cốt lõi** | • Tách rõ tiền thu từ thẻ, chi phí vốn, chi phí vận hành và chi phí dự phòng nợ xấu.<br>• Chia phần chi phí chung đang treo ở Hội sở về 7 vùng theo tỷ lệ sát thực tế như dư nợ, số lượng thẻ và quân số.<br>• Theo dõi thêm các tỷ lệ gọn: tỷ lệ chi phí trên thu nhập (`CIR`), biên lãi (`Margin`), mức sinh lời trên đồng vốn và năng suất mỗi quản lý. | • **Kết quả bán hàng cá nhân**: Doanh số mở thẻ mới (`LTN`), số khách hàng phát sinh dư nợ (`PSDN`), tỷ lệ duyệt hồ sơ.<br>• **Trách nhiệm với tài chính và nợ xấu của vùng**: Tỷ lệ nợ xấu mở rộng (`NPL`), tỷ lệ chi phí (`CIR`), biên lãi, hiệu suất vốn và lợi nhuận bình quân mỗi quản lý, tránh tình trạng mở thẻ ồ ạt mặc kệ nợ xấu. |
-| **Bước 3: Đưa lên báo cáo Power BI** | • **Trang 2 – Từ điển dữ liệu**: Giải thích tên gọi, đơn vị tính và cách tính chung cho cả hệ thống.<br>• **Trang 3 – Bảng lãi lỗ lũy kế vùng**: Đối soát thu – chi của `HỘI SỞ (Phân Bổ)`, 7 vùng và `Tổng`.<br>• **Trang 4 – Đánh giá hiệu quả kinh doanh vùng**: Tách riêng số trong tháng với số lũy kế, vẽ biểu đồ thác nước, bong bóng và xu hướng theo tháng. | • **Trang 5 – Báo cáo xếp hạng ASM**: Bảng điểm tổng hợp xếp hạng Quản lý vùng theo cả sức bán cá nhân lẫn tài chính vùng.<br>• **Trang 6 – Đánh giá năng lực ASM**: Biểu đồ mạng nhện xem Top 3 dẫn đầu, 3 người cuối bảng, mặt bằng 7 vùng và 4 nhóm năng lực bán hàng cá nhân.<br>• **Trang 7 – `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`**: Tóm tắt bức tranh lũy kế toàn hàng và bảng việc cần làm ngay cho cả 7 vùng. |
+| **Bước 3: Đưa lên báo cáo Power BI** | • **Trang 2 – Từ điển dữ liệu**: Giải thích tên gọi, đơn vị tính và cách tính chung cho cả hệ thống.<br>• **Trang 3 – Bảng lãi lỗ lũy kế vùng**: Đối soát thu – chi của `HỘI SỞ (Phân Bổ)`, 7 vùng và `Tổng`.<br>• **Trang 4 – Đánh giá hiệu quả kinh doanh vùng**: Tách riêng số trong tháng với số lũy kế, vẽ biểu đồ thác nước, bong bóng và xu hướng theo tháng. | • **Trang 5 – Báo cáo xếp hạng ASM**: Bảng điểm tổng hợp xếp hạng Quản lý vùng theo cả sức bán cá nhân lẫn tài chính vùng.<br>• **Trang 6 – Đánh giá năng lực ASM**: Biểu đồ mạng nhện xem Top 3 dẫn đầu, 3 người cuối bảng, mặt bằng 7 vùng và 4 nhóm năng lực bán hàng cá nhân. |
 
-### Giá trị thực tế khi ghép hai luồng lại với nhau
+### Hợp nhất cả hai luồng: Trang 7 – `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`
+Hai luồng tính lãi lỗ (P&L) và chấm điểm Quản lý vùng (ASM) hội tụ tại **Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`)**: ghép bức tranh thu, chi, dự phòng và lợi nhuận lũy kế 5 tháng của 7 vùng từ Luồng 1 với thực trạng bán hàng và xếp hạng ASM từ Luồng 2 thành bảng kế hoạch hành động cho cả 7 vùng.
+
+### Giá trị mang lại cho việc điều hành
 - **Nhìn rõ lãi thật – lỗ thật của từng vùng (32 dòng lãi lỗ, tỷ lệ chi phí, biên lãi, sinh lời trên vốn):** Ban Điều Hành không còn bị đánh lừa bởi số trước khi chia chi phí Hội sở, từ đó giao chỉ tiêu và phân bổ ngân sách sát thực tế hơn.
 - **Thưởng phạt quản lý đi đôi với kiểm soát nợ xấu (8 chỉ tiêu xếp hạng ASM):** Người bán thẻ giỏi nhưng làm vùng ngập trong nợ xấu vẫn bị trừ điểm rõ ràng, còn người vừa bán tốt vừa giữ chất lượng tín dụng sạch sẽ đứng đầu bảng.
 
@@ -103,7 +93,7 @@ Trong ngân hàng không có sẵn một bảng ghép chung cho cả báo cáo l
 | Trang báo cáo cần dựng | Cần những số liệu nào? | Lấy từ đâu? | Cách xử lý để ghép khớp |
 |---|---|---|---|
 | **01. Bảng lãi lỗ vùng** & **03. Đánh giá hiệu quả vùng** | Khoản thu, khoản chi, mã tỉnh, mã tài khoản kế toán, tỷ lệ chia chi phí Hội sở | `1. Dữ liệu hạch toán mỗi tháng (GL)` & `2. Dữ liệu sao kê thẻ mỗi tháng` | Gán thẳng 62.953 dòng có mã tỉnh về 7 vùng; lấy dư nợ và số thẻ từ 2.932.922 dòng sao kê để chia 181 dòng chi chung ở Hội sở (mã `'00'`) |
-| **Đo nợ xấu (NPL) của 7 vùng** | Dư nợ 5 nhóm nợ và nợ đã xóa ngoại bảng theo chi nhánh | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | Nhờ mỗi hợp đồng thẻ đều có mã chi nhánh nên cộng lên đúng từng vùng qua suốt 5 tháng |
+| **Tính tỷ lệ nợ xấu (NPL) dùng cho bảng điểm ASM và Trang 7** | Dư nợ 5 nhóm nợ và nợ đã xóa ngoại bảng theo chi nhánh | `2. Dữ liệu sao kê thẻ mỗi tháng` (`fact_kpi_month`) | Nhờ mỗi hợp đồng thẻ đều có mã chi nhánh nên cộng lên đúng từng vùng qua suốt 5 tháng |
 | **02. Bảng xếp hạng ASM** & **04. Đánh giá năng lực ASM** (phần bán hàng) | Doanh số mở mới, số khách có dư nợ, tỷ lệ duyệt thẻ của từng quản lý | `3. Dữ liệu kết quả sale của ASM mỗi tháng` (`kpi_asm_data`) | Có đủ số từng tháng của 74 đến 84 người nên chấm điểm cá nhân trực tiếp được ngay |
 | **Phần tài chính & nợ xấu trong bảng điểm ASM** | Tỷ lệ nợ xấu mở rộng, tỷ lệ chi phí `CIR`, biên lãi, sinh lời trên vốn, lợi nhuận bình quân mỗi quản lý | Ghép kết quả vùng từ `fact_txn_month` và `fact_kpi_month` | Vì hợp đồng thẻ chỉ ghi mã chi nhánh chứ không ghi tên nhân viên ASM, phần tài chính và nợ xấu phải tính chung theo cả vùng rồi áp cho các ASM đang phụ trách vùng đó |
 
@@ -116,11 +106,11 @@ Trong ngân hàng không có sẵn một bảng ghép chung cho cả báo cáo l
 
 ## 4. 🧮 Cách chia chi phí Hội sở và chấm điểm Quản lý vùng
 
-**Xuất phát điểm:** Ban Điều Hành không đưa sẵn công thức chia chi phí hay thang điểm mẫu. Nhóm làm dự án phải tự ngồi phân tích bản chất từng khoản tiền thu – chi và cách đánh giá nhân sự tín dụng sao cho công bằng, hợp lý nhất.
+Cả hai phần tính toán đều xuất phát từ bản chất từng khoản thu – chi và đặc thù dữ liệu ngân hàng để chia chi phí và chấm điểm công bằng.
 
 ### 4.1. Cách lập bảng lãi lỗ cho 7 vùng (xử lý phần chi phí Hội sở)
 
-Khó nhất khi tính lãi lỗ từng vùng là xử lý khối chi phí lớn đang nằm tập trung tại Hội sở. Mình bóc tách và xử lý lần lượt theo trình tự sau:
+Khó nhất khi tính lãi lỗ từng vùng là xử lý khối chi phí lớn đang nằm tập trung tại Hội sở. Việc bóc tách và xử lý phần này đi theo trình tự sau:
 1. Rà toàn bộ 63.134 bút toán trong **Dữ liệu hạch toán mỗi tháng (GL)**.
 2. Nhặt riêng những dòng đã có mã tỉnh hoặc mã chi nhánh cụ thể để cộng thẳng vào vùng tương ứng.
 3. Tách riêng các dòng đang treo ở Hội sở (mã tỉnh `'00'`, khu vực `'A'`).
@@ -129,7 +119,7 @@ Khó nhất khi tính lãi lỗ từng vùng là xử lý khối chi phí lớn 
 6. Kiểm tra xem các tiêu chí đó có tính được trực tiếp từ **Dữ liệu sao kê thẻ mỗi tháng** và bảng định biên nhân sự hay không.
 7. Chốt công thức tính tỷ lệ phần trăm cho từng vùng theo từng tháng.
 8. Viết công thức thành thủ tục tự động chạy trong PostgreSQL.
-9. Cộng ngược kết quả của 7 vùng lại, bảo đảm khớp đúng 100% với tổng tiền trên sổ cái ban đầu, không lệch một đồng.
+9. Cộng ngược kết quả của 7 vùng lại, bảo đảm khớp đúng 100% với tổng tiền trên sổ cái ban đầu.
 
 **Hai nguyên tắc chia số liệu cốt lõi:**
 - **Quy tắc 1 – Gán trực tiếp (Rule 1):** **62.953** dòng thu – chi nào có sẵn mã tỉnh thì đưa thẳng về vùng quản lý tỉnh đó (lãi trong hạn, lãi quá hạn, phí bảo hiểm, phí tăng hạn mức, phí trả chậm và chi phí trực tiếp tại địa bàn).
@@ -140,11 +130,11 @@ $$\text{Tỷ lệ chia cho vùng } i = \frac{\text{Giá trị tiêu chí của v
 $$\text{Tiền Hội sở chia về vùng } i = \text{Khoản tiền ở Hội sở} \times \text{Tỷ lệ chia cho vùng } i$$
 
 *Chọn tiêu chí nào cho khoản nào (tất cả được ghi chi tiết ở cột `Công Thức / Cách Tính` trong Từ điển dữ liệu):*
-- **Chi phí vốn, lãi trong hạn và phí tăng hạn mức từ Hội sở:** Chi phí chuyển vốn nội bộ để cho vay thẻ nhiều hay ít phụ thuộc vào phần dư nợ tốt đang sinh lời → chia theo **Dư nợ bình quân nhóm 1 (nợ đủ tiêu chuẩn sau xóa nợ)**. Vùng nào cho vay tốt nhiều thì gánh chi phí vốn tương ứng.
-- **Lãi quá hạn từ Hội sở:** Sinh ra từ những thẻ mới bắt đầu chậm trả → chia theo **Dư nợ bình quân nhóm 2**.
-- **Chi phí dự phòng rủi ro, phí chậm trả và thu hồi nợ ngoại bảng:** Khoản dự phòng đặt ra để bù cho các khoản có nguy cơ mất vốn → chia theo **Dư nợ bình quân từ nhóm 2 đến nhóm 5 cộng với nợ đã xóa ngoại bảng** (`d25_sau` hoặc `dtruoc`). Nhìn vào đây biết ngay vùng nào có nhiều nợ xấu tiềm ẩn sẽ phải gánh dự phòng nhiều hơn.
-- **Phí bảo hiểm thẻ, chi phí công nghệ và vận hành hệ thống thẻ:** Chi phí chạy máy chủ, phần mềm lõi thẻ và hoa hồng bán kèm thẻ gắn với số lượng thẻ đang xài → chia theo **Số lượng thẻ phát sinh dư nợ bình quân** (`psdn`) ở mỗi vùng.
-- **Chi phí lương, quản lý và tài sản của khối hỗ trợ ở Hội sở:** Lương thưởng bộ phận văn phòng Hội sở hỗ trợ mạng lưới → chia theo **Số lượng quản lý bán hàng (`Sale Manager Headcount`)** đang làm việc tại mỗi vùng.
+- **Chi phí vốn, lãi trong hạn và phí tăng hạn mức từ Hội sở:** Chi phí chuyển vốn nội bộ để cho vay thẻ nhiều hay ít phụ thuộc vào phần dư nợ tốt đang sinh lời, nên chia theo **Dư nợ bình quân nhóm 1 (nợ đủ tiêu chuẩn sau xóa nợ)**. Vùng nào cho vay tốt nhiều thì gánh chi phí vốn tương ứng.
+- **Lãi quá hạn từ Hội sở:** Sinh ra từ những thẻ mới bắt đầu chậm trả, nên chia theo **Dư nợ bình quân nhóm 2**.
+- **Chi phí dự phòng rủi ro, phí chậm trả và thu hồi nợ ngoại bảng:** Khoản dự phòng đặt ra để bù cho các khoản có nguy cơ mất vốn, nên chia theo **Dư nợ bình quân từ nhóm 2 đến nhóm 5 cộng với nợ đã xóa ngoại bảng** (`d25_sau` hoặc `dtruoc`). Nhìn vào đây biết ngay vùng nào có nhiều nợ xấu tiềm ẩn sẽ phải gánh dự phòng nhiều hơn.
+- **Phí bảo hiểm thẻ, chi phí công nghệ và vận hành hệ thống thẻ:** Chi phí chạy máy chủ, phần mềm lõi thẻ và hoa hồng bán kèm thẻ gắn với số lượng thẻ đang xài, nên chia theo **Số lượng thẻ phát sinh dư nợ bình quân** (`psdn`) ở mỗi vùng.
+- **Chi phí lương, quản lý và tài sản của khối hỗ trợ ở Hội sở:** Lương thưởng bộ phận văn phòng Hội sở hỗ trợ mạng lưới, nên chia theo **Số lượng quản lý bán hàng (`Sale Manager Headcount`)** đang làm việc tại mỗi vùng.
 - *Lưu ý thực tế:* Cách chia này tạm giả định chi phí chia đều theo tỷ lệ trung bình giữa các vùng, chưa tách riêng được các khoản chi tiếp thị nhỏ lẻ riêng của từng tỉnh.
 
 *Cách tách số riêng từng tháng từ số cộng dồn đầu năm:*
@@ -157,19 +147,19 @@ $$V_{\text{tháng } M} = V_{\text{lũy kế } M} - V_{\text{lũy kế } (M-1)}$$
 
 **Ghép 8 chỉ tiêu chia đều vào 2 nhóm (mỗi nhóm 4 chỉ tiêu):**
 Mỗi chỉ tiêu đều được đem đi xếp hạng riêng từ `1` đến hết toàn hàng (chỉ tiêu nào "càng cao càng tốt" thì người cao nhất được 1 điểm; chỉ tiêu nào "càng thấp càng tốt" như nợ xấu, chi phí thì người thấp nhất được 1 điểm):
-- **Nhóm 1: Bán hàng và giữ chất lượng (`diem_qm` – Điểm Quy mô kinh doanh):** Gồm **3** chỉ tiêu riêng của từng ASM (`Doanh số giải ngân mới bình quân`, `Số khách có dư nợ bình quân – PSDN`, `Tỷ lệ duyệt hồ sơ`) ghép với **1** chỉ tiêu giữ an toàn của vùng (`Tỷ lệ nợ xấu mở rộng – NPL vùng`). **Lưu ý: Tỷ lệ duyệt hồ sơ cao chưa hẳn đã hay!** Duyệt nhiều có thể vì chọn được khách tốt, nhưng cũng có thể do dễ dãi cho qua hồ sơ yếu — nên phải đặt cạnh tỷ lệ nợ xấu để soi chéo.
-- **Nhóm 2: Hiệu quả tài chính địa bàn (`diem_fin` – Điểm Tài chính):** Gồm **4** chỉ tiêu lấy từ báo cáo lãi lỗ vùng sau khi đã chia chi phí Hội sở (`Tỷ lệ chi phí/thu nhập – CIR`, `Biên lợi nhuận – Margin`, `Mức sinh lời trên vốn`, `Lợi nhuận bình quân mỗi quản lý`). Do dữ liệu sao kê thẻ không gắn mã nhân viên bán thẻ, 4 chỉ tiêu này tính theo cả vùng rồi dùng chung cho mọi ASM trong vùng, giúp ai cũng có trách nhiệm chung với kết quả lãi lỗ nơi mình quản lý.
+- **Nhóm 1: Bán hàng và giữ chất lượng (`diem_qm` – Điểm Quy mô kinh doanh):** Gồm **3** chỉ tiêu riêng của từng ASM (`Doanh số giải ngân mới bình quân`, `Số khách có dư nợ bình quân – PSDN`, `Tỷ lệ duyệt hồ sơ`) ghép với **1** chỉ tiêu giữ an toàn của vùng (`Tỷ lệ nợ xấu mở rộng – NPL vùng`). Tỷ lệ duyệt hồ sơ cao có thể do chọn được khách tốt, nhưng cũng có thể vì dễ dãi cho qua hồ sơ yếu, nên cần đặt cạnh tỷ lệ nợ xấu để soi chéo.
+- **Nhóm 2: Hiệu quả tài chính địa bàn (`diem_fin` – Điểm Tài chính):** Gồm **4** chỉ tiêu lấy từ báo cáo lãi lỗ vùng sau khi đã chia chi phí Hội sở (`Tỷ lệ chi phí/thu nhập – CIR`, `Biên lợi nhuận – Margin`, `Mức sinh lời trên vốn`, `Lợi nhuận bình quân mỗi quản lý`). Vì dữ liệu sao kê chưa gắn mã từng nhân viên, bốn chỉ tiêu này tính chung theo vùng để mọi ASM cùng có trách nhiệm với kết quả lãi lỗ nơi mình quản lý.
 
 **Cách tính tỷ lệ nợ xấu mở rộng (tính cả nợ đã xóa khỏi sổ):**
 Trong thủ tục SQL (`report_id = 204`), tỷ lệ nợ xấu không chỉ đếm nợ trên sổ mà cộng ngược cả khoản nợ xấu đã đem đi xử lý ngoại bảng (*write-off*) từ đầu năm:
 
 $$\text{Tỷ lệ nợ xấu mở rộng (NPL)} = \frac{\text{Dư nợ nhóm 3–5} + \text{Nợ đã xóa ngoại bảng lũy kế}}{\text{Tổng dư nợ} + \text{Nợ đã xóa ngoại bảng lũy kế}} \times 100$$
 
-Tại sao phải làm vậy? Vì nếu chỉ nhìn nợ trên sổ, cứ hễ xóa bớt nợ xấu ra ngoại bảng là tỷ lệ nợ xấu nhìn lại đẹp ngay một cách giả tạo. Cộng ngược phần đã xóa ngoại bảng giúp thấy đúng thực chất rủi ro của vùng. *(Điểm cần lưu ý: những vùng mở thẻ lâu năm sẽ tích lũy số nợ đã xóa từ các tháng trước nhiều hơn vùng mới mở.)*
+Nếu chỉ nhìn nợ trên sổ, mỗi lần xóa bớt nợ xấu ra ngoại bảng thì tỷ lệ nợ xấu sẽ giảm xuống một cách giả tạo; cộng ngược phần đã xóa giúp thấy đúng thực chất rủi ro của vùng. *(Điểm cần lưu ý: những vùng mở thẻ lâu năm sẽ tích lũy số nợ đã xóa từ các tháng trước nhiều hơn vùng mới mở.)*
 
 | Nhóm 1: Bán hàng & Giữ chất lượng (`diem_qm`) | Nhóm 2: Hiệu quả tài chính địa bàn (`diem_fin`) |
 |---|---|
-| • **Doanh số mở mới bình quân (`ltn_avg`)** *(Càng cao càng tốt)*<br>• **Số thẻ có dư nợ bình quân (`psdn_avg`)** *(Càng cao càng tốt)*<br>• **Tỷ lệ duyệt hồ sơ bình quân (`approval_rate_avg`)** *(Phải xem cùng nợ xấu)*<br>• **Tỷ lệ nợ xấu mở rộng (`npl_truoc_wo_luy_ke`)** *(Càng thấp càng tốt — gồm cả nợ xóa ngoại bảng)* | • **Tỷ lệ chi phí trên thu nhập (`CIR`)** *(Càng thấp càng tốt)*<br>• **Biên lợi nhuận (`Margin`)** *(Càng cao càng tốt)*<br>• **Mức sinh lời trên vốn (`hs_von`)** *(Càng cao càng tốt)*<br>• **Lợi nhuận bình quân/SM (`hs_nhan_su`)** *(Càng cao càng tốt — gắn trách nhiệm vùng)* |
+| • **Doanh số mở mới bình quân (`ltn_avg`)** *(Càng cao càng tốt)*<br>• **Số thẻ có dư nợ bình quân (`psdn_avg`)** *(Càng cao càng tốt)*<br>• **Tỷ lệ duyệt hồ sơ bình quân (`approval_rate_avg`)** *(Phải xem cùng nợ xấu)*<br>• **Tỷ lệ nợ xấu mở rộng (`npl_truoc_wo_luy_ke`)** *(Càng thấp càng tốt, gồm cả nợ xóa ngoại bảng)* | • **Tỷ lệ chi phí trên thu nhập (`CIR`)** *(Càng thấp càng tốt)*<br>• **Biên lợi nhuận (`Margin`)** *(Càng cao càng tốt)*<br>• **Mức sinh lời trên vốn (`hs_von`)** *(Càng cao càng tốt)*<br>• **Lợi nhuận bình quân/SM (`hs_nhan_su`)** *(Càng cao càng tốt, gắn trách nhiệm vùng)* |
 
 **Bảng tóm tắt 8 chỉ tiêu chấm điểm ASM:**
 
@@ -261,23 +251,19 @@ Toàn bộ dữ liệu đi qua quy trình khép kín từ file Excel thô cho t�
 ### Phần B – Bốn điểm nổi bật nhìn từ số liệu tháng 5/2023
 
 1. **Tây Nam Bộ – Đóng góp lãi nhiều nhất nhưng nợ xấu cũng cao nhất:**
-   - *Số liệu:* Lợi nhuận trước thuế tháng 5 tăng thêm **+4.267,8 triệu đồng**, chiếm **97,2%** mức tăng lợi nhuận toàn hàng trong tháng. Tuy nhiên, thu nhập thuần từ thẻ gần như đứng yên (chỉ tăng **16,3 triệu đồng**), chi phí hoạt động giảm lợi nhuận đi **−195,9 triệu đồng**, còn lợi nhuận vọt lên chủ yếu nhờ **chi phí dự phòng ròng giảm +4.447,3 triệu đồng**. Đáng lo nhất là tỷ lệ nợ xấu mở rộng của vùng đang cao nhất cả nước (**21,99%**) và không có ASM nào của vùng lọt Top 25 toàn hàng. (Lũy kế 5 tháng vùng đạt lãi **+167.883 triệu đồng**, nhưng hiệu suất sinh lời trên vốn là **131,7%**).
-   - *Nhìn nhận thực tế:* Lãi trong tháng tăng nhờ giảm trích lập dự phòng chứ chưa phải nhờ bán hàng hay thu nhập thẻ bứt phá.
-   - *Việc nên kiểm tra tiếp:* Cần kiểm tra kỹ xem dự phòng giảm là do thu được tiền thật từ khách hàng, hay do gia hạn, cơ cấu lại nợ; nên cử đoàn xuống kiểm tra trực tiếp hồ sơ và việc thu hồi nợ trong tháng 7.
+   - *Số liệu:* Lợi nhuận trước thuế tháng 5 tăng thêm **+4.267,8 triệu đồng**, chiếm **97,2%** mức tăng lợi nhuận toàn hàng trong tháng. Tuy nhiên, thu nhập thuần từ thẻ gần như đứng yên (chỉ tăng **16,3 triệu đồng**), chi phí hoạt động giảm lợi nhuận đi **−195,9 triệu đồng**, còn lợi nhuận vọt lên chủ yếu nhờ **chi phí dự phòng ròng giảm +4.447,3 triệu đồng**. Đáng lo nhất là tỷ lệ nợ xấu mở rộng của vùng đang cao nhất cả nước (**21,99%**) và không có ASM nào của vùng lọt Top 25 toàn hàng. (Lũy kế 5 tháng vùng đạt lãi **+167.883 triệu đồng**, hiệu suất sinh lời trên vốn đạt **131,7%**).
+   - *Việc nên kiểm tra tiếp:* Vì lãi tháng 5 tăng nhờ giảm trích lập dự phòng chứ chưa phải thu nhập thẻ bứt phá, cần rà kỹ xem dự phòng giảm là do thu được tiền thật từ khách hàng hay do gia hạn, cơ cấu lại nợ; nên cử đoàn xuống kiểm tra trực tiếp hồ sơ và việc thu hồi nợ trong tháng 7.
 
 2. **Đông Nam Bộ – Bán hàng vẫn tăng nhưng bị nợ xấu ăn hết lãi:**
-   - *Số liệu:* Riêng tháng 5 vùng lỗ **−8.787,4 triệu đồng**, đẩy lỗ lũy kế 5 tháng lên **−48.763 triệu đồng** (tức **−48,8 tỷ đồng**). Hoạt động kinh doanh vẫn kéo thu nhập thuần tăng khá (**+3.210,7 triệu đồng**), nhưng chi phí dự phòng lại tăng vọt thêm **−3.234,2 triệu đồng**. Vì cả vùng bị lỗ nặng, **16 trong số 19 quản lý vùng** (84%) dù bán hàng ổn vẫn bị kéo xuống nhóm cuối bảng xếp hạng.
-   - *Nhìn nhận thực tế:* Tiền dự phòng nợ xấu mới phát sinh lớn hơn phần thu nhập làm thêm, khiến vùng trở thành nơi duy nhất báo lỗ.
+   - *Số liệu:* Riêng tháng 5 vùng lỗ **−8.787,4 triệu đồng**, đẩy lỗ lũy kế 5 tháng lên **−48.763 triệu đồng** (tức **−48,8 tỷ đồng**). Hoạt động kinh doanh vẫn kéo thu nhập thuần tăng khá (**+3.210,7 triệu đồng**), nhưng chi phí dự phòng lại tăng vọt thêm **−3.234,2 triệu đồng**, khiến Đông Nam Bộ trở thành vùng duy nhất báo lỗ. Vì cả vùng bị lỗ nặng, **16 trong số 19 quản lý vùng** (84%) dù bán hàng ổn vẫn bị kéo xuống nhóm cuối bảng xếp hạng.
    - *Việc nên kiểm tra tiếp:* Cần rà lại các hợp đồng mở mới trong mấy tháng gần đây xem có phải vì duyệt nhanh quá nên bắt đầu chuyển sang nợ quá hạn, đồng thời chốt rà soát toàn bộ danh sách khách đang quá hạn tại Đông Nam Bộ trong 30 ngày tới.
 
 3. **Đồng Bằng Sông Hồng – Bán thẻ số 1 cả nước, giữ nợ xấu an toàn:**
    - *Số liệu:* Lũy kế đến tháng 5, vùng dẫn đầu tuyệt đối về doanh số giải ngân mới (**55.010 triệu đồng**, gấp **1,5 lần** vùng đứng thứ hai là Tây Nam Bộ). Tỷ lệ nợ xấu mở rộng chỉ ở mức **13,9%** (thấp hơn khá nhiều so với mức chung **17,3%**). Riêng trong tháng 5, lợi nhuận trước thuế của vùng tăng **+1.310,9 triệu đồng**, bù lại việc thu nhập thuần giảm nhẹ **−232,2 triệu đồng** nhờ chi phí dự phòng ròng giảm **+1.455,8 triệu đồng**.
-   - *Nhìn nhận thực tế:* Đây vẫn là vùng trụ cột giữ nhịp tăng trưởng an toàn nhất toàn hàng, nhưng việc thu nhập thuần nhích xuống nhẹ là dấu hiệu cần để mắt.
-   - *Việc nên kiểm tra tiếp:* Vì sổ kế toán mới ghi một con số dự phòng gộp chung, cần tách bạch phần trích lập mới và phần hoàn nhập để xem rủi ro nợ có thực sự giảm bền vững hay không.
+   - *Việc nên kiểm tra tiếp:* Vùng vẫn giữ được tăng trưởng an toàn, nhưng nhịp giảm nhẹ của thu nhập thuần tháng 5 cần được theo dõi; do sổ kế toán mới ghi một con số dự phòng gộp chung, cần tách bạch phần trích lập mới và phần hoàn nhập để xem rủi ro nợ có thực sự giảm bền vững hay không.
 
 4. **Nam Trung Bộ – Giữ nợ sạch nhất và đồng vốn sinh lời cao nhất:**
    - *Số liệu:* Chỉ có 5 quản lý vùng nhưng Nam Trung Bộ giữ tỷ lệ nợ xấu mở rộng thấp nhất toàn hàng (**11,24%**), mang về **50.036 triệu đồng** lợi nhuận lũy kế với hiệu suất sinh lời trên vốn đạt **203,5%** (cứ 1 đồng vốn thu về hơn **2,0 đồng** lãi), và có tới **4 trong 5 quản lý vùng** nằm trong nhóm 25 người đứng đầu cả nước.
-   - *Nhìn nhận thực tế:* Cách làm gọn, kiểm soát hồ sơ đầu vào chặt chẽ và rất hiệu quả.
    - *Việc nên kiểm tra tiếp:* Nên khảo sát thực tế trong 60 ngày (khoảng 2 tháng) cách vùng này lọc khách hàng và nhắc nợ, sau đó áp dụng thử cho các vùng đang có nợ xấu cao.
 
 ### Phần C – Bức tranh lũy kế toàn doanh nghiệp và việc cần làm ngay
@@ -298,8 +284,8 @@ Trên Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`), toàn bộ số l
 3. **Điểm chưa hợp lý ở Đông Nam Bộ: Bán giỏi vẫn rớt hạng vì nợ xấu chung của vùng:**
    - *Bị phạt kịch trần (`26 điểm`):* Do vùng Đông Nam Bộ lỗ −48,8 tỷ đồng và đứng thứ 7/7 ở cả 4 chỉ tiêu tài chính vùng, toàn bộ 19 ASM trong vùng đều chịu mức phạt tối đa **26 điểm**, bất kể cá nhân đó bán thẻ tốt tới đâu.
    - *Ví dụ nhìn thấy ngay trên bảng xếp hạng tháng 5/2023:*
-     * **`Trần Văn Hải`**: phần bán hàng đứng hạng **#28/84** toàn hàng (`124` điểm quy mô), cộng thêm **26 điểm** tài chính vùng thành **150 điểm** → tụt xuống hạng **`#33`** (rớt **5 bậc**).
-     * **`Nguyễn Thị Hằng`**: bán hàng đứng hạng **#52** (`197` điểm quy mô) → tụt xuống hạng **`#61`** (rớt **9 bậc**); **`Lê Văn An`**: từ hạng **#55** (`200` điểm quy mô) tụt xuống hạng **`#62`** (rớt **7 bậc**).
+     * **`Trần Văn Hải`**: phần bán hàng đứng hạng **#28/84** toàn hàng (`124` điểm quy mô), cộng thêm **26 điểm** tài chính vùng thành **150 điểm**, tụt xuống hạng **`#33`** (rớt **5 bậc**).
+     * **`Nguyễn Thị Hằng`**: bán hàng đứng hạng **#52** (`197` điểm quy mô), tụt xuống hạng **`#61`** (rớt **9 bậc**); **`Lê Văn An`**: từ hạng **#55** (`200` điểm quy mô) tụt xuống hạng **`#62`** (rớt **7 bậc**).
      * Toàn vùng chỉ có 3 người đứng trên vùng cuối (`Lê Văn Bình` hạng `#24`, `Trần Văn Hải` hạng `#33`, `Trần Văn Anh` hạng `#36`), còn lại **16 trong 19 quản lý (84%)** đều bị đẩy xuống nhóm cuối từ hạng **`#61` đến `#84`**.
    - *Hướng xử lý hợp lý:* Không nên gộp kết quả bán hàng cá nhân chung với khoản lỗ của cả vùng khiến **16/19 quản lý (84%)** rơi xuống nhóm cuối. Cần **tính riêng phần bán hàng của từng người** khi xét thưởng thi đua (như cách Trang 6 đang phân nhóm), còn phần lỗ **48,8 tỷ đồng** và thu hồi nợ xấu phải giao rõ trách nhiệm về cấp điều hành vùng.
 
@@ -310,7 +296,7 @@ Trên Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`), toàn bộ số l
 | **Khẩn cấp** | **Tây Nam Bộ** *(Lãi +167,9 tỷ)* | Mang về nhiều lãi nhất (**+67,0%** tổng lãi toàn hàng), nhưng tỷ lệ nợ xấu đang cao nhất (**22,0%**). | Kiểm tra kỹ hồ sơ trước khi mở thẻ mới và tập trung thu hồi các khoản nợ quá hạn. | Hạ nợ xấu **22,0% → 17,3%**; không để phí dự phòng (**290,4 tỷ** / **290.377 triệu đồng**) tăng thêm. |
 | **Khẩn cấp** | **Đông Nam Bộ** *(Lỗ −48,8 tỷ)* | Vùng duy nhất lỗ (**−48,8 tỷ**) do nợ xấu cao, kéo **16/19** quản lý (**84%**) rơi xuống nhóm cuối. | Tập trung thu hồi nợ xấu để giảm lỗ; đánh giá quản lý theo kết quả bán thẻ cá nhân. | Thu hồi nợ xóa lỗ **48,8 tỷ**; đánh giá công bằng cho **19** quản lý (dự phòng hiện ăn mòn **223,7 tỷ**). |
 | **Ưu tiên** | **Tây Bắc Bộ** *(Lãi +2,7 tỷ)* | Biên lãi mỏng nhất (**2,4%**): chi phí vận hành (**22,0%**) và dự phòng (**74,7%** thu nhập) đều ở mức cao. | Rà soát chi tiêu chi nhánh và siết chất lượng hồ sơ mới để đẩy lợi nhuận thoát vùng hòa vốn. | Tiết kiệm **~3,8 tỷ** chi phí; đưa biên lãi vượt **10%** (hiện **2,4%**). |
-| **Ưu tiên** | **Bắc Trung Bộ** *(Lãi +10,5 tỷ)* | Chi phí vận hành chiếm tới **26,5%** thu nhập — cao nhất toàn hàng (mức chung chỉ **17,4%**). | Cắt giảm các khoản chi chưa cần thiết tại chi nhánh và gắn mức chi tiêu theo doanh số thực tế. | Tiết kiệm **~3,5 tỷ** chi phí; đưa tỷ lệ chi phí về mức chung **17,4%**. |
+| **Ưu tiên** | **Bắc Trung Bộ** *(Lãi +10,5 tỷ)* | Chi phí vận hành chiếm tới **26,5%** thu nhập, cao nhất toàn hàng (mức chung chỉ **17,4%**). | Cắt giảm các khoản chi chưa cần thiết tại chi nhánh và gắn mức chi tiêu theo doanh số thực tế. | Tiết kiệm **~3,5 tỷ** chi phí; đưa tỷ lệ chi phí về mức chung **17,4%**. |
 | **Theo dõi** | **Đông Bắc Bộ** *(Lãi +13,8 tỷ)* | Biên lãi còn mỏng (**6,7%**): nợ xấu **18,1%** vượt mức chung (**17,3%**), dự phòng ngốn **73,2%** thu nhập. | Đẩy nhanh thu hồi nợ quá hạn và hướng dẫn bán thêm sản phẩm tăng thu cho đội ngũ quản lý. | Hạ nợ xấu **18,1% → 17,3%**; mở rộng biên lãi vượt **12%**. |
 | **Duy trì** | **ĐB Sông Hồng** *(Lãi +54,3 tỷ)* | Dẫn đầu toàn hàng về mở thẻ mới (đóng góp **30,6%** tổng doanh số mở thẻ toàn hàng). | Duy trì tốc độ mở thẻ mới và hướng dẫn thêm kỹ năng bán hàng cho nhóm quản lý đạt mức trung bình. | Đạt **+55,0 tỷ** mở mới; giữ vị trí số 1 toàn hàng (**30,6%**). |
 | **Nhân rộng** | **Nam Trung Bộ** *(Lãi +50,0 tỷ)* | Kinh doanh an toàn và hiệu quả nhất: nợ xấu thấp nhất (**11,2%**), cứ 1 đồng vốn thu về **2,0 đồng lãi** (**203,5%**). | Lấy cách chọn lọc khách hàng và quản lý nợ của vùng này làm mẫu để áp dụng cho các vùng nợ xấu cao. | Giữ tỷ lệ nợ xấu dưới **12%**; duy trì mức sinh lời vốn **203,5%**. |
@@ -349,7 +335,7 @@ Mỗi bước trong quy trình xử lý dữ liệu dùng một nhóm công cụ
 |---|---|---|---|
 | **Microsoft Excel** | 3 File Số Liệu Đầu Vào (`.xlsx`) | Cung cấp 3 nguồn số gốc: `1. Dữ liệu hạch toán mỗi tháng (GL)`, `2. Dữ liệu sao kê thẻ mỗi tháng` và `3. Dữ liệu kết quả sale của ASM mỗi tháng` | Là định dạng chuẩn xuất ra từ các hệ thống vận hành trong ngân hàng |
 | **DBeaver 24** | Data Import, ER Diagram | Đưa dữ liệu từ 3 file Excel (gồm tệp **117,2 MB**) vào 3 bảng `staging` trong PostgreSQL, kiểm tra 9 khóa ngoại ảo và chạy câu lệnh SQL | Dễ nhìn, hỗ trợ nạp file lớn nhanh và soi được ngay sơ đồ quan hệ bảng |
-| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), tự động chạy logic chia chi phí Hội sở (Rule 1 & Rule 2) và tính bảng điểm xếp hạng ASM | Xử lý mượt gần 3 triệu dòng với độ chính xác từng đồng và kiểm soát giao dịch an toàn |
+| **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedure | Lưu trữ kho dữ liệu Star Schema (19 bảng, 3 `view`), tự động chạy logic chia chi phí Hội sở (Rule 1 & Rule 2) và tính bảng điểm xếp hạng ASM | Xử lý gần 3 triệu dòng chính xác đến từng đồng và kiểm soát giao dịch chặt chẽ |
 | **Power BI Desktop** | DirectQuery, 90 công thức DAX, HTML Content | Xây dựng **7 trang báo cáo** quản trị đồng bộ từ Giới thiệu, Từ điển **68** chỉ tiêu, Bảng lãi lỗ **32** dòng, Xếp hạng ASM, Radar năng lực tới Kết quả doanh nghiệp | Giúp Ban Điều Hành vừa tra đối soát từng dòng số liệu giống Excel, vừa bấm lọc xem biểu đồ nhanh và trực tiếp |
 
 ---
@@ -375,10 +361,10 @@ Mỗi bước trong quy trình xử lý dữ liệu dùng một nhóm công cụ
 ## 10. 📖 Tài liệu chi tiết kèm theo
 
 Trong thư mục `docs/` có 4 tài liệu ghi lại đầy đủ quá trình làm và vận hành:
-- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Bảng thống kê số dòng của 19 bảng và 3 `view`, mô hình Power BI gồm **90** công thức DAX và các mốc số liệu đối soát chuẩn.
-- [`docs/PIPELINE.md`](docs/PIPELINE.md) — Chi tiết luồng xử lý 3 giai đoạn và thứ tự chạy các tệp SQL trong DBeaver.
-- [`docs/NHAT_KY_CONG_VIEC.md`](docs/NHAT_KY_CONG_VIEC.md) — Nhật ký ghi chép các đầu việc đã làm qua từng giai đoạn.
-- [`docs/LOI_THUONG_GAP.md`](docs/LOI_THUONG_GAP.md) — Tổng hợp **62 tình huống lỗi thường gặp** khi nạp dữ liệu nguồn, viết SQL, Python và DAX kèm cách khắc phục.
+- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md): Bảng thống kê số dòng của 19 bảng và 3 `view`, mô hình Power BI gồm **90** công thức DAX và các mốc số liệu đối soát chuẩn.
+- [`docs/PIPELINE.md`](docs/PIPELINE.md): Chi tiết luồng xử lý 3 giai đoạn và thứ tự chạy các tệp SQL trong DBeaver.
+- [`docs/NHAT_KY_CONG_VIEC.md`](docs/NHAT_KY_CONG_VIEC.md): Nhật ký ghi chép các đầu việc đã làm qua từng giai đoạn.
+- [`docs/LOI_THUONG_GAP.md`](docs/LOI_THUONG_GAP.md): Tổng hợp **62 tình huống lỗi thường gặp** khi nạp dữ liệu nguồn, viết SQL, Python và DAX kèm cách khắc phục.
 
 ---
 
