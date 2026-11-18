@@ -21,7 +21,7 @@
 SET search_path TO banking_project, public;
 
 -- 01. BẢNG SỰ KIỆN XẾP HẠNG ASM DẠNG DỌC (fct_asm_value)
--- Mỗi ASM có mặt trong kỳ báo cáo được lưu 22 dòng (tương ứng với 22 mã report_id từ 201 đến 222).
+-- Mỗi ASM có mặt trong kỳ báo cáo được lưu 23 dòng (tương ứng 22 mã xếp hạng 201..222 và mã 223 App Approved bổ trợ phân tích).
 DROP TABLE IF EXISTS fct_asm_value CASCADE;
 CREATE TABLE fct_asm_value (
     month_key   INT NOT NULL,              -- Kỳ báo cáo tháng (YYYYMM)
@@ -70,7 +70,8 @@ BEGIN
             MAX(d.area_code) AS area_code,
             MAX(value) FILTER (WHERE t.report_id = 201) AS ltn_avg,
             MAX(value) FILTER (WHERE t.report_id = 202) AS psdn_avg,
-            MAX(value) FILTER (WHERE t.report_id = 203) AS approval_rate_avg
+            MAX(value) FILTER (WHERE t.report_id = 203) AS approval_rate_avg,
+            MAX(value) FILTER (WHERE t.report_id = 223) AS app_approved_avg
         FROM tmp_xh_step1_asm_avg AS t
         JOIN banking_project.dim_asm AS d ON d.asm_id = t.asm_id
         WHERE t.month_key = p_month
@@ -78,7 +79,7 @@ BEGIN
     ),
     rows AS (
         SELECT
-            a.asm_id, a.area_code, a.ltn_avg, a.psdn_avg, a.approval_rate_avg,
+            a.asm_id, a.area_code, a.ltn_avg, a.psdn_avg, a.approval_rate_avg, a.app_approved_avg,
             n.value AS npl
         FROM asm_vals AS a
         LEFT JOIN tmp_xh_step2_npl_area AS n
@@ -88,7 +89,7 @@ BEGIN
     ),
     ranked AS (
         SELECT
-            r.asm_id, r.area_code, r.ltn_avg, r.psdn_avg, r.approval_rate_avg, r.npl,
+            r.asm_id, r.area_code, r.ltn_avg, r.psdn_avg, r.approval_rate_avg, r.app_approved_avg, r.npl,
             RANK() OVER (ORDER BY r.ltn_avg DESC NULLS LAST) AS r_ltn,
             RANK() OVER (ORDER BY r.psdn_avg DESC NULLS LAST) AS r_psdn,
             RANK() OVER (ORDER BY r.approval_rate_avg DESC NULLS LAST) AS r_appr,
@@ -112,6 +113,7 @@ BEGIN
             (201, s.ltn_avg),              -- Mã 201: Doanh số cho vay mới (LTN) bình quân luỹ kế
             (202, s.psdn_avg),             -- Mã 202: Số thẻ phát sinh dư nợ (PSDN) bình quân luỹ kế
             (203, s.approval_rate_avg),    -- Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (%)
+            (223, s.app_approved_avg),     -- Mã 223: Số hồ sơ được duyệt (App Approved) bình quân luỹ kế (chỉ tiêu bổ trợ phân tích)
             (204, s.npl),                  -- Mã 204: Tỷ lệ nợ xấu trước xoá nợ của vùng (%)
             (205, s.r_ltn::NUMERIC),       -- Mã 205: Hạng Doanh số cho vay mới (LTN)
             (206, s.r_psdn::NUMERIC),      -- Mã 206: Hạng Số thẻ phát sinh dư nợ (PSDN)

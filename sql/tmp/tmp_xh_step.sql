@@ -17,16 +17,17 @@
 
 SET search_path TO banking_project, public;
 
--- 01a. Bảng tạm Bước 1 (tmp_xh_step1_asm_avg): Trung bình luỹ kế 3 chỉ tiêu cá nhân của từng ASM
--- Mỗi ASM có số liệu hoạt động từ đầu năm sẽ có 3 dòng:
+-- 01a. Bảng tạm Bước 1 (tmp_xh_step1_asm_avg): Trung bình luỹ kế 4 chỉ tiêu cá nhân của từng ASM
+-- Mỗi ASM có số liệu hoạt động từ đầu năm sẽ có 4 dòng:
 --   - Mã 201: Doanh số cho vay mới bình quân luỹ kế (ltn_amount, làm tròn 2 chữ số thập phân)
 --   - Mã 202: Số thẻ phát sinh dư nợ bình quân luỹ kế (psdn_count, làm tròn 2 chữ số thập phân)
 --   - Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (approval_rate, làm tròn 6 chữ số thập phân)
+--   - Mã 223: Số hồ sơ được duyệt bình quân luỹ kế (app_approved, làm tròn 2 chữ số thập phân — phục vụ phân tích năng lực)
 DROP TABLE IF EXISTS tmp_xh_step1_asm_avg CASCADE;
 CREATE TABLE tmp_xh_step1_asm_avg (
     month_key   INT NOT NULL,
     asm_id      INT NOT NULL,          -- Mã định danh ASM (nối sang bảng dim_asm)
-    report_id   INT NOT NULL,          -- 3 mã chỉ tiêu cá nhân: 201, 202, 203
+    report_id   INT NOT NULL,          -- 4 mã chỉ tiêu cá nhân: 201, 202, 203, 223
     value       NUMERIC(20,6),
     PRIMARY KEY (month_key, asm_id, report_id)
 );
@@ -84,7 +85,7 @@ CREATE INDEX IF NOT EXISTS idx_tmp_xh_step3_fin_month
 -- đã có đủ số liệu của 7 vùng kinh doanh (tức là phải chạy sp_baocao_tonghop trước).
 -- =====================================================================
 
--- 02. THỦ TỤC BƯỚC 1 (sp_xh_step1_asm_avg): Tính trung bình luỹ kế 3 chỉ tiêu cá nhân của từng ASM
+-- 02. THỦ TỤC BƯỚC 1 (sp_xh_step1_asm_avg): Tính trung bình luỹ kế 4 chỉ tiêu cá nhân của từng ASM
 CREATE OR REPLACE PROCEDURE sp_xh_step1_asm_avg(p_month INT)
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -100,13 +101,14 @@ BEGIN
     -- Giải thích luồng xử lý:
     --   - Chỉ đưa vào danh sách xếp hạng những ASM có phát sinh số liệu ở ít nhất một tháng từ đầu năm
     --     đến tháng báo cáo (HAVING COUNT(...) > 0). Hàm AVG() tự động bỏ qua các tháng trống (NULL).
-    --   - Nối với bảng dim_asm qua email để lấy khoá đại diện asm_id và ghi 3 mã chỉ tiêu (201, 202, 203).
+    --   - Nối với bảng dim_asm qua email để lấy khoá đại diện asm_id và ghi 4 mã chỉ tiêu (201, 202, 203, 223).
     WITH asm_avg AS (
         SELECT
             LOWER(TRIM(t.email)) AS email,
             AVG(t.ltn_amount) AS ltn_avg,
             AVG(t.psdn_count) AS psdn_avg,
-            AVG(t.approval_rate) AS appr_avg
+            AVG(t.approval_rate) AS appr_avg,
+            AVG(t.app_approved) AS app_avg
         FROM banking_project.stg_asm_target AS t
         WHERE t.month_key BETWEEN v_ys AND p_month
         GROUP BY 1
@@ -114,7 +116,7 @@ BEGIN
              + COUNT(t.app_approved) + COUNT(t.approval_rate) > 0
     ),
     asm_ids AS (
-        SELECT a.email, d.asm_id, a.ltn_avg, a.psdn_avg, a.appr_avg
+        SELECT a.email, d.asm_id, a.ltn_avg, a.psdn_avg, a.appr_avg, a.app_avg
         FROM asm_avg AS a
         JOIN banking_project.dim_asm AS d
             ON d.email = a.email
@@ -126,7 +128,8 @@ BEGIN
         VALUES
             (201, m.ltn_avg::NUMERIC(20,2)),        -- Mã 201: Doanh số cho vay mới (LTN) bình quân luỹ kế
             (202, m.psdn_avg::NUMERIC(12,2)),       -- Mã 202: Số thẻ phát sinh dư nợ (PSDN) bình quân luỹ kế
-            (203, m.appr_avg::NUMERIC(12,6))        -- Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (%)
+            (203, m.appr_avg::NUMERIC(12,6)),       -- Mã 203: Tỷ lệ duyệt hồ sơ bình quân luỹ kế (%)
+            (223, m.app_avg::NUMERIC(12,2))         -- Mã 223: Số hồ sơ được duyệt (App Approved) bình quân luỹ kế
     ) AS v(rid, val);
     INSERT INTO banking_project.log_proc_run (proc_name, month_key, step_name, status)
     VALUES ('sp_xh_step1_asm_avg', p_month, v_step, 'OK');

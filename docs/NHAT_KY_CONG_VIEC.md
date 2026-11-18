@@ -12,7 +12,140 @@ _(Không có)_
 
 ## ĐÃ XONG
 
+### 2026-11-18
+
+361. **Áp dụng Bản 2 (đã tinh chỉnh) đồng bộ cho cả `README.md` và `README_eng.md`**
+   - Cập nhật trọn bộ Mục 1, 2, 3, 4.1–4.2, 5, 8, 10 của `README.md` theo Bản 2 (bỏ đếm bước/lặp số máy móc, đổi cột bảng 8 chỉ tiêu sang `Chiều hướng tốt` & `Phạm vi tính`, viết lại Bước 3 giới thiệu 7 trang Power BI gọn thoáng, giữ `đóng gọn thành 1 khối có đường kẻ dọc và tự động tô đỏ mọi số âm` ở Trang 5, sửa Mục 10 thành `mô hình Power BI gồm 90 công thức DAX`).
+   - Dịch và rút gọn đối ứng sang `README_eng.md` khớp hoàn toàn về số liệu & cấu trúc; kiểm chứng `check_int_pair.py` (`ok`), `check_toc.py` (`ok`), `push_check.py` (22 tệp hợp lệ, 0 liên kết gãy).
+
+360. **Gọt gọn các đoạn trùng lặp trong `README.md` / `README_eng.md` và cập nhật `docs/PIPELINE.md` khớp thực tế**
+   - Chỉnh sửa đồng bộ `README.md` & `README_eng.md`:
+     - Rút gọn `Năm kiến nghị gửi Ban Điều Hành` thành `Ba kiến nghị cấp Hội sở gửi Ban Điều Hành` (loại bỏ trùng lặp với bảng 7 vùng ngay phía trên).
+     - Gọt gọn Mục 2 Bước 3 (dòng 80), bỏ lặp câu `36.000 hợp đồng` ở dòng 213, đồng nhất dùng `công thức DAX` & `nền vàng kem dịu` ở Mục 8 và Mục 10.
+   - Cập nhật `docs/PIPELINE.md` từ thông số cũ (`100 DAX`, `Executive Orange`, `55` dòng `dim_report_detail`, `8.536` dòng `fct_asm_value`, Trang 4–5 bị đảo thứ tự) về đúng `90 công thức DAX`, `56` chỉ tiêu, `1.552` dòng `tmp_xh_step1_asm_avg`, `8.924` dòng `fct_asm_value`, `29` cột `v_xephang_asm`, bảng màu `#F7F3CE`/`#FFFFA0` và đúng thứ tự Trang 1–7.
+   - Kiểm chứng `check_int_pair.py` (`ok`), `check_toc.py` (`ok`), `push_check.py` (22 tệp hợp lệ, 0 liên kết gãy).
+
+359. **Sửa toàn bộ chỗ sai số liệu & chuốt lại văn phong thuần Việt tự nhiên cho `README.md` và `README_eng.md`**
+   - Đối chiếu dữ liệu thật tháng 5/2023 và sửa đồng bộ cả `README.md` + `README_eng.md`:
+     - Thay 3 tên giả & thứ hạng sai ở Mục 6 Phần C bằng đúng số liệu thật trên bảng xếp hạng (`Trần Văn Hải` `#28 → #33` rớt 5 bậc, `Nguyễn Thị Hằng` `#52 → #61` rớt 9 bậc, `Lê Văn An` `#55 → #62` rớt 7 bậc, còn `16/19` người tức `84%` bị đẩy xuống nhóm `#61–#84`).
+     - Đồng bộ `Hạng tổng thể`, cập nhật Kiến nghị 05 khớp với bước tách bán hàng cá nhân đã làm trên Trang 6.
+     - Gỡ các mã màu hex & tên hàm/bảng kỹ thuật rườm rà khỏi `README.md`/`README_eng.md` (giữ ở `docs/HIEN_TRANG_HE_THONG.md`), thay các cụm từ mang tính kỹ thuật/AI (`Wide`, `$\rightarrow$`, `Phạm vi · N quản lý`, `100% cá nhân`, `Nghịch lý`, `hình mẫu vận hành gọn`, `độ dày lợi nhuận`) sang tiếng Việt đời thường dễ hiểu.
+   - Kiểm chứng `check_int_pair.py` (`ok`), `check_toc.py` (`ok`), `push_check.py` (22 tệp hợp lệ, 0 liên kết gãy).
+
+358. **Rà soát và chuẩn hóa toàn bộ chỗ nhắc tên Trang 7 thành `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`**
+   - Sửa đồng nhất toàn bộ 5 vị trí gọi tắt/cũ tại `README.md` (dòng 80, 261), `README_eng.md` (dòng 80, 261) và `docs/PIPELINE.md` (dòng 87–88) về đúng `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`, kiểm chứng `Select-String "Trang 7|Page 7"` + `check_int_pair.py` / `check_toc.py` / `push_check.py`.
+
+357. **Chuẩn hóa đúng tên Trang 7 thành `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP` trong tài liệu**
+   - Bỏ chữ `VÀ ĐỀ XUẤT` dư thừa tại 5 vị trí (`README.md` dòng 244 & 287, `README_eng.md` dòng 244 & 287, `docs/HIEN_TRANG_HE_THONG.md` dòng 23) để khớp đúng `displayName` trang 7 trong `output/Ket qua kinh doanh va xep hang asm.pbix`.
+
+356. **Đồng bộ `README.md`, `README_eng.md` và `docs/HIEN_TRANG_HE_THONG.md` theo toàn bộ chỉnh sửa mới trên Power BI**
+   - Kiểm tra thực tế `output/Ket qua kinh doanh va xep hang asm.pbix` và model Power BI Desktop (12 bảng, 90 measure), cập nhật đầy đủ vào `README.md`, `README_eng.md` & `docs/HIEN_TRANG_HE_THONG.md`: nền canvas `#F7F3CE`, tiêu đề bảng P&L `#E8DF70`, thiết kế `#FFFFA0` & `ASM_Leaderboard_HTML` (1 khối, lưới dọc, 26 cột tiếng Việt, `Hạng tổng thể`, `QUY MÔ BÁN HÀNG`, `Năng suất bình quân`, số âm `#DC2626`, `(LŨY KẾ T01–T05/2023)`), nhãn `(Lũy kế T01–T05)` trên Trang 5/6/7, Slicer `dim_chon_vung[lua_chon]` có `Toàn hàng` tại Trang 4/5/6, và chỉnh phần tổng kết Trang 6/7 (`Hồ sơ được duyệt`, `7-region action plan`).
+   - Kiểm chứng `check_int_pair.py` (`ok`), `check_toc.py` (`ok`), `push_check.py` (22 tệp hợp lệ, 0 liên kết gãy).
+
+352. **Hoàn tất Slicer Khu Vực có tùy chọn `"Toàn hàng"` (`dim_chon_vung`) trên Trang 4, 5, 6**
+   - Người dùng đã gắn `dim_chon_vung[lua_chon]` thay thế cho `area_name` trên cả 3 Slicer Khu Vực (`25c08843`, `7011e357`, `bd547e51`), bỏ Slicer vùng thừa ở Trang 3 và lưu `output/Ket qua kinh doanh va xep hang asm.pbix`, kết hợp 3 measure `HASONEVALUE` + quan hệ Many-to-Many 1 chiều `v_baocao_tonghop[area_code]` -> `dim_chon_vung[area_code]`.
+
+355. **Tô đỏ `#DC2626` toàn bộ số âm trong `ASM_Leaderboard_HTML` (Trang 5)**
+   - Chạy `update_asm_lb_neg_red.py` bổ sung `_psdnColor`, `_apprColor`, `_nplColor`, `_cirColor`, `_marginColor`, `_hsbqColor` (`color:#DC2626;font-weight:800;` khi `< 0`) đồng bộ với `_ltnColor` & `_hsColor` và đẩy TOM (`TOM_SAVED_OK len=26059 ERR=`).
+   - Kiểm chứng ADOMD (`ADOMD_DNB_OK len=34764`) xác nhận `-16.2%` (`margin`), `-79.0%` (`hs_von`), `-3.251` (`hsbq_trieu_dong`) của `Đông Nam Bộ` hiển thị chữ đỏ `#DC2626` + duyệt ảnh `asm_lb_neg_dnb.png`.
+
+354. **Ghi rõ `(Lũy kế T01–TXX)` đồng bộ cho toàn bộ 8 measure tính lũy kế (Trang 5, Trang 6, Trang 7)**
+   - Chạy `update_all_ytd_labels.py` cập nhật 8 measure qua TOM (`TOM_SAVED_8_OK!`, 0 lỗi DAX):
+     - Trang 5 (`ASM_Leaderboard_HTML`): banner `★ BẢNG XẾP HẠNG QUẢN LÝ VÙNG (LŨY KẾ T01–T05/2023)` (tháng 1: `LŨY KẾ T01/2023`).
+     - Trang 6 (`ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`, `ASM_Block3_All_Regions_Radar_HTML_v2`, `Insight_DanhGiaHieuQua_HTML1`): badge `Tháng 05/2023 (Lũy kế T01–T05)` và thanh mốc chuẩn Khối 4 `... • T01–T05/2023`.
+     - Trang 7 (`Page5_Part1_KPICards_HTML`, `Page5_Part2_Waterfall_HTML`, `Page5_Part4_MatranHanhdong_HTML`): đồng bộ `vKyStr = "Lũy kế T01–T05/2023"` và nhãn `.period-tag` `Tháng 05/2023 (Lũy kế T01–T05)`.
+   - Kiểm chứng 24 phép đánh giá ADOMD (`ADOMD_ALL_24_OK!` qua T05/T02/T01) và duyệt 4 ảnh `ytd_p6_b1.png`, `ytd_p6_b3.png`, `ytd_p6_b4.png`, `ytd_p7_b4.png`.
+
+353. **Bổ sung kỳ lũy kế động vào tiêu đề banner `ASM_Leaderboard_HTML` (Trang 5)**
+   - Chạy `update_asm_lb_banner_ytd.py` đọc lại bản live từ Power BI Desktop (giữ nguyên các chỉnh sửa tay `Hạng tổng thể`, `QUY MÔ BÁN HÀNG`, `Năng suất bình quân`), bổ sung `_curMonthKey` / `_ytdLabel` hiển thị `★ BẢNG XẾP HẠNG QUẢN LÝ VÙNG (LŨY KẾ ĐẾN THÁNG MM/YYYY)` và đẩy TOM (`TOM_SAVED_OK len=25249 ERR=`).
+   - Kiểm chứng ADOMD qua tháng `202305` (`len05=117560`), tháng `202302` (`len02=104252`), lọc `"Đông Nam Bộ"` (`Tổng: 19 ASM`) và duyệt ảnh `asm_lb_banner_ytd.png`.
+
+### 2026-11-17
+
+351. **Việt hóa toàn bộ 26 tiêu đề cột & 3 dải nhóm của `ASM_Leaderboard_HTML` (Trang 5)**
+   - Chạy `update_asm_lb_vi_headers.py` cập nhật `ASM_Leaderboard_HTML` qua TOM (`TOM_SAVED_OK len=24742`):
+     - Đổi 3 dải nhóm thành `THÔNG TIN CHUNG`, `QUY MÔ BÁN HÀNG & RỦI RO`, `TÀI CHÍNH (THEO VÙNG)` (cố định `height: 52px` khớp `top: 52px`).
+     - Dịch toàn bộ 18 biến snake_case/tiếng Anh (`rank_final` → `Hạng chung cuộc`, `ltn_avg` → `Doanh số mở thẻ BQ`, `psdn_avg` → `Khách có dư nợ BQ`, `approval_rate_avg` → `Tỷ lệ duyệt thẻ BQ`, `npl_truoc_wo_luy_ke` → `Nợ xấu trước WO`, `cir` → `Chi phí / Thu nhập (CIR)`, `margin` → `Biên lợi nhuận`, `hs_von` → `Sinh lời trên vốn`, `hsbq_nhan_su` → `Năng suất BQ / Người`, `Điểm FIN` → `Điểm Tài Chính`, cùng toàn bộ các cột `Hạng ...` và `Email` → `Quản lý / Email`).
+     - Sửa lỗi nhãn đơn vị cột `psdn_avg` từ `trđ/thẻ` sang `khách`, ghi chú `% · theo vùng` dưới cột Nợ xấu, và bật `white-space: normal` để tiêu đề 2–3 dòng gọn không bị cắt chữ.
+   - Kiểm chứng ADOMD (`ADOMD_OK html_len=120785`), khẳng định không còn tên cột snake_case cũ trong `<thead>`, duyệt ảnh `asm_lb_vi_left.png` & `asm_lb_vi_full.png` và đồng bộ `README.md` / `docs/HIEN_TRANG_HE_THONG.md`.
+
+350. **Thêm đường kẻ dọc (vertical grid) cho `ASM_Leaderboard_HTML` (Trang 5)**
+   - Chạy `update_asm_lb_vgrid.py` cập nhật `ASM_Leaderboard_HTML` qua TOM (`TOM_SAVED_OK len=24379`): thêm `border-right: 1px solid #C8BC58` cho `.lb-th`, `border-right: 1px solid #E4DA8A` cho các ô dữ liệu `.lb-c`, `.lb-c-rk`, `.lb-l`, `.lb-r`, nâng độ ưu tiên vạch phân nhóm `.lb-table .lb-sep` (`2.5px solid #999900`) và bỏ viền phải ở cột cuối `.lb-table th:last-child, .lb-table td:last-child`.
+   - Kiểm chứng ADOMD (`ADOMD_OK html_len=120512` tháng `202305`) và duyệt ảnh `asm_lb_vgrid.png`.
+
+349. **Thiết kế `ASM_Leaderboard_HTML` (Trang 5) liền thành 1 khối thống nhất**
+   - Gộp `.lb-banner` và `.lb-table-box` vào chung 1 card `.lb-wrap` có `border: 2px solid #999900`, `border-radius: 10px`, `overflow: hidden`, `background: #FFFFFF`; gỡ bỏ viền/bo góc/`margin-bottom: 10px` tách đôi giữa banner và bảng, đồng thời bổ sung thẻ đóng `</span>` ở `.lb-banner-tag`.
+   - Đẩy qua TOM (`ASM_Leaderboard_HTML` độ dài `24005`), kiểm chứng ADOMD và duyệt ảnh `asm_lb_ffffa0.png`.
+
+348. **Chỉnh lại thiết kế màu sắc 3 trang bảng (`Trang 2 Từ điển dữ liệu`, `Trang 3 Lãi lỗ lũy kế vùng`, `Trang 5 Báo cáo xếp hạng ASM`) lấy `#FFFFA0` làm tông chủ đạo**
+   - Viết và chạy `update_palette_ffffa0.py` cập nhật **23 measure DAX** qua TOM (`Data Glossary[Data_Glossary_HTML]`, `ASM_Leaderboard_HTML`, 11 `PnlTable_BgColor_*` và 10 `PnlTable_FontColor_*`):
+     - Trang 2 (`Data_Glossary_HTML`): header bảng `#FFFFA0` chữ `#25251F`, nhóm cấp 1 `#FFFFB5`, cấp 2 `#FFFFD6`, dòng chi tiết `#FFFFFF`/`#FFFFF5`, cell nhấn `#FFFFA0`, viền `#999900`.
+     - Trang 3 (`21 PnlTable_*`): dòng LNTT `sort_order = 30` tô `#FFFFA0` chữ `#25251F`; tổng cấp 1 `{220, 230}` tô `#FFFFC2`; nhóm cấp 2 `{40, 100, 150, 280}` tô `#FFFFD9`; nhóm `{290, 300}` tô `#FFFFEE`; dòng chi tiết trắng `#FFFFFF` (`Total` `#FFFFF5`), giữ nguyên chữ Hội sở `#253659`, số âm `#DC2626`, số 0 `#858500`. Ghi chú: màu nền tiêu đề cột native `#E0E004` nằm trong `visual.json` của file `.pbix`, không sửa được qua TOM khi Power BI Desktop đang mở.
+     - Trang 5 (`ASM_Leaderboard_HTML`): banner `#FFFFA0` → `#FFF799`, group header `#FFFFA0`/`#FFFFBA`, cột `Tổng điểm` & huy hiệu `#1` `#FFFFA0`, top 1–3 `#FFFFB5`/`#FFFFE2`, chữ `#25251F`, giữ nguyên xanh `#16A34A` / đỏ `#DC2626`.
+   - Kiểm chứng TOM (`SaveChanges succeeded (23 measures)!`), ADOMD (32 dòng P&L tháng 202305 + HTML Trang 2 & Trang 5) và duyệt ảnh `glossary_ffffa0.png`, `asm_lb_ffffa0.png`, `pnl_table_ffffa0.png`.
+   - Đồng bộ mô tả màu trong `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+347. **Gộp Khối 4 (`Insight_DanhGiaHieuQua_HTML1`) thành 1 khối thống nhất đồng bộ Khối 1–3**
+   - Bọc thanh tiêu đề (có đường kẻ phân cách + cặp badge vàng `#FFFF00`), thanh Mốc chuẩn phân nhóm và lưới 2×2 bốn thẻ nhóm vào chung một card trắng lớn (`border: 1.5px solid #CCCC00; border-top: 5px solid #858500; border-radius: 14px`) y hệt ngôn ngữ thiết kế Khối 3.
+   - Đẩy Power BI Desktop (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML payloads, duyệt ảnh `page6_v2_t5.png` & `page6_v2_t5_H.png` và chạy đủ `check_int_pair.py`, `check_toc.py`, `push_check.py`.
+
+346. **Bỏ pill `Đạt: ≥ ...` ở thanh Mốc chuẩn và đổi nhãn `(LỌC HỒ SƠ)` → `(CHƯA CHỌN LỌC)` trên Khối 4 (`Insight_DanhGiaHieuQua_HTML1`)**
+   - Xoá 2 badge lặp `Đạt: ≥ ...` trên thanh Mốc chuẩn phân nhóm, căn chỉnh lại 2 hộp mốc chuẩn (`border-left: 5px solid #858500`, `30px` số chuẩn, `17.5px` nhãn) cho thoáng và cân đối, đồng thời đổi tên nhóm 2 sang `NHÓM BÁN TỐT - DUYỆT THẤP (CHƯA CHỌN LỌC)` dựa trên dữ liệu thực (`304.5` hồ sơ nộp/tháng, rớt `~65%`).
+   - Đẩy Power BI Desktop (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML payloads, duyệt ảnh `page6_v2_t5.png` và đồng bộ `README.md`, `README_eng.md`.
+
+345. **Mở rộng chiều cao bố cục và phóng to toàn bộ chữ Khối 4 (`Insight_DanhGiaHieuQua_HTML1`) Trang 6**
+   - Nới padding/gap của Khối 4 để lấp đầy chiều cao khung `1005px` trên Power BI Desktop và phóng to đồng bộ toàn bộ cỡ chữ: tiêu đề chính `28px` + badge `21px`, thanh Mốc chuẩn (`22.5px` tiêu đề, `20px` mô tả, `18px` nhãn, `29px` số chuẩn, `19px` pill), 4 thẻ nhóm (`25px` tiêu đề nhóm, `35px/21.5px` số lượng, `22px` điều kiện, `21.5px` nhãn KPI, `39px` số KPI, `20px` dòng so sánh, `22px` *Việc cần làm*).
+   - Đẩy Power BI Desktop qua TOM (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML payloads, duyệt ảnh `page6_v2_t5.png` & `page6_v2_t5_H.png` và chạy `check_int_pair.py`, `check_toc.py`, `push_check.py`.
+
+344. **Tăng cỡ chữ các thành phần nhỏ trên Khối 4 (`Insight_DanhGiaHieuQua_HTML1`) Trang 6**
+   - Tăng `+2..3.5px` các chữ nhỏ trong thanh Mốc chuẩn (`13.5px -> 16.5px` nhãn chuẩn, `15px -> 17.5px` pill đạt chuẩn, `16.5px -> 18.5px` mô tả, `19.5px -> 21px` tiêu đề chuẩn, `24px -> 27px` số chuẩn) và trong 4 thẻ nhóm (`15.5px -> 18.5px` dòng so sánh chênh lệch, `18px -> 20px` nhãn chỉ số, `18.5px -> 20.5px` mô tả điều kiện, `19.5px -> 20.5px` Việc cần làm, `22px -> 23.5px` tiêu đề nhóm, `34px -> 36px` số chính), giữ nguyên tên nhóm `NHÓM BÁN KÉM - DUYỆT CAO (TIỀM NĂNG)` trên model live.
+   - Đẩy Power BI Desktop (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML payloads, duyệt ảnh `page6_v2_t5.png` & `page6_v2_t5_H.png` và đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+343. **Bỏ dòng Lãi/Lỗ ở cột Khu vực và tăng cỡ chữ bảng 7 vùng (`Page5_Part4_MatranHanhdong_HTML`)**
+   - Xoá `.area-pnl` dưới tên từng vùng trong cột Khu vực, mở nhẹ độ rộng cột `Thực trạng hiện tại` (`30.5%`) & `Mục tiêu hướng tới` (`21.5%`) và tăng cỡ chữ bảng lên `+3..4px` (`th 22.5px`, `td 21px`, `.area-name 24px`, `.badge-pri 20.5px`, `.impact-main 22px`, `.impact-sub 19.5px`) trong `update_page7_v3.py`.
+   - Đẩy Power BI Desktop (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 20 HTML payloads, duyệt ảnh `page7_v3_t5.png` & `page7_v3_t1.png` xác nhận vừa khít `830px` và chạy đủ `check_int_pair.py`, `check_toc.py`, `push_check.py`.
+
+342. **Bổ sung đầy đủ 7 vùng vào `Page5_Part4_MatranHanhdong_HTML` trên Trang 7**
+   - Thêm 2 vùng còn thiếu (`Tây Bắc Bộ`, `Đông Bắc Bộ`) bên cạnh 5 vùng hiện có trong `update_page7_v3.py`, sắp theo thứ tự ưu tiên `Khẩn cấp -> Ưu tiên -> Theo dõi -> Duy trì / Nhân rộng` và co padding gọn vào khung `830px`.
+   - Đẩy Power BI Desktop qua TOM (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 20 HTML payloads (`202305..202301`), duyệt ảnh `page7_v3_t5.png` & `page7_v3_t1.png` và đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+341. **Nâng cấp Khối 4 (`Insight_DanhGiaHieuQua_HTML1`) sang 2 trục cá nhân (`Doanh số mở thẻ × Tỷ lệ duyệt thẻ`) có thanh Mốc chuẩn phân nhóm**
+   - Tính 2 mốc bình quân lũy kế YTD toàn hàng (`_avg_ltn`, `_avg_appr`), trình bày thành thanh **Mốc chuẩn phân nhóm** ngay dưới tiêu đề (ví dụ T05/2023: `2,141 Tr.đ` | `42.8%`; T02/2023: `986 Tr.đ` | `41.8%`), hiển thị chênh lệch so với chuẩn trong từng thẻ nhóm và chia 4 nhóm 100% cá nhân (`22 – 12 – 14 – 36` toàn hàng T05/2023; `2 – 2 – 4 – 11` Đông Nam Bộ).
+   - Cập nhật qua TOM (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML payloads, duyệt ảnh `page6_v2_t5.png`, `page6_v2_t5_H.png`, `page6_v2_t2.png` và đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+340. **Thay trục `Doanh số mỗi khách` bằng `Hồ sơ được duyệt` (`App Approved` YTD) và đồng bộ tiêu đề Khối 4 Trang 6**
+   - Bổ sung mã chỉ tiêu `223` (`App approved binh quan YTD`) qua `dim_report_detail` (56 dòng) → `sp_xh_step1_asm_avg` (`tmp_xh_step1_asm_avg` 1.552 dòng) → `sp_xephang_asm` (`fct_asm_value` 8.924 dòng, giữ nguyên 100% điểm số & thứ hạng `201..222`) → `v_xephang_asm` (29 cột, thêm `app_approved_avg`).
+   - Thêm cột `app_approved_avg` vào `'banking_project v_xephang_asm'` trong Power BI TOM + Refresh (`388` dòng, bình quân T05 = `105.07`), cập nhật `ASM_Block1..3_Selected_Radar_HTML_v2` (mở rộng `viewBox` trái để nhãn `HỒ SƠ ĐƯỢC DUYỆT` không bị cắt chữ `Đ`) và nâng cấp tiêu đề + 2 badge vàng tách biệt cho Khối 4 (`Insight_DanhGiaHieuQua_HTML1`).
+   - Kiểm chứng 16 HTML payloads (`0` lỗi), duyệt ảnh `page6_v2_t5.png` và `page6_v2_t5_H.png`, đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+339. **Đồng bộ màu vàng sáng (`#FFFF00`) cho toàn bộ ô tháng trên Trang 6 & Trang 7**
+   - Chuyển `.badge-month` (`ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`, `ASM_Block3_All_Regions_Radar_HTML_v2` trên Trang 6) và `.period-tag` (`Page5_Part2_Waterfall_HTML`, `Page5_Part4_MatranHanhdong_HTML` trên Trang 7) sang nền `#FFFF00`, viền `2px solid #858500`, chữ `#25251F`, `font-weight: 900` đồng bộ với ô khu vực/toàn hàng.
+   - Đã biên dịch, đẩy lên Power BI Desktop qua TOM (`SaveChanges succeeded!`), kiểm tra `0` lỗi trên 16 HTML Trang 6 + 20 HTML Trang 7 và duyệt trực quan `page6_v2_t5.png`, `page7_v3_t5.png`.
+
+338. **Bỏ chỉ số `Tỷ lệ nợ xấu` khỏi Khối 3 (`ASM_Block3_All_Regions_Radar_HTML_v2`) và đồng bộ 4 trục cá nhân (`Doanh số mỗi khách = LTN / PSDN`)**
+   - Cập nhật `DAX_BLOCK3` trong `scratch/update_page6_v1.py` và đẩy lên Power BI Desktop (`SaveChanges succeeded!`):
+     - Đổi trục trái SVG, thẻ KPI thứ 4 (`DOANH SỐ MỖI KHÁCH BÌNH QUÂN`), bảng tổng hợp vùng `_vungSummary` (`_best_val4_vung`) và dòng điểm nhấn 3 từ `Nợ xấu (npl)` sang `LTN / PSDN` (`tr/khách`, thang `/ 35.0`, cao hơn bình quân tô xanh `#16A34A` / thấp hơn tô đỏ `#DC2626`).
+   - Đã chạy `py_compile`, kiểm tra ADOMD qua 4 bối cảnh (`202305`, `202304`, `202302`, `202305_H` — `16` HTML `0` lỗi), kiểm chứng trực quan qua `page6_v2_t5.png` (`22.5 tr/khách`, cao nhất Tây Nam Bộ `27.8 tr/khách`), `page6_v2_t5_H.png` (Đông Nam Bộ `22.6 tr/khách`, `▲ +0.5% so với toàn hàng`), `page6_v2_t2.png` (`13.6 tr/khách`, cao nhất Tây Bắc Bộ `20.4 tr/khách`), và đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
+337. **Khóa Khối 1 & Khối 2 Trang 6 theo Toàn hàng và thay trục `Tỷ lệ nợ xấu` (vùng) bằng chỉ số cá nhân `Doanh số mỗi khách (LTN / PSDN)`**
+   - Cập nhật `scratch/update_page6_v1.py` và đẩy 2 measure (`ASM_Block1_Top3_Selected_Radar_HTML_v2`, `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`) lên Power BI Desktop (`localhost:52763`, `SaveChanges succeeded!`):
+     - Khóa cố định Khối 1 (`TOP 3 QUẢN LÝ VÙNG DẪN ĐẦU (TOÀN HÀNG)`) và Khối 2 (`3 QUẢN LÝ VÙNG CUỐI BẢNG (TOÀN HÀNG)`) theo `_allTable` của `Tháng` đang chọn, bỏ lọc `Khu Vực` để không bị trùng nhân sự tại các vùng ít người (`5` ASM ở Bắc Trung Bộ, Nam Trung Bộ).
+     - Thay chỉ số & trục thứ 4 từ `Nợ xấu` (cấp vùng) sang `LTN / PSDN` (`DOANH SỐ MỖI KHÁCH`, đơn vị `tr/khách`, thang Radar `/ 35.0`, cao hơn bình quân tô xanh `#16A34A` / thấp hơn tô đỏ `#DC2626`).
+     - Giữ nguyên Khối 3 & Khối 4 lọc theo `Khu Vực` và vẫn theo dõi `Nợ xấu vùng` đúng cấp dữ liệu.
+   - Đã chạy `py_compile`, kiểm tra ADOMD qua 4 bối cảnh (`202305`, `202304`, `202302`, `202305_H` — `16` HTML `0` lỗi), kiểm chứng trực quan qua `page6_v2_t5.png`, `page6_v2_t5_H.png`, `page6_v2_t2.png` (T05: Hoàng Văn Nam `#1` đạt `25.7 tr/khách` vs bình quân `22.5 tr/khách`; Hoàng Văn Lợi `#84` đạt `10.5 tr/khách`), và đồng bộ `README.md`, `README_eng.md`, `docs/HIEN_TRANG_HE_THONG.md`.
+
 ### 2026-11-16
+
+336. **Thêm 2 chữ số thập phân cho bảng `banking_project v_baocao_pnl_excel_pivoted` (đơn vị triệu đồng)**
+   - Cập nhật Power Query M của phân vùng bảng `banking_project v_baocao_pnl_excel_pivoted` trên Power BI Desktop (`localhost:58919`) từ `Number.Round(Record.Field(_, colName) / 1000000, 0)` sang `Number.Round(Record.Field(_, colName) / 1000000, 2)` để giữ 2 chữ số thập phân khi quy đổi sang triệu đồng.
+   - Đổi `FormatString` của cả 9 cột số liệu (`HỘI SỞ (Phân Bổ)`, 7 vùng kinh doanh, `Tổng`) từ `#,##0` sang `#,##0.00` và chạy làm mới toàn phần (`RequestRefresh(Full)` + `SaveChanges()`, `SAVE_WITH_REFRESH_OK`).
+   - Đã đối chiếu qua ADOMD: `LNTT 202302` cột `Tổng` = `92,226.35`; `LNTT 202305` cột `Tổng` = `250,450.06` (`HỘI SỞ` `-365,780.75`, `Đông Bắc Bộ` `13,805.98`, `Nam Trung Bộ` `50,036.27`); `Hiệu suất BQ/ Nhân sự` = `3,430.82`; `CIR (%)` = `17.37`.
+
+335. **Sửa logic lấy và hiển thị thứ hạng toàn hàng (`rank_final`) cho `ASM_Block1_Top3_Selected_Radar_HTML_v2` và `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`**
+   - Chỉnh `scratch/update_page6_v1.py` tự động dò cổng `msmdsrv.exe` đang chạy (`localhost:61075`) thay cho cổng gán cứng.
+   - Sửa `ASM_Block1_Top3_Selected_Radar_HTML_v2`: bỏ chữ gán cứng `Hạng 1`, `Hạng 2`, `Hạng 3` ở 3 nút tab, thanh trạng thái `Đang xem` và chú thích radar; đổi nguồn sắp xếp sang `rank_final` (`Tổng hạng` toàn hàng) kèm biến `_t1_rank`, `_t2_rank`, `_t3_rank` (ví dụ khi lọc **Đông Nam Bộ** tháng `202305` hiển thị đúng `Hạng 24 • Lê Văn Bình`, `Hạng 33 • Trần Văn Hải`, `Hạng 36 • Trần Văn Anh`).
+   - Đồng bộ sửa `ASM_Block2_Bottom3_Selected_Radar_HTML_v2`: đổi cột xếp hạng và hiển thị từ `rank_ptkd` sang `rank_final` (ví dụ ở **Đông Nam Bộ** hiển thị `Hạng 84`, `Hạng 83`, `Hạng 82` khớp bảng Trang 5 thay vì `Hạng 81`).
+   - Đã chạy `py_compile`, cập nhật lên Power BI Desktop (`SaveChanges succeeded!`), kiểm tra ADOMD qua `4` bối cảnh chính (`16` HTML, `0` lỗi) + đủ `7` vùng tháng `202305` và đối chiếu trực quan qua `page6_v2_t5.png`, `page6_v2_t5_H.png`.
 
 334. **Giữ duy nhất 1 tệp `.pbix` trong `output/` và chuẩn hóa mô tả commit GitHub thành `"Add files via upload"`**
    - Đưa `output/Pure_Yellow_Improved_Theme.json` vào `NEVER_PUSH` trong `.staging/push_check.py` để thư mục `output/` trên GitHub chỉ giữ duy nhất 1 tệp báo cáo Power BI (`output/Ket qua kinh doanh va xep hang asm.pbix`, tổng `22` tệp toàn kho).

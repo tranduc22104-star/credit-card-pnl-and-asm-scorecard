@@ -30,7 +30,7 @@ Tài liệu này mô tả chi tiết kiến trúc luồng dữ liệu của hệ
 │ │                                │     │                 ▼                     │     │                   │ │
 │ │                                │     │ • BƯỚC 3: ĐẦU RA VIEW (Schema rpt)    │     │ (Tổng 7 trang PBI │ │
 │ │                                │     │   v_baocao_tonghop                    │     │  + Từ điển 68 chỉ │ │
-│ │                                │     │   v_xephang_asm                       │     │  tiêu + 100 DAX)  │ │
+│ │                                │     │   v_xephang_asm                       │     │  tiêu + 90 DAX)   │ │
 │ │                                │     │   v_baocao_pnl_excel_pivoted          │     │                   │ │
 │ └────────────────────────────────┘     └───────────────────────────────────────┘     └───────────────────┘ │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -57,35 +57,35 @@ Triển khai trong schema `banking_project` (**19 bảng · 3 view · 11 thủ t
    - `dim_area.sql`: Dựng `dim_area` (8 vùng từ `'A'` đến `'H'`) và `dim_param_area` (64 tỉnh thành quy về 8 vùng).
    - `dim_month_headcount.sql`: Dựng trục tháng `dim_month` (5 dòng), trục ngày `dim_date` (151 dòng), bảng định biên `dim_sm_headcount` (35 dòng) và thủ tục `sp_load_dim()`.
    - `dim_asm.sql`: Dựng `dim_asm` (84 quản lý vùng).
-   - `dim_report_detail.sql`: Dựng cây chỉ tiêu `dim_report_detail` (**55 dòng** gồm 33 chỉ tiêu/tiêu đề P&L và 22 chỉ tiêu Xếp hạng ASM).
+   - `dim_report_detail.sql`: Dựng cây chỉ tiêu `dim_report_detail` (**56 dòng** gồm 33 chỉ tiêu/tiêu đề P&L và 23 chỉ tiêu Xếp hạng ASM).
 2. **Tính toán qua 6 bảng tạm 3 bước (`sql/tmp/`)**:
    - `tmp_pnl_step.sql`: Khai báo 3 bảng tạm dạng dọc `tmp_pnl_step1..3` (`tmp_pnl_step1_driver` 315 dòng, `tmp_pnl_step2_ratio` 560 dòng, `tmp_pnl_step3_gl_split` 535 dòng) và 3 thủ tục bước `sp_pnl_step1..3`.
-   - `tmp_xh_step.sql`: Khai báo 3 bảng tạm dạng dọc `tmp_xh_step1..3` (`tmp_xh_step1_asm_avg` 1.164 dòng, `tmp_xh_step2_npl_area` 105 dòng, `tmp_xh_step3_fin_area` 315 dòng) và 3 thủ tục bước `sp_xh_step1..3`.
+   - `tmp_xh_step.sql`: Khai báo 3 bảng tạm dạng dọc `tmp_xh_step1..3` (`tmp_xh_step1_asm_avg` 1.552 dòng, `tmp_xh_step2_npl_area` 105 dòng, `tmp_xh_step3_fin_area` 315 dòng) và 3 thủ tục bước `sp_xh_step1..3`.
 3. **Tổng hợp bảng sự kiện và ghi nhật ký (`sql/fct/`)**:
    - `fct_pnl_allocation.sql`: Tạo bảng nhật ký `log_proc_run`, bảng sự kiện `fct_pnl_value` (1.115 dòng) và thủ tục `sp_baocao_tonghop(p_month)`.
-   - `fct_xephang_asm.sql`: Tạo bảng sự kiện `fct_asm_value` (8.536 dòng) và thủ tục `sp_xephang_asm(p_month)`.
+   - `fct_xephang_asm.sql`: Tạo bảng sự kiện `fct_asm_value` (8.924 dòng) và thủ tục `sp_xephang_asm(p_month)`.
    - `sp_pipeline.sql`: Tạo 2 thủ tục điều phối tổng `sp_run_pipeline(p_month_key)` và `sp_run_all_months()` tự động chạy trọn vẹn cả 5 tháng (`202301..202305`), ghi nhận lịch sử vào `log_proc_run` (208 dòng, 0 dòng `FAIL`).
 
 #### Bước 3 — Đầu ra View báo cáo (`sql/rpt/`):
 Khởi tạo **3 View báo cáo sạch** trong schema `banking_project` để Power BI kết nối trực tiếp:
 1. `v_baocao_tonghop` (`sql/rpt/rpt_pnl_view.sql` — 35 dòng, 32 cột, đơn vị triệu đồng, lọc `area_code <> 'A'` kèm cột `sort` 1..7).
-2. `v_xephang_asm` (`sql/rpt/rpt_xephang_view.sql` — 388 dòng, 28 cột, kèm cột `sort` theo thứ hạng chung cuộc `rank_final` 1..84).
-3. `v_baocao_pnl_excel_pivoted` (`sql/rpt/rpt_pnl_excel_pivoted_view.sql` — 160 dòng = 32 dòng chỉ tiêu P&L × 5 tháng, trải ngang 10 cột hiển thị khớp 100% bảng tổng hợp Trang 3 `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` trên Power BI).
+2. `v_xephang_asm` (`sql/rpt/rpt_xephang_view.sql` — 388 dòng, 29 cột gồm `app_approved_avg`, kèm cột `sort` theo thứ hạng `rank_final` 1..84).
+3. `v_baocao_pnl_excel_pivoted` (`sql/rpt/rpt_pnl_excel_pivoted_view.sql` — 160 dòng = 32 dòng chỉ tiêu P&L × 5 tháng, trải ngang 10 cột hiển thị khớp 100% bảng tổng hợp Trang 3 `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` trên Power BI).
 
-### Giai Đoạn 3: Trực Quan Các Báo Cáo (Power BI — Executive Orange Theme)
-- Tệp `output/Bao cao quan tri va phan tich (Ngan Hang).pbix` kết nối vào PostgreSQL, vận hành **100 measure DAX** (bao gồm bộ measure tính chỉ số KPI, bộ 21 measure định dạng có điều kiện màu nền `PnlTable_BgColor_*` & màu chữ `PnlTable_FontColor_*` cho từng cột bảng P&L vùng, và các visual HTML Content cỡ chữ lớn) cùng bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa**).
-- Hệ thống gồm **7 trang báo cáo** đồng bộ theo bảng màu **Executive Orange / Orange Tree**:
+### Giai Đoạn 3: Trực Quan Các Báo Cáo (Power BI — Pure Yellow / Nền Vàng Kem Dịu)
+- Tệp `output/Ket qua kinh doanh va xep hang asm.pbix` kết nối trực tiếp vào PostgreSQL (`DirectQuery`), vận hành **90 công thức DAX** (89 trong `'LAI LO (Visuals & DAX)'` + 1 trong `'Data Glossary'`, gồm bộ 21 công thức tô màu `PnlTable_BgColor_*` & `PnlTable_FontColor_*` cho bảng P&L vùng và các visual HTML Content cỡ chữ lớn) cùng bảng `Data Glossary` (**68 chỉ tiêu nghiệp vụ chuẩn hóa**) và bảng lọc `dim_chon_vung` (**14 dòng** có tùy chọn `Toàn hàng` cho Slicer Trang 4, 5, 6).
+- Hệ thống gồm **7 trang báo cáo** đồng bộ trên nền vàng kem dịu (`#F7F3CE`, điểm nhấn `#FFFFA0`, chữ `#25251F`, xanh `#16A34A`, đỏ `#DC2626`):
   1. **2 Trang Nền Tảng**:
-     - Trang 1: `GIỚI THIỆU ĐỀ TÀI` (Tổng quan bối cảnh, 3 nguồn dữ liệu đầu vào, quy trình xử lý kỹ thuật 3 giai đoạn và 4 dashboard đầu ra).
+     - Trang 1: `GIỚI THIỆU ĐỀ TÀI` (Tổng quan bối cảnh, 3 nguồn dữ liệu đầu vào, quy trình xử lý kỹ thuật 3 giai đoạn và 4 nhóm báo cáo đầu ra).
      - Trang 2: `TỪ ĐIỂN DỮ LIỆU` (Ánh xạ chuẩn hóa 68 chỉ tiêu sang thuật ngữ nghiệp vụ ngân hàng).
-  2. **2 Bản Báo Cáo Tra Cứu & Tổng Hợp**:
-     - Trang 3: `BÁO CÁO KẾT QUẢ KINH DOANH VÙNG` (*Chứa* 32 chỉ tiêu tài chính P&L *để* tra cứu và đối soát số liệu của 7 vùng và Hội sở, tự động phân cấp dòng nền tối chữ sáng `#FFFFFF`/`#FECACA` và dòng chi tiết nền sáng chữ đậm `#0F172A`/`#DC2626`).
-     - Trang 4: `BÁO CÁO XẾP HẠNG ASM` (*Chứa* bảng điểm xếp hạng 84 ASM *để* khen thưởng cá nhân xuất sắc và chấn chỉnh nhân sự yếu).
-  3. **2 Bản Báo Cáo Trực Quan Hoá Đánh Giá**:
-     - Trang 5: `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` (*Chứa* biểu đồ cơ cấu thu – chi – dự phòng *để* so sánh hiệu quả sinh lời giữa 7 vùng).
-     - Trang 6: `ĐÁNH GIÁ HIỆU SUẤT ASM` (*Chứa* biểu đồ tương quan doanh số bán hàng và nợ xấu NPL *để* nhận diện các ASM đánh đổi rủi ro lấy quy mô).
-  4. **1 Bản Kết Quả Kinh Doanh Toàn Quốc**:
-     - Trang 7: `KẾT QUẢ KINH DOANH TOÀN QUỐC` (Khổ canvas `1920x2250` với cỡ chữ lớn sắc nét 19px – 48px: 4 thẻ KPI điều hành, Biểu đồ Thác nước đóng góp LNTT 7 vùng 250,5 tỷ đồng, Bóc tách nghịch lý cơ chế phạt vùng Đông Nam Bộ làm 84% quản lý tụt hạng, và Bảng hành động điều hành 5 địa bàn kèm tác động định lượng).
+  2. **2 Bản Báo Cáo Tra Cứu & Đánh Giá Hiệu Quả Vùng**:
+     - Trang 3: `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` (*Chứa* 32 chỉ tiêu tài chính P&L lũy kế của 7 vùng và Hội sở đặt cạnh nhau để đối soát trực tiếp, header vàng hổ phách dịu `#E8DF70`, dòng LNTT `#FFFFA0`).
+     - Trang 4: `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` (5 thẻ KPI tách rõ phát sinh tháng và lũy kế, thác nước tháng, bong bóng Lợi nhuận vs CIR, xu hướng theo tháng và khung nhận xét động lọc theo Slicer `Toàn hàng` / từng vùng).
+  3. **2 Bản Báo Cáo Xếp Hạng & Đánh Giá Năng Lực ASM**:
+     - Trang 5: `BÁO CÁO XẾP HẠNG ASM` (Bảng 26 cột Việt hóa toàn bộ của 74–84 ASM trong 1 khối liền mạch có lưới dọc, banner kèm kỳ động `(LŨY KẾ T01–T05/2023)`, số âm tô đỏ `#DC2626`, lọc theo `Toàn hàng` hoặc từng vùng).
+     - Trang 6: `ĐÁNH GIÁ NĂNG LỰC ASM` (4 khối Radar & phân nhóm bán hàng cá nhân đều gắn nhãn `(Lũy kế T01–T05)`: Top 3 Dẫn đầu & 3 người Cuối bảng khóa toàn hàng, Năng lực Toàn hàng / Theo vùng, và Khối phân nhóm 4 loại `Doanh số mở thẻ × Tỷ lệ duyệt thẻ`).
+  4. **1 Bản Kết Quả Kinh Doanh Toàn Hàng**:
+     - Trang 7: `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP` (Khổ canvas `1920x2350`: 4 thẻ KPI điều hành, Biểu đồ Thác nước cấu trúc LNTT toàn hàng 250,5 tỷ đồng, thẻ nổi bật 3 vùng và Bảng kế hoạch hành động 7 địa bàn gắn đồng bộ nhãn `(Lũy kế T01–T05)`).
 
 ---
 

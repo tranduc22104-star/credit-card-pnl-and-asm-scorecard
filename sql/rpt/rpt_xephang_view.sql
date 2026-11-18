@@ -2,7 +2,7 @@
 -- VIEW BÁO CÁO XẾP HẠNG QUẢN LÝ KHU VỰC ASM (v_xephang_asm)
 -- Vị trí trong quy trình: Giai đoạn 2 - Bước 3 (Đầu ra View báo cáo sạch cho Power BI Import).
 -- Vai trò:
---   - Xoay ngang 22 mã chỉ tiêu từ bảng sự kiện dọc (fct_asm_value) thành 22 cột điểm số,
+--   - Xoay ngang 23 mã chỉ tiêu từ bảng sự kiện dọc (fct_asm_value) thành 23 cột điểm số,
 --     thứ hạng và hiệu suất của từng Quản lý khu vực (tổng cộng 388 dòng qua 5 tháng).
 --   - Kết nối với bảng dim_asm và dim_area để hiển thị đầy đủ Họ tên, Email, Mã vùng và Tên vùng.
 --   - Quy đổi Doanh số cho vay mới (ltn_trieu_dong) và Hiệu suất bình quân nhân sự (hsbq_trieu_dong)
@@ -29,6 +29,7 @@ SELECT
     MAX(f.value) FILTER (WHERE f.report_id = 202)            AS psdn_avg,
     MAX(f.value) FILTER (WHERE f.report_id = 206)            AS rank_psdn,
     MAX(f.value) FILTER (WHERE f.report_id = 203)            AS approval_rate_avg,
+    MAX(f.value) FILTER (WHERE f.report_id = 223)            AS app_approved_avg,
     MAX(f.value) FILTER (WHERE f.report_id = 207)            AS rank_approval,
     MAX(f.value) FILTER (WHERE f.report_id = 204)            AS npl,
     MAX(f.value) FILTER (WHERE f.report_id = 208)            AS rank_npl,

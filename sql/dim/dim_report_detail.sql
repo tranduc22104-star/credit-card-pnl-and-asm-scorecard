@@ -73,8 +73,8 @@ VALUES
     -- Chỉ tiêu trung gian H (mã 80 = Thu nhập thẻ B + DT Kinh doanh D3), dùng làm mẫu số tính Margin (mã 92)
     ('PNL', 80,  'Tổng doanh thu (H = B + D3)',                                -1, 999, 'VND');
 
--- 02. NHÓM 'XH' — 22 mã chỉ tiêu đánh giá và xếp hạng Quản lý vùng (ASM)
--- Chia làm 2 trụ cột: Trụ cột Quy mô phát triển kinh doanh (201..210) và Trụ cột Tài chính vùng (211..220),
+-- 02. NHÓM 'XH' — 23 mã chỉ tiêu đánh giá và xếp hạng Quản lý vùng (ASM)
+-- Chia làm 2 trụ cột: Trụ cột Quy mô phát triển kinh doanh (201..210 + 223 chỉ tiêu phân tích) và Trụ cột Tài chính vùng (211..220),
 -- kết thúc bằng Tổng điểm (221) và Hạng tổng kết toàn hàng (222).
 INSERT INTO dim_report_detail
     (report_group, report_id, report_name, parent_id, sort_order, unit)
@@ -84,6 +84,7 @@ VALUES
     ('XH', 202, 'PSDN binh quan YTD',           -1,  30, 'count'),
     ('XH', 206, 'Rank PSDN',                    209,  40, 'rank'),
     ('XH', 203, 'Ty le duyet binh quan YTD',     -1,  50, 'pct'),
+    ('XH', 223, 'App approved binh quan YTD',   -1,  55, 'count'),
     ('XH', 207, 'Rank ty le duyet',              209,  60, 'rank'),
     ('XH', 204, 'NPL truoc WO luy ke',          -1,  70, 'pct'),
     ('XH', 208, 'Rank NPL',                     209,  80, 'rank'),

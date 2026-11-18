@@ -38,15 +38,15 @@ The bank runs its credit card business across **7 commercial regions** nationwid
 Everything started with a broad mandate from leadership:
 > *"**Executive Management** wants a **management reporting system** to track credit card performance in every region and **fairly evaluate how well the Area Sales Manager (ASM) team is performing**."*
 
-That request set the goal, nothing more — there were no existing formulas, no sample scorecards, and no report layouts. From day one, we had to figure out five missing pieces ourselves:
-- No agreed way to calculate true profit or loss by region.
-- No rules to push shared Head Office costs back down to the 7 regions.
-- No balanced metric set that captures both sales volume and bad debt risk.
-- No fair way to score regional sales managers.
-- No scoring math, ranking order, or clean report format.
+That request set the goal, nothing more — there were no existing formulas, no sample scorecards, and no report layouts. From day one, we had to build the core pieces ourselves:
+- Defining how to calculate true profit or loss by region.
+- Designing rules to push shared Head Office costs back down to the 7 regions.
+- Agreeing on a balanced metric set that captures both sales volume and bad debt risk.
+- Building a fair yardstick to score regional sales managers.
+- Setting up the scoring math, ranking order, and clean report format.
 
-### Three Blind Spots in Old Accounting Reports
-Looking through existing accounting statements quickly exposed three traps:
+### Blind Spots in Old Accounting Reports
+Looking through existing accounting statements exposed a few traps that easily mislead decision-makers:
 
 1. **Every region looked profitable on paper:**
    Interest income and card fees are booked directly at branches, while heavy costs — funding costs, marketing, IT, and central support teams — sit together at Head Office. Without sharing those Head Office expenses back to the 7 regions, reports looked unrealistically rosy and hid money-losing territories.
@@ -55,15 +55,15 @@ Looking through existing accounting statements quickly exposed three traps:
    If bonuses only reward new loan volume or card counts, managers have every reason to loosen credit checks just to hit targets. Numbers look great in month one, then bad debt and provision costs wipe out the profit a few months later.
 
 3. **YTD-only figures hide monthly swings:**
-   Existing accounting reports lump everything into year-to-date totals without breaking out each individual month. That makes it hard to tell whether profit rose because business improved or simply because provisions dropped.
+   Existing accounting reports lump everything into year-to-date totals without breaking out each individual month. That makes it hard to tell whether profit rose because business genuinely picked up or simply because provisions dropped.
 
-To fix all three issues, the reporting system was built around 5 plain business questions:
+To clear up those blind spots, the reporting system answers the everyday questions management cares about:
 
 | Focus Area | Plain Question to Answer | What the Report Delivers |
 |---|---|---|
 | **True Regional P&L** | After paying their share of Head Office costs, which regions actually make money? | Full 7-region and Head Office P&L table |
 | **Why Profit Moved** | Did profit go up this month because of higher revenue, lower expenses, or fewer provisions? | Monthly standalone flows and step-by-step profit waterfalls |
-| **Bad Debt Safety** | Which regions are seeing risky loans pile up fast? | Tracking across 5 debt buckets, write-offs, and regional NPL |
+| **Bad Debt Control** | Which regions are seeing risky loans pile up fast? | Tracking across 5 debt buckets, write-offs, and regional NPL |
 | **ASM Performance** | Who sells well while keeping bad debt low, and who is chasing risky volume? | Multi-factor scorecard for 74 to 84 managers combining sales and regional finance |
 | **Audit & Action** | How can leaders check numbers fast, reconcile to the general ledger, and act early? | A 7-page Power BI report wired directly to PostgreSQL |
 
@@ -77,11 +77,11 @@ Instead of jumping straight into charts, we split the assignment into two parall
 |---|---|---|
 | **Step 1: Define the Goal** | Show true credit card profit and loss across 7 regions after allocating shared overhead | Rank **74 – 84** Area Sales Managers (ASMs) fairly to reward top talent and coach weak spots |
 | **Step 2: Pick the Right Metrics** | • Separate card income, funding costs, operating costs, and credit risk provisions.<br>• Share central Head Office costs across the 7 regions using real drivers like loan balances, active card counts, and headcount.<br>• Track clean ratios: cost-to-income (`CIR`), profit margin (`Margin`), return on funding capital, and profit per manager. | • **Personal sales metrics**: New loan volume (`LTN`), active balance-carrying cards (`PSDN`), application approval rate.<br>• **Regional financial & risk guardrails**: Extended `NPL`, regional `CIR`, margin, return on capital, and average pre-tax profit per manager — stopping volume growth at the expense of bad debt. |
-| **Step 3: Build Power BI Pages** | • **Page 2 – Data Dictionary**: Explains **68** indicators in 5 groups so every team uses the same definitions.<br>• **Page 3 – Regional YTD P&L Table**: Reconciles **32** financial rows across `HỘI SỞ (Phân Bổ)`, 7 regions, and `Total`, using **21** dynamic color measures.<br>• **Page 4 – Regional Performance Review**: Features **5** KPI cards showing both monthly flow and YTD totals, an **8**-step monthly waterfall, a bubble chart, and a monthly trend combo chart. | • **Page 5 – ASM Ranking Table**: Full **26**-column scorecard for **74 – 84** managers combining commercial scale (`diem_qm`) and regional finance (`diem_fin`).<br>• **Page 6 – ASM Capability Radar**: Interactive radar views for Top 3 winners, Bottom 3 at-risk managers, **7**-region comparison, and 4 plain-language groups (*Good Sales - Low Bad Debt*, *Good Sales - High Bad Debt*, *Slow Sales - Low Bad Debt*, *Weak Sales - High Bad Debt*).<br>• **Page 7 – Enterprise Results & Action Plan**: Highlights **4** big KPIs, enterprise waterfall, why the **−48.8 billion** Southeast loss triggered a **+26-point** penalty dragging **84%** of its managers down, and a 5-region action table. |
+| **Step 3: Build Power BI Pages** | • **Page 2 – Data Dictionary**: Standardizes definitions, units, and calculation rules across teams.<br>• **Page 3 – Regional YTD P&L Table**: Reconciles `HỘI SỞ (Phân Bổ)`, 7 regions, and `Total` side-by-side.<br>• **Page 4 – Regional Performance Review**: Separates standalone monthly figures from YTD totals via waterfall, bubble, and trend charts. | • **Page 5 – ASM Ranking Table**: Unified scorecard ranking managers across personal sales and regional financial results.<br>• **Page 6 – ASM Capability Radar**: Interactive Radar views for Top 3 leaders, Bottom 3 managers, 7-region comparison, and 4 individual sales groups.<br>• **Page 7 – `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`**: Full YTD executive summary paired with a 7-region action table. |
 
 ### Why Running Both Tracks Together Matters
 - **Real P&L visibility (32 P&L lines, cost ratio, margin, return on capital):** Management can see which regions genuinely earn money after central costs, making budget and target setting realistic.
-- **Growth tied to credit discipline (8 ASM ranking metrics):** Selling lots of cards in a region buried in bad debt no longer puts someone at the top, while balanced managers clearly stand out.
+- **Growth tied to bad debt control (8 ASM ranking metrics):** Selling lots of cards in a region buried in bad debt no longer puts someone at the top, while balanced managers keeping clean credit quality clearly stand out.
 
 ---
 
@@ -92,11 +92,11 @@ No single database table held everything needed for both P&L and ASM scoring, so
 
 | No. | Source Dataset | Target Table & Size | **WHAT'S INSIDE?** | **WHAT IS IT USED FOR?** |
 |:---:|---|---|---|---|
-| **1** | **Dữ liệu hạch toán mỗi tháng (GL)** *(Monthly General Ledger)* | `fact_txn_month`<br>(**63,134** rows / 63 thousand rows) | **Actual revenue and expense entries across 7 regions and Head Office**, made of **62,953** province-tagged entries and **181** central Head Office entries coded `'00'`. Join keys: `city_code`, `account_code`. | **Building the 7-region P&L**: Sums direct regional entries as-is and spreads Head Office costs across regions. |
-| **2** | **Dữ liệu sao kê thẻ mỗi tháng** *(Monthly Card Statements)* | `fact_kpi_month`<br>(**2,932,922** rows / 2.9 million rows, **117.2 MB**) | **Card-by-card monthly statements across 5 months**: ending principal, debt buckets 1–5, cumulative *write-offs*, and active balance flags. Join keys: `branch_code`, `month_key`. | **Computing Head Office cost drivers and regional bad debt**: Supplies balance shares and active card counts to split central costs and measure extended NPL across 7 regions. |
+| **1** | **Dữ liệu hạch toán mỗi tháng (GL)** *(Monthly General Ledger)* | `fact_txn_month`<br>(**63,134** rows) | **Actual revenue and expense entries across 7 regions and Head Office**, made of **62,953** province-tagged entries and **181** central Head Office entries coded `'00'`. Join keys: `city_code`, `account_code`. | **Building the 7-region P&L**: Sums direct regional entries as-is and spreads Head Office costs across regions. |
+| **2** | **Dữ liệu sao kê thẻ mỗi tháng** *(Monthly Card Statements)* | `fact_kpi_month`<br>(**2,932,922** rows, **117.2 MB**) | **Card-by-card monthly statements across 5 months**: ending principal, debt buckets 1–5, cumulative *write-offs*, and active balance flags. Join keys: `branch_code`, `month_key`. | **Computing Head Office cost drivers and regional bad debt**: Supplies balance shares and active card counts to split central costs and measure extended NPL across 7 regions. |
 | **3** | **Dữ liệu kết quả sale của ASM mỗi tháng** *(Monthly ASM Sales Results)* | `kpi_asm_data`<br>(**420** rows covering **84** managers over 5 months) | **Monthly sales output for 74 to 84 active ASMs**: new disbursement volume, active cards with balances, and approval rates. Join keys: `asm_id`, `month_key`. | **Scoring the personal sales pillar**: Scores commercial scale (`diem_qm`) before combining with regional finance (`diem_fin`) for final rankings. |
 
-*(Alongside those 3 raw files sits a parameter workbook mapping **64** provinces into **8** zones — Head Office `'A'` and 7 commercial regions `'B'..'H'` — plus **55** P&L/ranking report items in `dim_report_detail` and a **68**-term Data Dictionary).*
+*(Alongside those 3 raw files sits a parameter workbook mapping **64** provinces into **8** zones — Head Office `'A'` and 7 commercial regions `'B'..'H'` — plus **56** P&L/ranking report items in `dim_report_detail` and a **68**-term Data Dictionary).*
 
 ### Can the Data Answer Everything We Need?
 
@@ -120,7 +120,7 @@ No single database table held everything needed for both P&L and ASM scoring, so
 
 ### 4.1. Building the 7-Region P&L (Handling Head Office Costs)
 
-The hardest part of regional P&L reporting is deciding how to divide large shared entries sitting at Head Office. We followed 9 straightforward steps:
+The hardest part of regional P&L reporting is deciding how to divide large shared entries sitting at Head Office. We unpack and process everything step-by-step:
 1. Inspect all 63,134 rows in the **Monthly General Ledger (GL)**.
 2. Keep branch/province entries pinned directly to their own regions.
 3. Isolate shared entries parked at Head Office (province `'00'`, zone `'A'`).
@@ -173,7 +173,7 @@ Why do that? Standard on-book NPL drops overnight whenever bad loans are written
 
 **Breakdown of All 8 ASM Scoring Metrics:**
 
-| Metric | What It Shows | Why It Matters | Data Source | Better When | Level | Keep in Mind |
+| Metric | What It Shows | Why It Matters | Data Source | Good Direction | Scope | Keep in Mind |
 |---|---|---|---|---|---|---|
 | **New Loan Disbursement** | Direct sales push | Tracks monthly new borrowing volume brought in | `3. ASM Sales Results` | Higher | Individual ASM | Ignores later card cancellations |
 | **Active Balance Cards (`PSDN`)** | Real card usage | Counts customers actively carrying a balance | `3. ASM Sales Results` | Higher | Individual ASM | Must weigh against activation/servicing costs |
@@ -193,7 +193,7 @@ $$\text{Total Score} = \text{Scale Score } (diem\_qm) + \text{Financial Score } 
 
 ## 5. 🔄 Data Pipeline and the 7 Power BI Pages
 
-Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI report:
+Data flows across a closed pipeline from raw Excel workbooks into the Power BI reporting suite:
 
 <div align="center">
 
@@ -201,20 +201,20 @@ Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI
 
 </div>
 
-### How the 3 Stages Work:
+### Detailed Processing Steps:
 
 - **Stage 1 – Collect 3 Raw Excel Files (`Excel – 3 File Số Liệu`):**
-  1. **Dữ liệu hạch toán mỗi tháng (GL)** (`fact_txn_month` • **63,134** rows / 63 thousand rows): Revenue and expense ledger entries for 7 regions & Head Office.
-  2. **Dữ liệu sao kê thẻ mỗi tháng** (`fact_kpi_month` • **2,932,922** rows / 2.9 million rows, **117.2 MB**): Contract-level balances, debt buckets, write-offs, and active cards used for cost splitting and NPL tracking.
+  1. **Dữ liệu hạch toán mỗi tháng (GL)** (`fact_txn_month` • **63,134** rows): Revenue and expense ledger entries for 7 regions & Head Office.
+  2. **Dữ liệu sao kê thẻ mỗi tháng** (`fact_kpi_month` • **2,932,922** rows, **117.2 MB**): Contract-level balances, debt buckets, write-offs, and active cards used for cost splitting and NPL tracking.
   3. **Dữ liệu kết quả sale của ASM mỗi tháng** (`kpi_asm_data` • **420** rows for **84** managers over 5 months): Individual sales numbers used to score scale performance.
 
 - **Stage 2 – Clean Storage and Automated Math in PostgreSQL (`PostgreSQL + DBeaver`):**
   Everything lives inside schema `banking_project` as a clean Star Schema with **19 tables, 3 `views`, and 11 `stored procedures`**:
-  - **Ingest (`DBeaver Import`):** Loads the 3 Excel sources into staging tables (`stg_fact_txn_month` **63,134** rows, `stg_fact_kpi_month` **2,932,922** rows, `stg_asm_target` **420** rows) and cleans province names (`pos_city_norm`) so over **36,000** card contracts in Ba Ria - Vung Tau stay intact.
+  - **Ingest (`DBeaver Import`):** Loads the 3 Excel sources into staging tables (`stg_fact_txn_month` **63,134** rows, `stg_fact_kpi_month` **2,932,922** rows, `stg_asm_target` **420** rows) and cleans province names (`pos_city_norm`) for clean regional mapping.
   - **Calculate via SQL & Stored Procedures:**
-    1. *7 dimension tables (`dim_`)*: `dim_area` (8 zones), `dim_param_area` (64 provinces), `dim_month` (5 months), `dim_date` (151 days), `dim_asm` (84 ASMs), `dim_report_detail` (55 line items), `dim_sm_headcount` (35 SM headcount rows).
+    1. *7 dimension tables (`dim_`)*: `dim_area` (8 zones), `dim_param_area` (64 provinces), `dim_month` (5 months), `dim_date` (151 days), `dim_asm` (84 ASMs), `dim_report_detail` (56 line items), `dim_sm_headcount` (35 SM headcount rows).
     2. *6 three-step working tables (`tmp_`)*: Uniform tall format (`month_key`, `area_code`, `report_id`, `value`) holding intermediate math for P&L (`tmp_pnl_step1..3`) and ASM Ranking (`tmp_xh_step1..3`).
-    3. *2 final fact tables (`fct_`)*: `fct_pnl_value` (**1,115** rows) stores post-allocation P&L; `fct_asm_value` (**8,536** rows) stores 5 months of ASM values, scores, and ranks.
+    3. *2 final fact tables (`fct_`)*: `fct_pnl_value` (**1,115** rows) stores post-allocation P&L; `fct_asm_value` (**8,924** rows) stores 5 months of ASM values, scores, and ranks.
     4. *1 run-history log (`log_`)*: `log_proc_run` logs execution across 11 procedures (**208** `START` and `OK` rows, **0** `FAIL` rows), backed by **9** virtual foreign keys in DBeaver.
   - **Publish 3 Clean Reporting Views (`Schema rpt`):** `v_baocao_tonghop` (**35** rows), `v_xephang_asm` (**388** rows), and `v_baocao_pnl_excel_pivoted` (**160** rows).
 
@@ -225,26 +225,24 @@ Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI
 </div>
 
 - **Stage 3 – Interactive Reporting in Power BI (`DirectQuery`):**
-  Power BI queries PostgreSQL live over `DirectQuery` and runs **90 DAX measures** (**89** in `'LAI LO (Visuals & DAX)'` and **1** in `'Data Glossary'`, including **21** `PnlTable_BgColor_*` and `PnlTable_FontColor_*` formatting measures). Every visual across all 7 pages follows the **Pure Yellow** palette (soft cream canvas, bright yellow highlights, deep navy labels, green for healthy/profitable metrics, and red for losses or high risk):
+  Power BI queries PostgreSQL live over `DirectQuery`, running **90 DAX formulas** (89 powering charts, KPI cards, dynamic commentary, and conditional row styling, plus 1 for the Data Dictionary). All 7 pages use a warm cream-and-white palette with clear visual cues (green for healthy gains, red for losses or high costs, and muted zeros) and stamp `(Lũy kế T01–T05)` on cumulative views. Pages 4, 5, and 6 let users pick **`Toàn hàng`** or drill into a single region:
 
-  1. **Page 1 – `GIỚI THIỆU ĐỀ TÀI` (Topic Introduction)**: Frames management's request, previews the 4 core analytical areas, summarizes the 3 raw data sources, and embeds the 3-stage pipeline diagram.
-  2. **Page 2 – `TỪ ĐIỂN DỮ LIỆU` (Data Dictionary)**: Documents **68** fields and KPIs across 5 clear categories (`0. Identification & Hierarchy`, `1. P&L Statement`, `2. Financial & Headcount Ratios`, `3. Head Office Allocation Drivers`, `4. ASM Evaluation & Ranking`) with plain definitions and formulas.
-  3. **Page 3 – `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` *(Dashboard 01)***: Reconciles **32** YTD P&L indicators across `HỘI SỞ (Phân Bổ)`, **7** regions (`Đông Bắc Bộ`, `Tây Bắc Bộ`, `Đồng Bằng Sông Hồng`, `Bắc Trung Bộ`, `Nam Trung Bộ`, `Tây Nam Bộ`, `Đông Nam Bộ`), and `Total`. `1. Profit before tax` stands out in bright yellow, section totals use dark olive rows with high-contrast text, detail rows sit cleanly on cream/white, negatives turn crimson red, and zeros fade softly.
-  4. **Page 4 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` *(Dashboard 03)***: Compares revenue, expenses, provisions, and profitability across 7 regions using 5 linked visuals that clearly separate monthly numbers from YTD totals:
-     - *Top Strip of 5 Large KPI Cards:* Bold primary numbers show the **selected month's standalone result** (green when positive/favorable, red for expenses or losses) plus `%` change vs. prior month, while the bottom line prints **YTD cumulative totals** matching Page 3. For May: `Operating Income` **+288,146 million** (+1.8% vs. April, YTD **1,353,898 million**); `Pre-Tax Profit` **+56,798 million** (+8.4%, YTD **250,450 million**); `Operating Expense` **-48,577 million** (+1.1%, YTD **-235,122 million**); `Provision Expense` **-182,771 million** (+0.0%, YTD **-868,327 million**); `Average Productivity` **+915.7 million/person** (+6.0%, YTD **4,099.5 million/person**).
-     - *Monthly Waterfall Chart:* Breaks down standalone May pre-tax profit from 4 revenue drivers (`In-term interest` **355,009** million, `Insurance fees` **6,596** million, `Card services` **21,192** million, `Overdue interest` **323** million) minus 3 cost buckets (`Funding & other net costs` **-94,975** million, `Operating expense` **-48,577** million, `Provision expense` **-182,771** million) down to **56,798** million.
-     - *Bubble Comparison Chart:* Plots Pre-Tax Profit against Cost-to-Income Ratio (`CIR`), sizing each bubble by regional Sales Manager headcount (`SM`).
-     - *Monthly Trend Combo Chart:* Tracks monthly Pre-Tax Profit from January through May (**40,173**, **52,053**, **49,019**, **52,407**, **56,798** million) alongside Return on Capital (**57.9%**, **82.9%**, **70.2%**, **76.9%**, **80.7%**).
-     - *Dynamic Insight & Takeaways Panel:* Automatically rewrites itself when you filter by Month or Region — in bank-wide mode it highlights Southwest leading monthly profit at **+37.07 billion** (YTD **+167.88 billion**, **2.9x** Red River Delta), South Central leading capital efficiency (**233.7%** monthly return, **13.4%** `CIR`), Southeast's loss of **-8.79 billion** in the month (YTD **-48.76 billion**, dragging bank-wide monthly profit down **15.5%** and YTD down **19.5%**), and cross-sell opportunities where in-term interest accounts for **92.7%** of gross income while provisions eat **63.4%** of monthly operating income (**64.1%** YTD). Picking a single region switches it to rank `1..7` and tailored regional notes.
-  5. **Page 5 – `BÁO CÁO XẾP HẠNG ASM` *(Dashboard 02)***: Complete **26**-column leaderboard covering **74 – 84** managers each month so leaders can filter by month or region, inspect `Total Score` and `Final Rank`, and see exact sub-ranks (February champion Hoang Van Nam scored **34 points**; May champion Hoang Van Nam scored **36 points**).
-  6. **Page 6 – `ĐÁNH GIÁ NĂNG LỰC ASM` *(Dashboard 04)***: Visualizes 4 capabilities (`New Lending`, `Active Cards`, `Approval Rate`, `Bad Debt Safety`) on Radar charts across 4 panels:
-     - *Top 3 Winners* & *Bottom 3 Managers*: Interactive 3-tab cards let viewers click directly between Rank 1, 2, and 3 against bank averages. In May, #1 Hoang Van Nam (Red River Delta) posted **5,326 million** in new lending, **208** active balance customers, **53.6%** approval rate, and **13.9%** NPL (vs. bank averages of **2,141 million**, **101** customers, **42.8%**, and **17.3%**); back in February he led with **2,901 million**, **176** customers, **47.2%**, and **12.8%** (vs. averages of **986 million**, **72** customers, **41.8%**, and **15.5%**).
-     - *National / Regional Benchmark:* Shows team totals (**179.8 billion** card sales and **8,459** active cardholders in May; North Central leading average sales at **3,089 million/person**, South Central holding the lowest NPL at **11.2%**).
-     - *4 Plain-Language Capability Groups:* Splits May's **84** managers into four actionable buckets: **Good Sales - Low Bad Debt** (**22** people, **26.2%**), **Good Sales - High Bad Debt** (**12** people, **14.3%**), **Slow Sales - Low Bad Debt** (**18** people, **21.4%**), and **Weak Sales - High Bad Debt** (**32** people, **38.1%**), each with average stats and concrete next steps.
-  7. **Page 7 – `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP VÀ ĐỀ XUẤT`**: Full **5-month YTD** executive summary built cleanly on 3 blocks:
-     - *4 Headline KPI Cards:* Operating Income **+1,353.9 billion** (+1.8% vs. April), Operating Expense **-235.1 billion** (+1.1%, 17.4% of income), Bad Debt Provision **-868.3 billion** (+0.05%, 64.1% of income), Pre-Tax Profit **+250.5 billion** (+8.4%, 6/7 regions profitable).
-     - *Enterprise Profit Waterfall:* Walks from Card Revenue **+1,810.5 billion** (92.6% card interest) minus Funding Cost **-340.5 billion** and Card Selling Costs **-116.0 billion** to Net Operating Income **+1,353.9 billion**, then deducts Operating Expense **-235.1 billion** and Bad Debt Provision **-868.3 billion** to arrive at **+250.5 billion** Profit (13.8% margin), flanked by 3 callouts (Southwest **+167.9 billion**, South Central & RRD **+104.3 billion**, Southeast loss **-48.8 billion** wiping **16.3%** off profitable regions' gains).
-     - *Regional Priority Action Table:* Uses plain 5-column language (**Priority · Region · Current Situation · Action Needed · Target Outcome**) across the 5 priority regions (detailed in Section 6 – Part C).
+  1. **Page 1 – `GIỚI THIỆU ĐỀ TÀI` (Topic Introduction)**: Frames management's request, previews the 4 core analytical areas, summarizes the 3 raw data sources, and displays the Excel → PostgreSQL → Power BI workflow diagram.
+  2. **Page 2 – `TỪ ĐIỂN DỮ LIỆU` (Data Dictionary)**: Documents **68** fields and KPIs across 5 groups (`0. Identification & Hierarchy`, `1. P&L Statement`, `2. Financial & Headcount Ratios`, `3. Head Office Allocation Drivers`, `4. ASM Evaluation & Ranking`) with plain definitions, units, and formulas.
+  3. **Page 3 – `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` *(Dashboard 01)***: Reconciles **32** YTD P&L indicators across `HỘI SỞ (Phân Bổ)`, **7** regions, and `Total` side-by-side like an audit sheet without needing region filters. Key rows such as `1. Profit before tax` and section totals are color-tiered automatically by DAX.
+  4. **Page 4 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` *(Dashboard 03)***: Breaks down revenues, costs, provisions, and profit across 7 regions, separating **standalone monthly activity** from **YTD cumulative totals**:
+     - *5 Headline KPI Cards:* Primary numbers show standalone monthly results plus `%` change vs. prior month, while secondary lines show YTD totals matching Page 3 (in May: Operating Income **+288,146 million**, YTD **1,353,898 million**; Pre-Tax Profit **+56,798 million**, YTD **250,450 million**).
+     - *Monthly Waterfall Chart:* Walks step-by-step through monthly profit from 4 card revenue streams minus funding/card costs, operating expenses, and provisions.
+     - *Bubble & Trend Charts:* Compares regional Pre-Tax Profit against `CIR` and manager headcount (`SM`), alongside 5-month profit and Return on Capital trends.
+     - *Dynamic Insight Panel:* Automatically updates narrative commentary by Month and Region — calling out profit leaders, top capital return, loss-making territories, and provision ratios bank-wide, or grading rank `1..7` when a single region is selected.
+  5. **Page 5 – `BÁO CÁO XẾP HẠNG ASM` *(Dashboard 02)***: Complete **26**-column scorecard covering **74 – 84** managers grouped into 3 bands (`THÔNG TIN CHUNG`, `QUY MÔ BÁN HÀNG`, `TÀI CHÍNH (THEO VÙNG)`) inside one unified bordered grid where negative numbers turn red automatically. Leaders select a month and `Toàn hàng` or any region to inspect `Tổng điểm`, `Hạng tổng thể`, and sub-ranks (e.g., #1 champion **Hoàng Văn Nam** scoring **34** in Feb and **36** in May).
+  6. **Page 6 – `ĐÁNH GIÁ NĂNG LỰC ASM` *(Dashboard 04)***: Evaluates personal sales capability using Radar charts and capability grouping:
+     - *Top 3 Winners & Bottom 3 Managers (Bank-Wide):* Locked bank-wide by month across 4 personal axes (`Doanh số mở thẻ`, `Khách có dư nợ`, `Tỷ lệ duyệt thẻ`, `Hồ sơ được duyệt`) against bank averages, with quick 3-person tab switches.
+     - *National / Regional Benchmark:* Compares the 4 sales metrics across regions alongside cards for total sales volume, active cards, and approved applications.
+     - *Capability Grouping Matrix:* Uses bank-wide YTD averages (May: **2,141 million** card sales and **42.8%** approval rate) to classify **84** managers into 4 action buckets: **Good Sales - High Approval (All-Round)** (22), **Good Sales - Low Approval (Unfiltered)** (12), **Weak Sales - High Approval (Potential)** (14), and **Weak Sales - Low Approval (At Risk)** (36).
+  7. **Page 7 – `KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`**: Single-screen **5-month YTD** executive summary for leadership:
+     - *4 Enterprise KPI Cards & Profit Waterfall:* Walks from Card Revenue (**+1,810.5 billion**) minus funding, selling, Operating Expense (**-235.1 billion**), and Bad Debt Provision (**-868.3 billion**) to **+250.5 billion** Profit (**6/7** regions profitable), paired with 3 regional callout cards.
+     - *7-Region Priority Action Table:* Turns enterprise metrics into a crisp 5-column action sheet (**Priority · Region · Current Situation · Action Needed · Target Outcome**) across all 7 territories (detailed in Section 6 – Part C).
 
 ---
 
@@ -257,8 +255,8 @@ Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI
 | **Check and reconcile true 7-region P&L** | **Page 3 · Regional YTD P&L Statement** | **Delivered:** All 32 metrics across 7 regions + Head Office match 100% of general ledger totals. |
 | **Rank ASMs fairly for rewards & coaching** | **Page 5 · ASM Ranking Leaderboard** | **Delivered:** Full **26**-column scorecard covering **74 - 84** managers across sales and regional finance. |
 | **Compare income, expenses, provisions, and returns** | **Page 4 · Regional Business Performance** | **Delivered:** Separates monthly flow from YTD totals, shows 8 waterfall steps, `CIR`, and capital return across 7 regions. |
-| **Spot managers trading credit safety for fast sales** | **Page 6 · ASM Competency Radar** | **Delivered Well:** Pairs sales against NPL on interactive Radar tabs and groups all managers into 4 action buckets. |
-| **Standardize metrics and list next actions** | **Page 2 · Data Dictionary & Page 7 · Enterprise Results** | **Delivered:** Defines 68 terms and turns 5-month numbers into a clear 5-region action plan. |
+| **Spot strong sellers with weak screening** | **Page 6 · ASM Competency Radar** | **Delivered Well:** Provides a `Toàn hàng` region selector, pairs `New Lending`, `Approval Rate`, and `Approved Applications` on Radar tabs, and groups managers into 4 action buckets. |
+| **Standardize metrics and list next actions** | **Page 2 · Data Dictionary & Page 7 · KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP** | **Delivered:** Defines 68 terms and turns 5-month numbers into a clear 7-region action plan. |
 
 ### Part B – Four Standout Takeaways From May Figures
 
@@ -284,7 +282,7 @@ Data flows across 3 clear stages from raw Excel workbooks into a 7-page Power BI
 
 ### Part C – Enterprise Big Picture and Regional Action Plan
 
-Page 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP VÀ ĐỀ XUẤT`) sums up 5-month YTD performance into **4 key points**:
+Page 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`) sums up 5-month YTD performance into **4 key points**:
 
 1. **4 Headline Figures to Remember:**
    - **Largest Profit Share – `67.0%`:** Southwest contributes **+167.9 billion VND** out of **+250.5 billion VND** bank-wide.
@@ -297,32 +295,33 @@ Page 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP VÀ ĐỀ XUẤT`) sums up 
    - *Southeast's drag:* Southeast's **−48.8 billion VND** loss wipes out **16.3%** (around 16%) of all gains earned by the profitable territories.
    - *Final bank-wide profit:* Consolidated pre-tax profit finishes at **+250.5 billion VND**.
 
-3. **Why Good Sellers in Southeast Still Fell to the Bottom:**
+3. **What Looks Unfair in Southeast: Good Sellers Pulled Down by Regional Bad Debt:**
    - *Maximum financial penalty (`26 points`):* Because Southeast ran a −48.8 billion VND loss and placed 7/7 on all four regional financial ratios, all 19 Southeast ASMs received the full **26-point** penalty no matter how much they sold personally.
-   - *Real scorecard examples:*
-     * Inside Southeast: Nguyen T. Loan (**Top sale**, **16 points**) landed at **Rank 18**; Tran V. Hung (**Good**, **14 points**) landed at **Rank 21**; Le T. Mai (**Average**, **11 points**) landed at **Rank 24**.
-     * Nationwide: Le Van Binh slipped from #24 on sales to #31 overall (down 7 spots); Tran Van Hai fell from #28 to #33 (down 5 spots); Tran Van Anh fell from #36 to #41 (down 5 spots).
-   - *Practical fix:* Don't punish strong individual salespeople with **16/19 managers (84%)** sunk by regional write-offs. **Score personal card sales separately** to keep morale up, while holding territory heads directly accountable for fixing the **48.8 billion VND** loss and collecting bad loans.
+   - *Real examples directly from May 2023's leaderboard:*
+     * **`Trần Văn Hải`**: ranked **#28/84** bank-wide on sales scale (`124` scale pts), then took **26** regional penalty points to total **150** pts and drop to **`#33`** overall (down **5** places).
+     * **`Nguyễn Thị Hằng`**: dropped from **#52** on sales (`197` pts) to **`#61`** overall (down **9** places); **`Lê Văn An`**: slipped from **#55** (`200` pts) to **`#62`** overall (down **7** places).
+     * Aside from 3 top-half performers (`Lê Văn Bình` `#24`, `Trần Văn Hải` `#33`, and `Trần Văn Anh` `#36`), the other **16 out of 19 Southeast managers (84%)** were pushed down into the bottom bracket (**`#61` to `#84`**).
+   - *Practical fix:* Don't punish strong individual salespeople with **16/19 managers (84%)** sunk by regional write-offs. **Score personal card sales separately** for bonus evaluation (just as Page 6 already isolates personal sales), while holding territory heads directly accountable for fixing the **48.8 billion VND** loss and collecting bad loans.
 
-4. **Priority Action Plan for 5 Key Regions (Shown Live on Page 7):**
+4. **Priority Action Plan for All 7 Regions (Shown Live on Page 7):**
 
 | Priority | Region | Current Situation | Action Needed | Target Outcome |
 |:---:|---|---|---|---|
 | **Urgent** | **Southwest** *(Profit +167.9 billion)* | Generates the biggest profit (**+67.0%** of total), but has the highest bad debt (**22.0%**). | Tighten underwriting checks before issuing new cards and push overdue collection hard. | Cut bad debt **22.0% → 17.3%**; stop provisions (**290.4 billion** / **290,377 million VND**) from growing further. |
-| **Urgent** | **Southeast** *(Loss −48.8 billion)* | The sole loss-making region (**−48.8 billion**) from heavy bad debt, pulling **16/19** managers (**84%**) into the bottom tier. | Focus on bad-debt recovery to close the loss; score personal card sales separately so top sellers aren't penalized. | Recover debt to clear the **48.8 billion** loss; give fair evaluations to all **19** managers (provisions now eat **223.7 billion**). |
+| **Urgent** | **Southeast** *(Loss −48.8 billion)* | The sole loss-making region (**−48.8 billion**) from heavy bad debt, pulling **16/19** managers (**84%**) into the bottom tier. | Focus on bad-debt recovery to close the loss; evaluate managers on individual card sales results. | Recover debt to clear the **48.8 billion** loss; give fair evaluations to all **19** managers (provisions now eat **223.7 billion**). |
+| **Priority** | **Northwest** *(Profit +2.7 billion)* | Thin margin (**2.4%**): both operating costs (**22.0%**) and provisions (**74.7%** of income) remain elevated. | Review branch spending and tighten new card underwriting to move profit safely above breakeven. | Save **~3.8 billion** in expenses; lift margin above **10%** (from **2.4%**). |
 | **Priority** | **North Central** *(Profit +10.5 billion)* | Operating costs eat **26.5%** of income — highest in the bank (average is only **17.4%**). | Trim non-essential branch spending and tie budgets strictly to real sales volume. | Save **~3.5 billion** in expenses; bring operating cost ratio down to the **17.4%** norm. |
+| **Monitor** | **Northeast** *(Profit +13.8 billion)* | Thin margin (**6.7%**): bad debt (**18.1%**) exceeds the bank average (**17.3%**), with provisions taking **73.2%** of income. | Speed up overdue collection and coach managers on cross-selling fee-generating products. | Cut bad debt **18.1% → 17.3%**; expand profit margin past **12%**. |
 | **Sustain** | **Red River Delta** *(Profit +54.3 billion)* | Leads the country in new card lending (**30.6%** of all new card volume). | Keep acquisition pace steady and coach average performers to raise team output evenly. | Hit **+55.0 billion** in new lending; hold the #1 national share (**30.6%**). |
 | **Replicate** | **South Central** *(Profit +50.0 billion)* | Safest and most efficient business: lowest bad debt (**11.2%**), earning **2.0 dong profit** per 1 dong capital (**203.5%**). | Package this region's screening and collection habits as a playbook for high-NPL territories. | Keep bad debt under **12%**; sustain **203.5%** return on capital. |
 
-### Five Clear Recommendations for Executive Management:
+### Three Head Office Recommendations for Executive Management *(system-wide decisions above regional level)*:
 
 | # | Recommended Move | Supporting Evidence | Owner · Timing |
 |:---:|:---|:---|:---|
-| 01 | **Split new provisions from loan recoveries in accounting:** Shows whether profit growth came from real sales or accounting adjustments. | Current GL only reports one net provision figure combining both | Risk Management · June |
-| 02 | **Inspect overdue contracts in 3 provision-spiking regions:** Southeast, Northeast, and Northwest. | Provisions across these 3 territories jumped **6,035.1 million VND** in May alone | Regional Heads + Risk · 30 Days |
-| 03 | **Audit underwriting and collections on-site in Southwest:** Check why provisions fell sharply despite peak bad debt. | Highest NPL (**21.99%**) alongside **97.2%** of May's total profit growth | Business + Risk · July |
-| 04 | **Study and test South Central's playbook elsewhere:** Document how they pick customers and monitor early arrears. | Lowest NPL (**11.24%**) with 4/5 regional managers ranking in Top 25 | Commercial Division · After 2 Months |
-| 05 | **Update ASM bonus & ranking rules:** Separate individual sales scoring from regional provision swings; balance sales, risk quality, finance, and tenure. | Stops **84%** of Southeast ASMs from sinking together and avoids over-rewarding provision drops | Executive Board · Immediate |
+| 01 | **Split new provisions from loan recoveries in accounting:** Shows clearly whether profit grew from real card sales or accounting adjustments. | Current GL only reports one net provision figure combining both | Risk Management · June |
+| 02 | **Update ASM bonus & ranking rules:** Officially adopt individual-only sales grouping (already isolated on Page 6) for bonus evaluation, and assign regional bad-debt responsibility separately to regional heads. | Stops **84%** of Southeast ASMs from sinking together and keeps top individual sellers motivated | Executive Board · Immediate |
+| 03 | **Dispatch a central inspection team across 4 provision & bad-debt hotspots:** Audit Southwest (peak NPL alongside steep provision drops) plus Southeast, Northeast, and Northwest (sharp May provision spikes). | Southwest holds **21.99%** NPL while contributing **97.2%** of May profit growth; the other 3 territories added **6,035.1 million VND** in May provisions | Business + Risk · 30 – 60 Days |
 
 ---
 
@@ -344,14 +343,14 @@ Page 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP VÀ ĐỀ XUẤT`) sums up 
 
 ## 8. 🛠️ Tools and Stack Used
 
-Each stage of the 3-step workflow runs on a dedicated tool:
+Each step of the workflow runs on a dedicated tool:
 
 | Tool | Role in Pipeline | What It Handles | Why It Fits |
 |---|---|---|---|
 | **Microsoft Excel** | 3 Raw Source Files (`.xlsx`) | Supplies `1. Dữ liệu hạch toán mỗi tháng (GL)`, `2. Dữ liệu sao kê thẻ mỗi tháng`, and `3. Dữ liệu kết quả sale của ASM mỗi tháng` | Native export format from banking operational systems |
 | **DBeaver 24** | Data Import, ER Diagram | Loads the 3 Excel sources (including the **117.2 MB** file) into 3 PostgreSQL `staging` tables, maintains 9 virtual FKs, and runs SQL | Clean visual import wizard for large spreadsheets and quick schema checks |
 | **PostgreSQL 16** | PL/pgSQL, 11 Stored Procedures | Stores the 19-table, 3-`view` Star Schema and runs Head Office cost splitting (Rule 1 & Rule 2) plus ASM scoring automatically | Handles nearly 3 million records accurately under strict transactions |
-| **Power BI Desktop** | DirectQuery, 90 DAX Measures, HTML Content | Runs all **7 report pages** in the **Pure Yellow** theme (from Data Dictionary of **68** terms and **32**-line P&L to ASM Radar and Enterprise Summary) | Lets leadership audit exact Excel-style numbers and slice visuals live |
+| **Power BI Desktop** | DirectQuery, 90 DAX Formulas, HTML Content | Runs all **7 report pages** consistently from Data Dictionary (**68** terms) and **32**-line P&L to ASM Radar and Enterprise Results | Lets leadership audit exact Excel-style numbers and slice visuals live |
 
 ---
 
@@ -376,7 +375,7 @@ Each stage of the 3-step workflow runs on a dedicated tool:
 ## 10. 📖 Accompanying Documentation
 
 Four detailed reference guides sit inside `docs/`:
-- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Current row counts across 19 tables and 3 `views`, Power BI model with **90** DAX measures under Pure Yellow, and reconciliation benchmarks.
+- [`docs/HIEN_TRANG_HE_THONG.md`](docs/HIEN_TRANG_HE_THONG.md) — Current row counts across 19 tables and 3 `views`, Power BI model with **90** DAX formulas, and reconciliation benchmarks.
 - [`docs/PIPELINE.md`](docs/PIPELINE.md) — Step-by-step 3-stage architecture and DBeaver SQL execution order.
 - [`docs/NHAT_KY_CONG_VIEC.md`](docs/NHAT_KY_CONG_VIEC.md) — Chronological build and tuning log across all development phases.
 - [`docs/LOI_THUONG_GAP.md`](docs/LOI_THUONG_GAP.md) — Log of **62 real-world issues and fixes** encountered across source Excel files, SQL, Python, and DAX.
