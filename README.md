@@ -34,18 +34,18 @@
 ### Hoạt động mảng thẻ tín dụng hiện tại
 Mảng thẻ tín dụng của ngân hàng được chia về **7 vùng kinh doanh** trên cả nước. Mỗi vùng có đội ngũ Quản lý vùng (Area Sales Manager - ASM) phụ trách bán hàng và giữ chất lượng khách hàng. Tùy từng tháng, toàn hàng có từ **74 đến 84 ASM** đang hoạt động.
 
-### Đề bài từ Ban Điều Hành
+### Yêu cầu từ Ban Điều Hành
 Dự án bắt đầu từ một yêu cầu khá rộng:
 > *"**Ban Điều Hành** cần một **hệ thống báo cáo quản trị** để theo dõi kết quả kinh doanh thẻ tín dụng ở từng vùng và **đánh giá công bằng hiệu quả làm việc** của đội ngũ **Quản lý vùng (ASM)**."*
 
-Đề bài ban đầu chỉ nêu mong muốn chung như vậy, chưa có công thức tính sẵn, chưa có bảng điểm mẫu hay mẫu báo cáo. Khi bắt tay vào làm, phải tự xây dựng từ đầu các phần việc:
+Yêu cầu ban đầu chỉ nêu mục tiêu tổng quan như vậy, chưa có công thức tính sẵn, chưa có bảng điểm mẫu hay mẫu báo cáo. Khi bắt tay vào làm, phải tự xây dựng từ đầu các phần việc:
 - Xác định cách tính xem từng vùng thực sự lãi hay lỗ bao nhiêu.
 - Xây dựng nguyên tắc chia các khoản chi phí chung đang hạch toán tập trung ở Hội sở về cho 7 vùng.
 - Chốt bộ chỉ tiêu vừa đo sức bán hàng vừa kiểm soát rủi ro nợ xấu.
 - Thiết kế thước đo công bằng để đánh giá Quản lý vùng.
 - Lên phương án chấm điểm, xếp hạng và mẫu biểu trình bày rõ ràng.
 
-Từ đề bài đó, hệ thống báo cáo tập trung làm rõ những câu hỏi sát sườn với việc điều hành:
+Từ bài toán đó, hệ thống báo cáo tập trung làm rõ những câu hỏi sát sườn với việc điều hành:
 
 | Khía cạnh | Câu hỏi cần trả lời rõ | Đầu ra của báo cáo |
 |---|---|---|
@@ -58,11 +58,11 @@ Từ đề bài đó, hệ thống báo cáo tập trung làm rõ những câu h
 
 ## 2. 🎯 Từ yêu cầu ban đầu đến bộ báo cáo đầu ra
 
-Thay cho cách làm rời rạc từng bảng, dự án tách đề bài của Ban Điều Hành thành hai luồng song song để xử lý cho rành mạch: một luồng tính đúng lãi lỗ từng vùng, một luồng chấm điểm công bằng đội ngũ Quản lý vùng.
+Thay cho cách làm rời rạc từng bảng, dự án tách bài toán của Ban Điều Hành thành hai luồng song song để xử lý cho rành mạch: một luồng tính đúng lãi lỗ từng vùng, một luồng chấm điểm công bằng đội ngũ Quản lý vùng.
 
 | Giai đoạn | Luồng 1: Tính lãi lỗ 7 vùng (P&L) | Luồng 2: Chấm điểm Quản lý vùng (ASM) |
 |---|---|---|
-| **Bước 1: Nắm rõ đề bài** | Cần nhìn ra lãi lỗ thực chất của mảng thẻ tín dụng tại 7 vùng sau khi chia hết chi phí chung | Cần xếp hạng công bằng từ **74 – 84** Quản lý vùng (ASM) để khen đúng người và hỗ trợ đúng chỗ |
+| **Bước 1: Chốt phạm vi bài toán** | Cần nhìn ra lãi lỗ thực chất của mảng thẻ tín dụng tại 7 vùng sau khi chia hết chi phí chung | Cần xếp hạng công bằng từ **74 – 84** Quản lý vùng (ASM) để khen đúng người và hỗ trợ đúng chỗ |
 | **Bước 2: Chọn chỉ tiêu cốt lõi** | • Tách rõ tiền thu từ thẻ, chi phí vốn, chi phí vận hành và chi phí dự phòng nợ xấu.<br>• Chia phần chi phí chung đang treo ở Hội sở về 7 vùng theo tỷ lệ sát thực tế như dư nợ, số lượng thẻ và quân số.<br>• Theo dõi thêm các tỷ lệ gọn: tỷ lệ chi phí trên thu nhập (`CIR`), biên lãi (`Margin`), mức sinh lời trên đồng vốn và năng suất mỗi quản lý. | • **Kết quả bán hàng cá nhân**: Doanh số mở thẻ mới (`LTN`), số khách hàng phát sinh dư nợ (`PSDN`), tỷ lệ duyệt hồ sơ.<br>• **Trách nhiệm với tài chính và nợ xấu của vùng**: Tỷ lệ nợ xấu mở rộng (`NPL`), tỷ lệ chi phí (`CIR`), biên lãi, hiệu suất vốn và lợi nhuận bình quân mỗi quản lý, tránh tình trạng mở thẻ ồ ạt mặc kệ nợ xấu. |
 | **Bước 3: Đưa lên báo cáo Power BI** | • **Trang 2 – Từ điển dữ liệu**: Giải thích tên gọi, đơn vị tính và cách tính chung cho cả hệ thống.<br>• **Trang 3 – Bảng lãi lỗ lũy kế vùng**: Đối soát thu – chi của `HỘI SỞ (Phân Bổ)`, 7 vùng và `Tổng`.<br>• **Trang 4 – Đánh giá hiệu quả kinh doanh vùng**: Tách riêng số trong tháng với số lũy kế, vẽ biểu đồ thác nước, bong bóng và xu hướng theo tháng. | • **Trang 5 – Báo cáo xếp hạng ASM**: Bảng điểm tổng hợp xếp hạng Quản lý vùng theo cả sức bán cá nhân lẫn tài chính vùng.<br>• **Trang 6 – Đánh giá năng lực ASM**: Biểu đồ mạng nhện xem Top 3 dẫn đầu, 3 người cuối bảng, mặt bằng 7 vùng và 4 nhóm năng lực bán hàng cá nhân. |
 
@@ -139,6 +139,7 @@ $$\text{Tiền Hội sở chia về vùng } i = \text{Khoản tiền ở Hội s
 
 *Cách tách số riêng từng tháng từ số cộng dồn đầu năm:*
 Vì sổ cái cộng dồn từ tháng 1 đến tháng hiện tại, muốn xem tháng này làm ăn riêng thế nào thì chỉ cần lấy số lũy kế tháng này trừ đi lũy kế tháng trước:
+
 $$V_{\text{tháng } M} = V_{\text{lũy kế } M} - V_{\text{lũy kế } (M-1)}$$
 
 ### 4.2. Cách chấm điểm và xếp hạng Quản lý vùng (ASM)
@@ -176,7 +177,9 @@ Nếu chỉ nhìn nợ trên sổ, mỗi lần xóa bớt nợ xấu ra ngoại 
 
 *Cách cộng tổng điểm khi các chỉ tiêu khác đơn vị:*
 Vì một bên tính bằng triệu đồng, một bên đếm số thẻ, một bên tính phần trăm nên không cộng trực tiếp số thô được. Mỗi chỉ tiêu được xếp hạng từ `1` đến `N` trong toàn hàng (Hạng `1` là tốt nhất, Hạng `N` là kém nhất), sau đó cộng hết thứ hạng lại:
+
 $$\text{Tổng Điểm} = \text{Điểm Quy Mô } (diem\_qm) + \text{Điểm Tài Chính } (diem\_fin)$$
+
 Người nào có **Tổng điểm càng nhỏ thì `Hạng tổng thể` càng cao** (`#1` là người có Tổng điểm thấp nhất).
 
 ---
@@ -217,16 +220,16 @@ Toàn bộ dữ liệu đi qua quy trình khép kín từ file Excel thô cho t�
 - **Bước 3 – Dựng 7 trang báo cáo trên Power BI (`DirectQuery`):**
   Power BI kết nối thẳng vào kho dữ liệu PostgreSQL qua `DirectQuery`, vận hành **90 công thức DAX** (89 công thức tính cho biểu đồ, thẻ số liệu, định dạng màu có điều kiện và 1 công thức cho Từ điển dữ liệu). Bộ báo cáo thiết kế đồng bộ trên tông màu vàng kem – trắng, phân cấp màu theo cấp độ chỉ tiêu (số lãi tô xanh lá, số lỗ hoặc chi phí cao tô chữ đỏ, làm mờ nhẹ số `0`) và gắn nhãn rõ ràng giữa số trong tháng với số lũy kế `(Lũy kế T01–T05)`. Các trang 4, 5 và 6 đều tích hợp bộ lọc cho phép xem **`Toàn hàng`** hoặc đi sâu vào từng vùng:
 
-  1. **Trang 1 – `GIỚI THIỆU ĐỀ TÀI`**: Tóm tắt đề bài của Ban Điều Hành, giới thiệu 4 nhóm báo cáo đầu ra, 3 nguồn dữ liệu đầu vào và sơ đồ quy trình xử lý dữ liệu từ Excel → PostgreSQL → Power BI.
+  1. **Trang 1 – `GIỚI THIỆU ĐỀ TÀI`**: Tóm tắt bài toán của Ban Điều Hành, giới thiệu 4 nhóm báo cáo đầu ra, 3 nguồn dữ liệu đầu vào và sơ đồ quy trình xử lý dữ liệu từ Excel → PostgreSQL → Power BI.
   2. **Trang 2 – `TỪ ĐIỂN DỮ LIỆU`**: Chuẩn hóa **68** chỉ tiêu và biến số thuộc 5 nhóm (`0. Định danh & Phân cấp`, `1. Báo cáo Lãi Lỗ (P&L)`, `2. Chỉ số Tài chính & Nhân sự`, `3. Tiêu thức Phân bổ Hội sở`, `4. Đánh giá & Xếp hạng ASM`) kèm đơn vị tính, ý nghĩa và công thức để các phòng ban dùng chung một cách hiểu.
-  3. **Trang 3 – `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` *(Dashboard 01)***: Bảng đối soát **32** chỉ tiêu lũy kế từ đầu năm cho `HỘI SỞ (Phân Bổ)`, **7** vùng kinh doanh và cột `Tổng`, đặt cạnh nhau như mặt bảng Excel để kế toán và lãnh đạo đối chiếu trực tiếp mà không cần bấm lọc từng vùng. Các dòng chỉ tiêu chính như `1. Lợi nhuận trước thuế` và các dòng tổng cấp 1, cấp 2 được tô màu phân cấp tự động bằng DAX.
-  4. **Trang 4 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG` *(Dashboard 03)***: Bóc tách chi tiết thu – chi – dự phòng – lợi nhuận của 7 vùng, tách rạch ròi giữa **số phát sinh riêng trong tháng** và **số lũy kế từ đầu năm**:
+  3. **Trang 3 – `BÁO CÁO KẾT QUẢ KINH DOANH LUỸ KẾ VÙNG` : Bảng đối soát **32** chỉ tiêu lũy kế từ đầu năm cho `HỘI SỞ (Phân Bổ)`, **7** vùng kinh doanh và cột `Tổng`, đặt cạnh nhau như mặt bảng Excel để kế toán và lãnh đạo đối chiếu trực tiếp mà không cần bấm lọc từng vùng. Các dòng chỉ tiêu chính như `1. Lợi nhuận trước thuế` và các dòng tổng cấp 1, cấp 2 được tô màu phân cấp tự động bằng DAX.
+  4. **Trang 4 – `ĐÁNH GIÁ HIỆU QUẢ KINH DOANH VÙNG`  Bóc tách chi tiết thu – chi – dự phòng – lợi nhuận của 7 vùng, tách rạch ròi giữa **số phát sinh riêng trong tháng** và **số lũy kế từ đầu năm**:
      - *Hàng 5 thẻ KPI lớn:* Hiển thị số phát sinh riêng của tháng đang chọn kèm `%` tăng/giảm so với tháng trước, bên dưới đặt ngay số lũy kế từ đầu năm để đối chiếu khớp với Trang 3 (ví dụ tại tháng 5: `Thu nhập hoạt động` đạt **+288.146 triệu**, lũy kế **1.353.898 triệu**; `Lợi nhuận trước thuế` đạt **+56.798 triệu**, lũy kế **250.450 triệu**).
      - *Biểu đồ thác nước (Waterfall):* Bóc tách từng bước hình thành lợi nhuận riêng trong tháng từ 4 khoản thu (`Thu lãi trong hạn`, `Phí bảo hiểm`, `Thu dịch vụ thẻ`, `Thu lãi quá hạn`) trừ đi 3 khoản chi (`Chi phí vốn & HĐ khác`, `Chi phí hoạt động`, `Chi phí dự phòng`) để ra Lợi nhuận trước thuế.
      - *Biểu đồ bong bóng & Biểu đồ xu hướng:* Đặt Lợi nhuận trước thuế cạnh Tỷ lệ Chi phí/Thu nhập (`CIR`) và quy mô nhân sự (`SM`) của từng vùng; đồng thời theo dõi đà tăng trưởng lợi nhuận và Hệ số sinh lời trên vốn qua 5 tháng.
      - *Khung nhận xét tự động:* Tự động đổi nội dung phân tích theo bộ lọc. Khi chọn toàn hàng, khung chỉ ra vùng dẫn đầu lợi nhuận, vùng hiệu quả vốn cao nhất, vùng đang báo lỗ và tỷ trọng dự phòng; khi bấm chọn một vùng cụ thể, khung tự động chấm hạng `1..7` và đưa ra nhận xét riêng cho vùng đó.
-  5. **Trang 5 – `BÁO CÁO XẾP HẠNG ASM` *(Dashboard 02)***: Bảng điểm tổng hợp **26** chỉ tiêu của toàn bộ **74 – 84** ASM chia làm 3 khối (`THÔNG TIN CHUNG`, `QUY MÔ BÁN HÀNG`, `TÀI CHÍNH (THEO VÙNG)`), đóng gọn thành 1 khối có đường kẻ dọc và tự động tô đỏ mọi số âm. Người quản lý chỉ cần chọn tháng hoặc vùng (`Toàn hàng` hoặc từng vùng) là tra được ngay `Tổng điểm`, `Hạng tổng thể` và từng chỉ tiêu thành phần (như quán quân tháng 2 và tháng 5 là **Hoàng Văn Nam** với tổng điểm lần lượt là **34** và **36 điểm**) để có căn cứ khen thưởng hoặc nhắc nhở kịp thời.
-  6. **Trang 6 – `ĐÁNH GIÁ NĂNG LỰC ASM` *(Dashboard 04)***: Phân tích sâu năng lực cá nhân qua biểu đồ mạng nhện (Radar) và ma trận phân nhóm:
+  5. **Trang 5 – `BÁO CÁO XẾP HẠNG ASM`: Bảng điểm tổng hợp **26** chỉ tiêu của toàn bộ **74 – 84** ASM chia làm 3 khối (`THÔNG TIN CHUNG`, `QUY MÔ BÁN HÀNG`, `TÀI CHÍNH (THEO VÙNG)`), đóng gọn thành 1 khối có đường kẻ dọc và tự động tô đỏ mọi số âm. Người quản lý chỉ cần chọn tháng hoặc vùng (`Toàn hàng` hoặc từng vùng) là tra được ngay `Tổng điểm`, `Hạng tổng thể` và từng chỉ tiêu thành phần (như quán quân tháng 2 và tháng 5 là **Hoàng Văn Nam** với tổng điểm lần lượt là **34** và **36 điểm**) để có căn cứ khen thưởng hoặc nhắc nhở kịp thời.
+  6. **Trang 6 – `ĐÁNH GIÁ NĂNG LỰC ASM`: Phân tích sâu năng lực cá nhân qua biểu đồ mạng nhện (Radar) và ma trận phân nhóm:
      - *Khối 1 & 2 – Top 3 dẫn đầu và 3 người cuối bảng (Toàn hàng):* Cố định phạm vi toàn hàng theo tháng để so sánh 4 chỉ số bán hàng cá nhân (`Doanh số mở thẻ`, `Khách có dư nợ`, `Tỷ lệ duyệt thẻ`, `Hồ sơ được duyệt`) của từng người với mức bình quân chung, tích hợp nút bấm chuyển đổi giữa 3 nhân sự ngay trên góc thẻ.
      - *Khối 3 – Năng lực toàn hàng / Theo vùng:* Đối chiếu mặt bằng 4 chỉ số bán hàng giữa các vùng kèm các thẻ tổng hợp quy mô doanh số, số khách phát sinh dư nợ và lượng hồ sơ được duyệt.
      - *Khối 4 – Phân nhóm năng lực bán hàng & chất lượng duyệt hồ sơ:* Dựa trên mốc chuẩn bình quân toàn hàng (như tại tháng 5 là **2.141 triệu** doanh số và **42,8%** tỷ lệ duyệt), hệ thống tự động xếp **84** ASM vào 4 nhóm hành động kèm hướng xử lý cụ thể: **Bán tốt - Duyệt cao (Toàn diện)** (22 người), **Bán tốt - Duyệt thấp (Chưa chọn lọc)** (12 người), **Bán kém - Duyệt cao (Tiềm năng)** (14 người) và **Bán kém - Duyệt thấp (Nguy cơ)** (36 người).
@@ -284,9 +287,9 @@ Trên Trang 7 (`KẾT QUẢ KINH DOANH CỦA DOANH NGHIỆP`), toàn bộ số l
 3. **Điểm chưa hợp lý ở Đông Nam Bộ: Bán giỏi vẫn rớt hạng vì nợ xấu chung của vùng:**
    - *Bị phạt kịch trần (`26 điểm`):* Do vùng Đông Nam Bộ lỗ −48,8 tỷ đồng và đứng thứ 7/7 ở cả 4 chỉ tiêu tài chính vùng, toàn bộ 19 ASM trong vùng đều chịu mức phạt tối đa **26 điểm**, bất kể cá nhân đó bán thẻ tốt tới đâu.
    - *Ví dụ nhìn thấy ngay trên bảng xếp hạng tháng 5/2023:*
-     * **`Trần Văn Hải`**: phần bán hàng đứng hạng **#28/84** toàn hàng (`124` điểm quy mô), cộng thêm **26 điểm** tài chính vùng thành **150 điểm**, tụt xuống hạng **`#33`** (rớt **5 bậc**).
-     * **`Nguyễn Thị Hằng`**: bán hàng đứng hạng **#52** (`197` điểm quy mô), tụt xuống hạng **`#61`** (rớt **9 bậc**); **`Lê Văn An`**: từ hạng **#55** (`200` điểm quy mô) tụt xuống hạng **`#62`** (rớt **7 bậc**).
-     * Toàn vùng chỉ có 3 người đứng trên vùng cuối (`Lê Văn Bình` hạng `#24`, `Trần Văn Hải` hạng `#33`, `Trần Văn Anh` hạng `#36`), còn lại **16 trong 19 quản lý (84%)** đều bị đẩy xuống nhóm cuối từ hạng **`#61` đến `#84`**.
+     - **`Trần Văn Hải`**: phần bán hàng đứng hạng **#28/84** toàn hàng (`124` điểm quy mô), cộng thêm **26 điểm** tài chính vùng thành **150 điểm**, tụt xuống hạng **`#33`** (rớt **5 bậc**).
+     - **`Nguyễn Thị Hằng`**: bán hàng đứng hạng **#52** (`197` điểm quy mô), tụt xuống hạng **`#61`** (rớt **9 bậc**); **`Lê Văn An`**: từ hạng **#55** (`200` điểm quy mô) tụt xuống hạng **`#62`** (rớt **7 bậc**).
+     - Toàn vùng chỉ có 3 người đứng trên vùng cuối (`Lê Văn Bình` hạng `#24`, `Trần Văn Hải` hạng `#33`, `Trần Văn Anh` hạng `#36`), còn lại **16 trong 19 quản lý (84%)** đều bị đẩy xuống nhóm cuối từ hạng **`#61` đến `#84`**.
    - *Hướng xử lý hợp lý:* Không nên gộp kết quả bán hàng cá nhân chung với khoản lỗ của cả vùng khiến **16/19 quản lý (84%)** rơi xuống nhóm cuối. Cần **tính riêng phần bán hàng của từng người** khi xét thưởng thi đua (như cách Trang 6 đang phân nhóm), còn phần lỗ **48,8 tỷ đồng** và thu hồi nợ xấu phải giao rõ trách nhiệm về cấp điều hành vùng.
 
 4. **Kế hoạch hành động trọng tâm cho cả 7 vùng kinh doanh (hiển thị ngay trên Trang 7):**
