@@ -1,6 +1,6 @@
 <div align="center">
 
-# Báo cáo quản trị lãi lỗ thẻ tín dụng (P&L) & Đánh giá Quản lý vùng (ASM)
+# Xây dựng hệ thống Báo cáo quản trị lãi lỗ thẻ tín dụng (P&L) & Đánh giá Quản lý vùng (ASM)
 
 **Ngôn ngữ / Language**: **Tiếng Việt** · [English](README_eng.md)
 
@@ -13,7 +13,6 @@
 
 </div>
 
-**🔗 Live Power BI Demo:** [Xem báo cáo tương tác trên Power BI](https://app.powerbi.com/view?r=eyJrIjoiMDRkMWE5NWEtNWI4Ni00MjZhLTgyOWUtNTVkN2RiODljYTBlIiwidCI6ImQ2ZDEzZTBlLTdjYTAtNDNkNC05OTY1LTQyZDM4ZWU1M2RkYSIsImMiOjEwfQ%3D%3D)
 
 ---
 
